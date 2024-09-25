@@ -14,3 +14,4 @@ jit/
 docs
 *.0
 .idea
+test/string
