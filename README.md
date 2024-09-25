@@ -78,7 +78,6 @@ Support for lua 5.1.x features, plus:
 <li>Support for compiling lua source code into Java source code.
 <li>Support for compiling lua bytecode directly into Java bytecode.
 <li>Stackless vm design centered around dynamically typed objects.
-<li>Good alignment with C API (see <a href="names.csv">names.csv</a> for details)
 <li>Implementation of weak keys and values, and all metatags. 
 </ul>
 <h3>Luaj 1.0.x</h3>
