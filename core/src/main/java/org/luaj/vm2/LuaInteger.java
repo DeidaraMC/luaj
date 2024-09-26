@@ -56,24 +56,24 @@ public class LuaInteger extends LuaNumber {
 		this.v = i;
 	}
 	
-	public boolean isint() {		return true;	}
-	public boolean isinttype() {	return true;	}
-	public boolean islong() {		return true;	}
+	public boolean isInt() {		return true;	}
+	public boolean isInteger() {	return true;	}
+	public boolean isLong() {		return true;	}
 	
-	public byte    tobyte()        { return (byte) v; }
+	public byte toByte()        { return (byte) v; }
 	public char    tochar()        { return (char) v; }
-	public double  todouble()      { return v; }
-	public float   tofloat()       { return v; }
-	public int     toint()         { return v; }
-	public long    tolong()        { return v; }
-	public short   toshort()       { return (short) v; }
+	public double toDouble()      { return v; }
+	public float toFloat()       { return v; }
+	public int toInt()         { return v; }
+	public long toLong()        { return v; }
+	public short toShort()       { return (short) v; }
 
-	public double      optdouble(double defval)            { return v; }
-	public int         optint(int defval)                  { return v;  }
-	public LuaInteger  optinteger(LuaInteger defval)       { return this; }
-	public long        optlong(long defval)                { return v; }
+	public double optionalDouble(double defval)            { return v; }
+	public int optionalInt(int defval)                  { return v;  }
+	public LuaInteger optionalInteger(LuaInteger defval)       { return this; }
+	public long optionalLong(long defval)                { return v; }
 
-	public String tojstring() {
+	public String toJString() {
 		return Integer.toString(v);
 	}
 
@@ -81,23 +81,23 @@ public class LuaInteger extends LuaNumber {
 		return LuaString.valueOf(Integer.toString(v));
 	}
 		
-	public LuaString optstring(LuaString defval) {
+	public LuaString optionalLuaString(LuaString defval) {
 		return LuaString.valueOf(Integer.toString(v));
 	}
 	
-	public LuaValue tostring() {
+	public LuaValue toLuaString() {
 		return LuaString.valueOf(Integer.toString(v));
 	}
 		
-	public String optjstring(String defval) {
+	public String optionalJString(String defval) {
 		return Integer.toString(v);
 	}
 	
-	public LuaInteger checkinteger() {
+	public LuaInteger checkInteger() {
 		return this;
 	}
 	
-	public boolean isstring() {
+	public boolean isString() {
 		return true;
 	}
 	
@@ -179,19 +179,19 @@ public class LuaInteger extends LuaNumber {
 	// string comparison
 	public int strcmp( LuaString rhs )      { typerror("attempt to compare number with string"); return 0; }
 	
-	public int checkint() {
+	public int checkInt() {
 		return v;
 	}
-	public long checklong() {
+	public long checkLong() {
 		return v;
 	}
-	public double checkdouble() {
+	public double checkDouble() {
 		return v;
 	}
-	public String checkjstring() {
+	public String checkJString() {
 		return String.valueOf(v);
 	}
-	public LuaString checkstring() {
+	public LuaString checkLuaString() {
 		return valueOf( String.valueOf(v) );
 	}
 

@@ -111,9 +111,9 @@ public class Print extends Lua {
 			ps.print("null");
 			return;
 		}
-		switch ( v.type() ) {
+		switch ( v.getType() ) {
 		case LuaValue.TSTRING: printString( ps, (LuaString) v ); break;
-		default: ps.print( v.tojstring() );
+		default: ps.print( v.toJString() );
 		
 		}
 	}
@@ -422,18 +422,18 @@ public class Print extends Lua {
 			LuaValue v = stack[i];
 			if ( v == null ) 
 				ps.print(STRING_FOR_NULL);
-			else switch ( v.type() ) {
+			else switch ( v.getType() ) {
 			case LuaValue.TSTRING: 
-				LuaString s = v.checkstring();
+				LuaString s = v.checkLuaString();
 				ps.print( s.length() < 48?
-						s.tojstring():
-						s.substring(0, 32).tojstring()+"...+"+(s.length()-32)+"b");					
+						s.toJString():
+						s.substring(0, 32).toJString()+"...+"+(s.length()-32)+"b");
 				break;
 			case LuaValue.TFUNCTION:
-				ps.print( v.tojstring() );
+				ps.print( v.toJString() );
 				break;
 			case LuaValue.TUSERDATA:
-				Object o = v.touserdata();
+				Object o = v.toUserdata();
 				if ( o != null ) {
 					String n = o.getClass().getName();
 					n = n.substring(n.lastIndexOf('.')+1);
@@ -443,7 +443,7 @@ public class Print extends Lua {
 				}
 				break;
 			default:
-				ps.print(v.tojstring());
+				ps.print(v.toJString());
 			}
 			if ( i+1 == top )
 				ps.print(']');

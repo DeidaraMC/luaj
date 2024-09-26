@@ -108,54 +108,54 @@ public class VarargsTest extends TestCase {
 
 	static void standardTestsA_G(Varargs a_g) {
 		expectEquals(A_G, a_g);
-		expectEquals(A_G, a_g.subargs(1));
-		expectEquals(C_G, a_g.subargs(3).subargs(1));
-		expectEquals(E_G, a_g.subargs(5));
-		expectEquals(E_G, a_g.subargs(5).subargs(1));
-		expectEquals(FG, a_g.subargs(6));
-		expectEquals(FG, a_g.subargs(6).subargs(1));
-		expectEquals(G, a_g.subargs(7));
-		expectEquals(G, a_g.subargs(7).subargs(1));
-		expectEquals(NONE, a_g.subargs(8));
-		expectEquals(NONE, a_g.subargs(8).subargs(1));
-		standardTestsC_G(A_G.subargs(3));
+		expectEquals(A_G, a_g.subArgs(1));
+		expectEquals(C_G, a_g.subArgs(3).subArgs(1));
+		expectEquals(E_G, a_g.subArgs(5));
+		expectEquals(E_G, a_g.subArgs(5).subArgs(1));
+		expectEquals(FG, a_g.subArgs(6));
+		expectEquals(FG, a_g.subArgs(6).subArgs(1));
+		expectEquals(G, a_g.subArgs(7));
+		expectEquals(G, a_g.subArgs(7).subArgs(1));
+		expectEquals(NONE, a_g.subArgs(8));
+		expectEquals(NONE, a_g.subArgs(8).subArgs(1));
+		standardTestsC_G(A_G.subArgs(3));
 	}
 
 	static void standardTestsC_G(Varargs c_g) {
-		expectEquals(C_G, c_g.subargs(1));
-		expectEquals(E_G, c_g.subargs(3));
-		expectEquals(E_G, c_g.subargs(3).subargs(1));
-		expectEquals(FG, c_g.subargs(4));
-		expectEquals(FG, c_g.subargs(4).subargs(1));
-		expectEquals(G, c_g.subargs(5));
-		expectEquals(G, c_g.subargs(5).subargs(1));
-		expectEquals(NONE, c_g.subargs(6));
-		expectEquals(NONE, c_g.subargs(6).subargs(1));
-		standardTestsE_G(c_g.subargs(3));
+		expectEquals(C_G, c_g.subArgs(1));
+		expectEquals(E_G, c_g.subArgs(3));
+		expectEquals(E_G, c_g.subArgs(3).subArgs(1));
+		expectEquals(FG, c_g.subArgs(4));
+		expectEquals(FG, c_g.subArgs(4).subArgs(1));
+		expectEquals(G, c_g.subArgs(5));
+		expectEquals(G, c_g.subArgs(5).subArgs(1));
+		expectEquals(NONE, c_g.subArgs(6));
+		expectEquals(NONE, c_g.subArgs(6).subArgs(1));
+		standardTestsE_G(c_g.subArgs(3));
 	}
 
 	static void standardTestsE_G(Varargs e_g) {
-		expectEquals(E_G, e_g.subargs(1));
-		expectEquals(FG, e_g.subargs(2));
-		expectEquals(FG, e_g.subargs(2).subargs(1));
-		expectEquals(G, e_g.subargs(3));
-		expectEquals(G, e_g.subargs(3).subargs(1));
-		expectEquals(NONE, e_g.subargs(4));
-		expectEquals(NONE, e_g.subargs(4).subargs(1));
-		standardTestsFG(e_g.subargs(2));
+		expectEquals(E_G, e_g.subArgs(1));
+		expectEquals(FG, e_g.subArgs(2));
+		expectEquals(FG, e_g.subArgs(2).subArgs(1));
+		expectEquals(G, e_g.subArgs(3));
+		expectEquals(G, e_g.subArgs(3).subArgs(1));
+		expectEquals(NONE, e_g.subArgs(4));
+		expectEquals(NONE, e_g.subArgs(4).subArgs(1));
+		standardTestsFG(e_g.subArgs(2));
 	}
 
 	static void standardTestsFG(Varargs fg) {
-		expectEquals(FG, fg.subargs(1));
-		expectEquals(G, fg.subargs(2));
-		expectEquals(G, fg.subargs(2).subargs(1));
-		expectEquals(NONE, fg.subargs(3));
-		expectEquals(NONE, fg.subargs(3).subargs(1));
+		expectEquals(FG, fg.subArgs(1));
+		expectEquals(G, fg.subArgs(2));
+		expectEquals(G, fg.subArgs(2).subArgs(1));
+		expectEquals(NONE, fg.subArgs(3));
+		expectEquals(NONE, fg.subArgs(3).subArgs(1));
 	}
 
 	static void standardTestsNone(Varargs none) {
-		expectEquals(NONE, none.subargs(1));
-		expectEquals(NONE, none.subargs(2));		
+		expectEquals(NONE, none.subArgs(1));
+		expectEquals(NONE, none.subArgs(2));
 	}
 	
 	public void testVarargsSubargs() {
@@ -215,13 +215,13 @@ public class VarargsTest extends TestCase {
 	static void expectNegSubargsError(Varargs v) {
 		String expected_msg = "bad argument #1: start must be > 0";
 		try {
-			v.subargs(0);
+			v.subArgs(0);
 			fail("Failed to throw exception for index 0");
 		} catch ( LuaError e ) {
 			assertEquals(expected_msg, e.getMessage());
 		}
 		try {
-			v.subargs(-1);
+			v.subArgs(-1);
 			fail("Failed to throw exception for index -1");
 		} catch ( LuaError e ) {
 			assertEquals(expected_msg, e.getMessage());

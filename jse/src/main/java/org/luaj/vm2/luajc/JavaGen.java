@@ -49,7 +49,7 @@ public class JavaGen {
 		scanInstructions(pi, classname, builder);
 		for (int i = 0; i < pi.prototype.locvars.length; ++i) {
 			LocVars l = pi.prototype.locvars[i];
-			builder.setVarStartEnd(i, l.startpc, l.endpc, l.varname.tojstring());
+			builder.setVarStartEnd(i, l.startpc, l.endpc, l.varname.toJString());
 		}
 		this.bytecode = builder.completeClass(genmain);
 		

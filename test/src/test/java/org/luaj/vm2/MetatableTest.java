@@ -167,18 +167,18 @@ public class MetatableTest extends TestCase {
 		// plain metatable
 		mt.set( LuaValue.INDEX, new TwoArgFunction() {
 			public LuaValue call(LuaValue arg1, LuaValue arg2) {
-				return LuaValue.valueOf( arg1.typename()+"["+arg2.tojstring()+"]=xyz" );
+				return LuaValue.valueOf( arg1.getTypeName()+"["+arg2.toJString()+"]=xyz" );
 			}
 			
 		});
-		assertEquals( "table[1]=xyz",    table.get(1).tojstring() );
-		assertEquals( "userdata[1]=xyz", userdata.get(1).tojstring() );
-		assertEquals( "nil[1]=xyz",      LuaValue.NIL.get(1).tojstring() );
-		assertEquals( "boolean[1]=xyz",  LuaValue.TRUE.get(1).tojstring() );
-		assertEquals( "number[1]=xyz",   LuaValue.ONE.get(1).tojstring() );
+		assertEquals( "table[1]=xyz",    table.get(1).toJString() );
+		assertEquals( "userdata[1]=xyz", userdata.get(1).toJString() );
+		assertEquals( "nil[1]=xyz",      LuaValue.NIL.get(1).toJString() );
+		assertEquals( "boolean[1]=xyz",  LuaValue.TRUE.get(1).toJString() );
+		assertEquals( "number[1]=xyz",   LuaValue.ONE.get(1).toJString() );
 	//	assertEquals( "string[1]=xyz",   string.get(1).tojstring() );
-		assertEquals( "function[1]=xyz", function.get(1).tojstring() );
-		assertEquals( "thread[1]=xyz",   thread.get(1).tojstring() );
+		assertEquals( "function[1]=xyz", function.get(1).toJString() );
+		assertEquals( "thread[1]=xyz",   thread.get(1).toJString() );
 	}
 
 	

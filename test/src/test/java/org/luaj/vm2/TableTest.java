@@ -45,7 +45,7 @@ public class TableTest extends TestCase {
 		LuaValue k = LuaValue.NIL;
 		while ( true ) {
 			Varargs n = t.next(k);
-			if ( (k = n.arg1()).isnil() )
+			if ( (k = n.arg1()).isNil() )
 				break;
 			l.add( k );
 		}
@@ -62,7 +62,7 @@ public class TableTest extends TestCase {
 
 		// Ensure all keys are still there.
 		for ( int i = 1; i <= 32; ++i ) {
-			assertEquals( "Test Value! " + i, t.get( i ).tojstring() );
+			assertEquals( "Test Value! " + i, t.get( i ).toJString() );
 		}
 		
 		// Ensure capacities make sense
@@ -102,7 +102,7 @@ public class TableTest extends TestCase {
 
 		// Ensure all keys are still there.
 		for ( int i = 1; i <= 32; ++i ) {
-			assertEquals( "Test Value! "+i, t.get( i ).tojstring() );
+			assertEquals( "Test Value! "+i, t.get( i ).toJString() );
 		}
 		
 		// Ensure capacities make sense
@@ -134,14 +134,14 @@ public class TableTest extends TestCase {
 			LuaValue k = keys[i];
 			
 			if ( k instanceof LuaInteger ) {
-				final int ik = k.toint();
+				final int ik = k.toInt();
 				assertTrue( ik >= 0 && ik < 10 );
 				final int mask = 1 << ik;
 				assertTrue( ( intKeys & mask ) == 0 );
 				intKeys |= mask;
 			} else if ( k instanceof LuaString ) {
-				final int ik = Integer.parseInt( k.strvalue().tojstring() );
-				assertEquals( String.valueOf( ik ), k.strvalue().tojstring() );
+				final int ik = Integer.parseInt( k.strvalue().toJString() );
+				assertEquals( String.valueOf( ik ), k.strvalue().toJString() );
 				assertTrue( ik >= 0 && ik < 10 );
 				final int mask = 1 << ik;
 				assertTrue( "Key \""+ik+"\" found more than once", ( stringKeys & mask ) == 0 );
@@ -242,16 +242,16 @@ public class TableTest extends TestCase {
 		assertEquals(4, t.getArrayLength());
 		assertTrue(t.getHashLength() < 10);
 		assertEquals(5, t.hashEntries);
-		assertEquals("one", t.get(1).tojstring());
-		assertEquals("two", t.get(2).tojstring());
+		assertEquals("one", t.get(1).toJString());
+		assertEquals("two", t.get(2).toJString());
 		assertEquals(LuaValue.NIL, t.get(3));
 		assertEquals(LuaValue.NIL, t.get(4));
-		assertEquals("five", t.get(5).tojstring());
+		assertEquals("five", t.get(5).toJString());
 		assertEquals(LuaValue.NIL, t.get(6));
-		assertEquals("aaa", t.get("aa").tojstring());
-		assertEquals("bbb", t.get("bb").tojstring());
-		assertEquals("ccc", t.get("cc").tojstring());
-		assertEquals("ddd", t.get("dd").tojstring());
+		assertEquals("aaa", t.get("aa").toJString());
+		assertEquals("bbb", t.get("bb").toJString());
+		assertEquals("ccc", t.get("cc").toJString());
+		assertEquals("ddd", t.get("dd").toJString());
 	}
 
 	public void testInOrderLuaLength() {
@@ -298,8 +298,8 @@ public class TableTest extends TestCase {
 		assertEquals(v.size(),t.length());
 		for ( int j=0; j<n; j++ ) {
 			Object vj = v.elementAt(j);
-			Object tj = t.get(j+1).tojstring();
-			vj = ((LuaString)vj).tojstring();
+			Object tj = t.get(j+1).toJString();
+			vj = ((LuaString)vj).toJString();
 			assertEquals(vj,tj);
 		}
 	}
@@ -400,18 +400,18 @@ public class TableTest extends TestCase {
 		java.util.List<String> expected = new java.util.ArrayList<String>();
 		Varargs n;
 		int i;
-		for (n = t.next(LuaValue.NIL), i = 0; !n.arg1().isnil(); n = t.next(n.arg1()), ++i) {
+		for (n = t.next(LuaValue.NIL), i = 0; !n.arg1().isNil(); n = t.next(n.arg1()), ++i) {
 			if (i % 2 == 0)
 				expected.add(n.arg1() + "=" + n.arg(2));
 		}
 		// Remove every other key while iterating over the table.
-		for (n = t.next(LuaValue.NIL), i = 0; !n.arg1().isnil(); n = t.next(n.arg1()), ++i) {
+		for (n = t.next(LuaValue.NIL), i = 0; !n.arg1().isNil(); n = t.next(n.arg1()), ++i) {
 			if (i % 2 != 0)
 				t.set(n.arg1(), LuaValue.NIL);
 		}
 		// Iterate over remaining table, and form list of entries still in table.
 		java.util.List<String> actual = new java.util.ArrayList<String>();
-		for (n = t.next(LuaValue.NIL); !n.arg1().isnil(); n = t.next(n.arg1())) {
+		for (n = t.next(LuaValue.NIL); !n.arg1().isNil(); n = t.next(n.arg1())) {
 			actual.add(n.arg1() + "=" + n.arg(2));
 		}
 		assertEquals(expected, actual);

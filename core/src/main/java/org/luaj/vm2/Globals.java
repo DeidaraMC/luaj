@@ -136,7 +136,7 @@ public class Globals extends LuaTable {
 	}
 	
 	/** Check that this object is a Globals object, and return it, otherwise throw an error. */
-	public Globals checkglobals() {
+	public Globals checkGlobals() {
 		return this;
 	}
 	

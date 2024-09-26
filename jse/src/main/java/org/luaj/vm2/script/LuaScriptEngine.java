@@ -83,7 +83,7 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 	    	InputStream is = new Utf8Encoder(script);
 	    	try {
 	    		final Globals g = context.globals;
-	    		final LuaFunction f = g.load(script, "script").checkfunction();
+	    		final LuaFunction f = g.load(script, "script").checkFunction();
 	    		return new LuajCompiledScript(f, g);
 			} catch ( LuaError lee ) {
 				throw new ScriptException(lee.getMessage() );
@@ -160,8 +160,8 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 	    Object eval(Globals g, Bindings b) throws ScriptException {
 	    	g.setmetatable(new BindingsMetatable(b));
 			LuaFunction f = function;
-			if (f.isclosure())
-				f = new LuaClosure(f.checkclosure().p, g);
+			if (f.isClosure())
+				f = new LuaClosure(f.checkClosure().p, g);
 			else {
 				try {
 					f = f.getClass().newInstance();
@@ -208,16 +208,16 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 		BindingsMetatable(final Bindings bindings) {
 			this.rawset(LuaValue.INDEX, new TwoArgFunction() {
 				public LuaValue call(LuaValue table, LuaValue key) {
-					if (key.isstring()) 
-						return toLua(bindings.get(key.tojstring()));
+					if (key.isString())
+						return toLua(bindings.get(key.toJString()));
 					else
 						return this.rawget(key);
 				}
 			});
 			this.rawset(LuaValue.NEWINDEX, new ThreeArgFunction() {
 				public LuaValue call(LuaValue table, LuaValue key, LuaValue value) {
-					if (key.isstring()) {
-						final String k = key.tojstring();
+					if (key.isString()) {
+						final String k = key.toJString();
 						final Object v = toJava(value);
 						if (v == null)
 							bindings.remove(k);
@@ -239,13 +239,13 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 	}
 
 	static private Object toJava(LuaValue luajValue) {
-		switch ( luajValue.type() ) {
+		switch ( luajValue.getType() ) {
 		case LuaValue.TNIL: return null;
-		case LuaValue.TSTRING: return luajValue.tojstring();
-		case LuaValue.TUSERDATA: return luajValue.checkuserdata(Object.class);
-		case LuaValue.TNUMBER: return luajValue.isinttype()? 
-				(Object) new Integer(luajValue.toint()): 
-				(Object) new Double(luajValue.todouble());
+		case LuaValue.TSTRING: return luajValue.toJString();
+		case LuaValue.TUSERDATA: return luajValue.checkUserdata(Object.class);
+		case LuaValue.TNUMBER: return luajValue.isInteger()?
+				(Object) new Integer(luajValue.toInt()):
+				(Object) new Double(luajValue.toDouble());
 		default: return luajValue;
 		}
 	}

@@ -34,7 +34,7 @@ public class UTF8StreamTest  extends TestCase {
 		Globals globals = JsePlatform.standardGlobals();
 		LuaValue chunk = globals.load(script);
 		LuaValue result = chunk.call();
-		String str = result.tojstring();
+		String str = result.toJString();
 		assertEquals("98\u00b0: today's temp!", str);
 	}
 

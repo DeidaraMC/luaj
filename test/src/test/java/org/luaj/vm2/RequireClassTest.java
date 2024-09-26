@@ -19,14 +19,14 @@ public class RequireClassTest extends TestCase {
 
 	public void testLoadClass() {
 		LuaValue result = globals.load(new org.luaj.vm2.require.RequireSampleSuccess());
-		assertEquals( "require-sample-success-", result.tojstring() );
+		assertEquals( "require-sample-success-", result.toJString() );
 	}
 	
 	public void testRequireClassSuccess() {
 		LuaValue result = require.call( LuaValue.valueOf("org.luaj.vm2.require.RequireSampleSuccess") );
-		assertEquals( "require-sample-success-org.luaj.vm2.require.RequireSampleSuccess", result.tojstring() );
+		assertEquals( "require-sample-success-org.luaj.vm2.require.RequireSampleSuccess", result.toJString() );
 		result = require.call( LuaValue.valueOf("org.luaj.vm2.require.RequireSampleSuccess") );
-		assertEquals( "require-sample-success-org.luaj.vm2.require.RequireSampleSuccess", result.tojstring() );
+		assertEquals( "require-sample-success-org.luaj.vm2.require.RequireSampleSuccess", result.toJString() );
 	}
 	
 	public void testRequireClassLoadLuaError() {

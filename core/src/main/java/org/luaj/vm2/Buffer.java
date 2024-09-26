@@ -95,7 +95,7 @@ public final class Buffer {
 	 * @return the value as a Java String
 	 */
 	public String tojstring() {
-		return value().tojstring();
+		return value().toJString();
 	}
 	
 	/** 
@@ -165,7 +165,7 @@ public final class Buffer {
 	 * @return {@link Buffer} for use in call chaining.
 	 */
 	public Buffer concatTo(LuaString lhs) {
-		return value!=null&&!value.isstring()? setvalue(lhs.concat(value)): prepend(lhs);
+		return value!=null&&!value.isString()? setvalue(lhs.concat(value)): prepend(lhs);
 	}
 
 	/** Concatenate this buffer onto a {@link LuaNumber}
@@ -175,7 +175,7 @@ public final class Buffer {
 	 * @return {@link Buffer} for use in call chaining.
 	 */
 	public Buffer concatTo(LuaNumber lhs) {
-		return value!=null&&!value.isstring()? setvalue(lhs.concat(value)): prepend(lhs.strvalue());
+		return value!=null&&!value.isString()? setvalue(lhs.concat(value)): prepend(lhs.strvalue());
 	}
 
 	/** Concatenate bytes from a {@link LuaString} onto the front of this buffer

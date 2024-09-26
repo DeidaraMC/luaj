@@ -77,24 +77,24 @@ public class DefaultLauncher implements Launcher {
 		Object return_values[] = new Object[n];
 		for (int i = 0; i < n; ++i) {
 			LuaValue r = results.arg(i+1);
-			switch (r.type()) {
+			switch (r.getType()) {
 			case LuaValue.TBOOLEAN:
-				return_values[i] = r.toboolean();
+				return_values[i] = r.toBoolean();
 				break;
 			case LuaValue.TNUMBER:
-				return_values[i] = r.todouble();
+				return_values[i] = r.toDouble();
 				break;
 			case LuaValue.TINT:
-				return_values[i] = r.toint();
+				return_values[i] = r.toInt();
 				break;
 			case LuaValue.TNIL:
 				return_values[i] = null;
 				break;
 			case LuaValue.TSTRING:
-				return_values[i] = r.tojstring();
+				return_values[i] = r.toJString();
 				break;
 			case LuaValue.TUSERDATA:
-				return_values[i] = r.touserdata();
+				return_values[i] = r.toUserdata();
 				break;
 			default:
 				return_values[i] = r;

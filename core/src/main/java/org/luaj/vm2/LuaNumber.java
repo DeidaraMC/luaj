@@ -16,35 +16,35 @@ public class LuaNumber extends LuaValue {
 	/** Shared static metatable for all number values represented in lua. */
 	public static LuaValue s_metatable;
 	
-	public int type() {
+	public int getType() {
 		return TNUMBER;
 	}
 	
-	public String typename() {
+	public String getTypeName() {
 		return "number";
 	}
 	
-	public LuaNumber checknumber() {
+	public LuaNumber checkNumber() {
 		return this; 
 	}
 	
-	public LuaNumber checknumber(String errmsg) {
+	public LuaNumber checkNumber(String errmsg) {
 		return this; 
 	}
 	
-	public LuaNumber optnumber(LuaNumber defval) {
+	public LuaNumber optionalNumber(LuaNumber defval) {
 		return this; 
 	}
 	
-	public LuaValue tonumber() {
+	public LuaValue toNumber() {
 		return this;
 	}
 	
-	public boolean isnumber() {
+	public boolean isNumber() {
 		return true;
 	}
 	
-	public boolean isstring() {
+	public boolean isString() {
 		return true;
 	}
 	

@@ -18,23 +18,23 @@ public class LuaFunction extends LuaValue {
 	/** Shared static metatable for all functions and closures. */
 	public static LuaValue s_metatable;
 
-	public int type() {
+	public int getType() {
 		return TFUNCTION;
 	}
 	
-	public String typename() {
+	public String getTypeName() {
 		return "function";
 	}
 	
-	public boolean isfunction() {
+	public boolean isFunction() {
 		return true;
 	}
 
-	public LuaFunction checkfunction()  {
+	public LuaFunction checkFunction()  {
 		return this;
 	}
 	
-	public LuaFunction optfunction(LuaFunction defval) {
+	public LuaFunction optionalFunction(LuaFunction defval) {
 		return this;
 	}
 
@@ -42,12 +42,12 @@ public class LuaFunction extends LuaValue {
 		return s_metatable;
 	}
 
-	public String tojstring() {
+	public String toJString() {
 		return "function: " + classnamestub();
 	}
 
 	public LuaString strvalue() {
-		return valueOf(tojstring());
+		return valueOf(this.toJString());
 	}
 
 	/** Return the last part of the class name, to be used as a function name in tojstring and elsewhere.

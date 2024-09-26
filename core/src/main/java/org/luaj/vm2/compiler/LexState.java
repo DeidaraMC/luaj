@@ -238,7 +238,7 @@ public class LexState extends Constants {
 	}
 
 	void lexerror( String msg, int token ) {
-		String cid = Lua.chunkid( source.tojstring() );
+		String cid = Lua.chunkid( source.toJString() );
 		L.pushfstring( cid+":"+linenumber+": "+msg );
 		if ( token != 0 )
 			L.pushfstring( "syntax error: "+msg+" near "+txtToken(token) );
@@ -984,7 +984,7 @@ public class LexState extends Constants {
 			LuaString vname = fs.getlocvar(gt.nactvar).varname;
 			String msg = L.pushfstring("<goto " + gt.name + "> at line "
 					+ gt.line + " jumps into the scope of local '"
-					+ vname.tojstring() + "'");
+					+ vname.toJString() + "'");
 			semerror(msg);
 		}
 		fs.patchlist(gt.pc, label.pc);
@@ -1051,7 +1051,7 @@ public class LexState extends Constants {
 	** message when label name is a reserved word (which can only be 'break')
 	*/
 	void undefgoto (Labeldesc gt) {
-	  String msg = L.pushfstring(isReservedKeyword(gt.name.tojstring())
+	  String msg = L.pushfstring(isReservedKeyword(gt.name.toJString())
 	                    ? "<"+gt.name+"> at line "+gt.line+" not inside a loop"
 	                    : "no visible label '"+gt.name+"' for <goto> at line "+gt.line);
 	  semerror(msg);

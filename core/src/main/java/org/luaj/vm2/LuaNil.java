@@ -10,7 +10,7 @@ package org.luaj.vm2;
  * is also considered treated as a nil value by default.  
  * <p>
  * Although it is possible to test for nil using Java == operator, 
- * the recommended approach is to use the method {@link LuaValue#isnil()} 
+ * the recommended approach is to use the method {@link LuaValue#isNil()}
  * instead.  By using that any ambiguities between 
  * {@link LuaValue#NIL} and {@link LuaValue#NONE} are avoided.
  * @see LuaValue
@@ -24,7 +24,7 @@ public class LuaNil extends LuaValue {
 	
 	LuaNil() {}
 
-	public int type() {
+	public int getType() {
 		return LuaValue.TNIL;
 	}
 
@@ -32,11 +32,11 @@ public class LuaNil extends LuaValue {
 		return "nil";		
 	}
 	
-	public String typename() {
+	public String getTypeName() {
 		return "nil";
 	}
 	
-	public String tojstring() {
+	public String toJString() {
 		return "nil";
 	}
 
@@ -44,11 +44,11 @@ public class LuaNil extends LuaValue {
 		return LuaValue.TRUE;  
 	}
 	
-	public boolean toboolean() { 
+	public boolean toBoolean() {
 		return false; 
 	}
 	
-	public boolean isnil() {
+	public boolean isNil() {
 		return true;
 	}
 		
@@ -60,28 +60,28 @@ public class LuaNil extends LuaValue {
 		return o instanceof LuaNil;
 	}
 
-	public LuaValue checknotnil() { 
+	public LuaValue checkNotNil() {
 		return argerror("value");
 	}
 	
-	public boolean isvalidkey() {
+	public boolean isValidKey() {
 		return false;
 	}
 
 	// optional argument conversions - nil alwas falls badk to default value
-	public boolean     optboolean(boolean defval)          { return defval; }
-	public LuaClosure  optclosure(LuaClosure defval)       { return defval; }
-	public double      optdouble(double defval)               { return defval; }
-	public LuaFunction optfunction(LuaFunction defval)     { return defval; }
-	public int         optint(int defval)                  { return defval; }
-	public LuaInteger  optinteger(LuaInteger defval)       { return defval; }
-	public long        optlong(long defval)                { return defval; }
-	public LuaNumber   optnumber(LuaNumber defval)         { return defval; }
-	public LuaTable    opttable(LuaTable defval)           { return defval; }
-	public LuaThread   optthread(LuaThread defval)         { return defval; }
-	public String      optjstring(String defval)            { return defval; }
-	public LuaString   optstring(LuaString defval)         { return defval; }
-	public Object      optuserdata(Object defval)          { return defval; }
-	public Object      optuserdata(Class c, Object defval) { return defval; }
-	public LuaValue    optvalue(LuaValue defval)           { return defval; }
+	public boolean optionalBoolean(boolean defval)          { return defval; }
+	public LuaClosure optionalClosure(LuaClosure defval)       { return defval; }
+	public double optionalDouble(double defval)               { return defval; }
+	public LuaFunction optionalFunction(LuaFunction defval)     { return defval; }
+	public int optionalInt(int defval)                  { return defval; }
+	public LuaInteger optionalInteger(LuaInteger defval)       { return defval; }
+	public long optionalLong(long defval)                { return defval; }
+	public LuaNumber optionalNumber(LuaNumber defval)         { return defval; }
+	public LuaTable optionalTable(LuaTable defval)           { return defval; }
+	public LuaThread optionalThread(LuaThread defval)         { return defval; }
+	public String optionalJString(String defval)            { return defval; }
+	public LuaString optionalLuaString(LuaString defval)         { return defval; }
+	public Object optionalUserdata(Object defval)          { return defval; }
+	public Object optionalUserdata(Class type, Object defval) { return defval; }
+	public LuaValue optionalValue(LuaValue defval)           { return defval; }
 }

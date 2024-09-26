@@ -63,14 +63,14 @@ public class WeakTable implements Metatable {
 		value = value.strongvalue();
 		if ( value == null )
 			return null;
-		if ( weakkeys && !( key.isnumber() || key.isstring() || key.isboolean() )) {
-			if ( weakvalues && !( value.isnumber() || value.isstring() || value.isboolean() )) {
+		if ( weakkeys && !( key.isNumber() || key.isString() || key.isBoolean() )) {
+			if ( weakvalues && !( value.isNumber() || value.isString() || value.isBoolean() )) {
 				return new WeakKeyAndValueSlot( key, value, null );
 			} else {
 				return new WeakKeySlot( key, value, null );
 			}
 		}
-		if ( weakvalues && ! (value.isnumber() || value.isstring() || value.isboolean() )) {
+		if ( weakvalues && ! (value.isNumber() || value.isString() || value.isBoolean() )) {
 			return new WeakValueSlot( key, value, null );
 		}
 		return LuaTable.defaultEntry( key, value );
@@ -284,7 +284,7 @@ public class WeakTable implements Metatable {
 	 * @return {@link LuaValue} that is a strong or weak reference, depending on type of {@code value}
 	 */
 	protected static LuaValue weaken( LuaValue value ) {
-		switch ( value.type() ) {
+		switch ( value.getType() ) {
 			case LuaValue.TFUNCTION:
 			case LuaValue.TTHREAD:
 			case LuaValue.TTABLE:
@@ -322,12 +322,12 @@ public class WeakTable implements Metatable {
 			ref = new WeakReference(value);
 		}
 
-		public int type() {
+		public int getType() {
 			illegal("type","weak value");
 			return 0;
 		}
 
-		public String typename() {
+		public String getTypeName() {
 			illegal("typename","weak value");
 			return null;
 		}
@@ -356,7 +356,7 @@ public class WeakTable implements Metatable {
 
 		private WeakUserdata(LuaValue value) {
 			super(value);
-			ob = new WeakReference(value.touserdata());
+			ob = new WeakReference(value.toUserdata());
 			mt = value.getmetatable();
 		}
 

@@ -12,7 +12,6 @@ import java.io.StringReader;
 import junit.framework.TestCase;
 
 import org.luaj.vm2.Globals;
-import org.luaj.vm2.LoadState;
 import org.luaj.vm2.LuaClosure;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaValue;
@@ -91,7 +90,7 @@ public class DumpLoadEndianIntTest extends TestCase {
             // double check script result before dumping
             LuaFunction f = new LuaClosure(p, globals);
             LuaValue r = f.call();
-            String actual = r.tojstring();
+            String actual = r.toJString();
             assertEquals( expectedPriorDump, actual );
             
             // dump into bytes
@@ -110,9 +109,9 @@ public class DumpLoadEndianIntTest extends TestCase {
             
             // load again using compiler
             InputStream is = new ByteArrayInputStream(dumped);
-            f = globals.load(is, "dumped", "b", globals).checkfunction();
+            f = globals.load(is, "dumped", "b", globals).checkFunction();
             r = f.call();
-            actual = r.tojstring();
+            actual = r.toJString();
             assertEquals( expectedPostDump, actual );
 
             // write test chunk

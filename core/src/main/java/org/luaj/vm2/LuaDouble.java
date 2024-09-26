@@ -68,24 +68,24 @@ public class LuaDouble extends LuaNumber {
 		return ((int)(l>>32)) + (int) l;
 	}
 	
-	public boolean islong() {
+	public boolean isLong() {
 		return v == (long) v;
 	}
 	
-	public byte    tobyte()        { return (byte) (long) v; }
+	public byte toByte()        { return (byte) (long) v; }
 	public char    tochar()        { return (char) (long) v; }
-	public double  todouble()      { return v; }
-	public float   tofloat()       { return (float) v; }
-	public int     toint()         { return (int) (long) v; }
-	public long    tolong()        { return (long) v; }
-	public short   toshort()       { return (short) (long) v; }
+	public double toDouble()      { return v; }
+	public float toFloat()       { return (float) v; }
+	public int toInt()         { return (int) (long) v; }
+	public long toLong()        { return (long) v; }
+	public short toShort()       { return (short) (long) v; }
 
-	public double      optdouble(double defval)        { return v; }
-	public int         optint(int defval)              { return (int) (long) v;  }
-	public LuaInteger  optinteger(LuaInteger defval)   { return LuaInteger.valueOf((int) (long)v); }
-	public long        optlong(long defval)            { return (long) v; }
+	public double optionalDouble(double defval)        { return v; }
+	public int optionalInt(int defval)              { return (int) (long) v;  }
+	public LuaInteger optionalInteger(LuaInteger defval)   { return LuaInteger.valueOf((int) (long)v); }
+	public long optionalLong(long defval)            { return (long) v; }
 	
-	public LuaInteger  checkinteger()                  { return LuaInteger.valueOf( (int) (long) v ); }
+	public LuaInteger checkInteger()                  { return LuaInteger.valueOf( (int) (long) v ); }
 	
 	// unary operators
 	public LuaValue neg() { return valueOf(-v); }
@@ -213,7 +213,7 @@ public class LuaDouble extends LuaNumber {
 	// string comparison
 	public int strcmp( LuaString rhs )      { typerror("attempt to compare number with string"); return 0; }
 			
-	public String tojstring() {
+	public String toJString() {
 		/*
 		if ( v == 0.0 ) { // never occurs in J2me
 			long bits = Double.doubleToLongBits( v );
@@ -231,49 +231,49 @@ public class LuaDouble extends LuaNumber {
 	}
 	
 	public LuaString strvalue() {
-		return LuaString.valueOf(tojstring());
+		return LuaString.valueOf(toJString());
 	}
 	
-	public LuaString optstring(LuaString defval) {
-		return LuaString.valueOf(tojstring());
+	public LuaString optionalLuaString(LuaString defval) {
+		return LuaString.valueOf(toJString());
 	}
 		
-	public LuaValue tostring() {
-		return LuaString.valueOf(tojstring());
+	public LuaValue toLuaString() {
+		return LuaString.valueOf(toJString());
 	}
 	
-	public String optjstring(String defval) {
-		return tojstring();
+	public String optionalJString(String defval) {
+		return toJString();
 	}
 	
-	public LuaNumber optnumber(LuaNumber defval) {
+	public LuaNumber optionalNumber(LuaNumber defval) {
 		return this;
 	}
 	
-	public boolean isnumber() {
+	public boolean isNumber() {
 		return true;
 	}
 	
-	public boolean isstring() {
+	public boolean isString() {
 		return true;
 	}
 	
-	public LuaValue tonumber() {
+	public LuaValue toNumber() {
 		return this;
 	}
-	public int checkint()                { return (int) (long) v; }
-	public long checklong()              { return (long) v; }
-	public LuaNumber checknumber()       { return this; }
-	public double checkdouble()          { return v; }
+	public int checkInt()                { return (int) (long) v; }
+	public long checkLong()              { return (long) v; }
+	public LuaNumber checkNumber()       { return this; }
+	public double checkDouble()          { return v; }
 	
-	public String checkjstring() {
-		return tojstring();
+	public String checkJString() {
+		return toJString();
 	}
-	public LuaString checkstring() {
-		return LuaString.valueOf(tojstring());
+	public LuaString checkLuaString() {
+		return LuaString.valueOf(toJString());
 	}
 	
-	public boolean isvalidkey() {
+	public boolean isValidKey() {
 		return !Double.isNaN(v);
 	}
 }

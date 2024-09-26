@@ -33,7 +33,7 @@ public class Exp extends SyntaxElement {
 	}
 
 	public static Exp numberconstant(String token) {		
-		return new Constant( LuaValue.valueOf(token).tonumber() );
+		return new Constant( LuaValue.valueOf(token).toNumber() );
 	}
 
 	public static Exp varargs() {

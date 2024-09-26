@@ -100,7 +100,7 @@ public class DumpState {
 	}
 	
 	void dumpString(LuaString s) throws IOException {
-		final int len = s.len().toint();
+		final int len = s.len().toInt();
 		dumpInt( len+1 );
 		s.write( writer, 0, len );
 		writer.write( 0 );
@@ -130,33 +130,33 @@ public class DumpState {
 		dumpInt(n);
 		for (i = 0; i < n; i++) {
 			final LuaValue o = k[i];
-			switch ( o.type() ) {
+			switch ( o.getType() ) {
 			case LuaValue.TNIL:
 				writer.write(LuaValue.TNIL);
 				break;
 			case LuaValue.TBOOLEAN:
 				writer.write(LuaValue.TBOOLEAN);
-				dumpChar(o.toboolean() ? 1 : 0);
+				dumpChar(o.toBoolean() ? 1 : 0);
 				break;
 			case LuaValue.TNUMBER:
 				switch (NUMBER_FORMAT) {
 				case NUMBER_FORMAT_FLOATS_OR_DOUBLES:
 					writer.write(LuaValue.TNUMBER);
-					dumpDouble(o.todouble());
+					dumpDouble(o.toDouble());
 					break;
 				case NUMBER_FORMAT_INTS_ONLY:
-					if ( ! ALLOW_INTEGER_CASTING && ! o.isint() )
+					if ( ! ALLOW_INTEGER_CASTING && ! o.isInt() )
 						throw new java.lang.IllegalArgumentException("not an integer: "+o);
 					writer.write(LuaValue.TNUMBER);
-					dumpInt(o.toint());
+					dumpInt(o.toInt());
 					break;
 				case NUMBER_FORMAT_NUM_PATCH_INT32:
-					if ( o.isint() ) {
+					if ( o.isInt() ) {
 						writer.write(LuaValue.TINT);
-						dumpInt(o.toint());
+						dumpInt(o.toInt());
 					} else {
 						writer.write(LuaValue.TNUMBER);
-						dumpDouble(o.todouble());
+						dumpDouble(o.toDouble());
 					}
 					break;
 				default:

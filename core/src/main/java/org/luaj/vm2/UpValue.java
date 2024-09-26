@@ -27,10 +27,10 @@ public final class UpValue {
 	/** 
 	 * Convert this upvalue to a Java String
 	 * @return the Java String for this upvalue.
-	 * @see LuaValue#tojstring()
+	 * @see LuaValue#toJString()
 	 */
 	public String tojstring() {
-		return array[index].tojstring();
+		return array[index].toJString();
 	}
 	
 	/**

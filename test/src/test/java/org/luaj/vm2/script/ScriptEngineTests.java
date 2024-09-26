@@ -102,7 +102,7 @@ public class ScriptEngineTests extends TestSuite  {
 		public void testCompiledFunctionIsClosure() throws ScriptException {
             CompiledScript cs = ((Compilable)e).compile("return 'foo'");
             LuaValue value = ((LuaScriptEngine.LuajCompiledScript)cs).function;
-            assertTrue(value.isclosure());
+            assertTrue(value.isClosure());
 		}
 	}
 	
@@ -114,7 +114,7 @@ public class ScriptEngineTests extends TestSuite  {
 		public void testCompiledFunctionIsNotClosure() throws ScriptException {
             CompiledScript cs = ((Compilable)e).compile("return 'foo'");
             LuaValue value = ((LuaScriptEngine.LuajCompiledScript)cs).function;
-            assertFalse(value.isclosure());
+            assertFalse(value.isClosure());
 		}
 	}
 

@@ -91,7 +91,7 @@ public class LuaError extends RuntimeException {
 	 * @param message_object message string or object to supply
 	 */
 	public LuaError(LuaValue message_object) {
-		super( message_object.tojstring() );
+		super( message_object.toJString() );
 		this.object = message_object;
 		this.level = 1;
 	}	

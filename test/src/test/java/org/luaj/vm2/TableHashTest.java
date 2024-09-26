@@ -23,9 +23,6 @@ package org.luaj.vm2;
 
 import junit.framework.TestCase;
 
-import org.luaj.vm2.LuaString;
-import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.TwoArgFunction;
 
 /**
@@ -107,48 +104,48 @@ public class TableHashTest extends TestCase {
 		fb.set( 456, "jkl" );
 		
 		// check before setting metatable
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "nil", t.get("qqq").tojstring() );
-		assertEquals( "nil", t.get(456).tojstring() );
-		assertEquals( "nil", fb.get("ppp").tojstring() );
-		assertEquals( "nil", fb.get(123).tojstring() );
-		assertEquals( "ghi", fb.get("qqq").tojstring() );
-		assertEquals( "jkl", fb.get(456).tojstring() );
-		assertEquals( "nil", mt.get("ppp").tojstring() );
-		assertEquals( "nil", mt.get(123).tojstring() );
-		assertEquals( "nil", mt.get("qqq").tojstring() );
-		assertEquals( "nil", mt.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "nil", t.get("qqq").toJString() );
+		assertEquals( "nil", t.get(456).toJString() );
+		assertEquals( "nil", fb.get("ppp").toJString() );
+		assertEquals( "nil", fb.get(123).toJString() );
+		assertEquals( "ghi", fb.get("qqq").toJString() );
+		assertEquals( "jkl", fb.get(456).toJString() );
+		assertEquals( "nil", mt.get("ppp").toJString() );
+		assertEquals( "nil", mt.get(123).toJString() );
+		assertEquals( "nil", mt.get("qqq").toJString() );
+		assertEquals( "nil", mt.get(456).toJString() );
 		
 		// check before setting metatable
 		t.setmetatable(mt);
 		assertEquals( mt, t.getmetatable() );
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "ghi", t.get("qqq").tojstring() );
-		assertEquals( "jkl", t.get(456).tojstring() );
-		assertEquals( "nil", fb.get("ppp").tojstring() );
-		assertEquals( "nil", fb.get(123).tojstring() );
-		assertEquals( "ghi", fb.get("qqq").tojstring() );
-		assertEquals( "jkl", fb.get(456).tojstring() );
-		assertEquals( "nil", mt.get("ppp").tojstring() );
-		assertEquals( "nil", mt.get(123).tojstring() );
-		assertEquals( "nil", mt.get("qqq").tojstring() );
-		assertEquals( "nil", mt.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "ghi", t.get("qqq").toJString() );
+		assertEquals( "jkl", t.get(456).toJString() );
+		assertEquals( "nil", fb.get("ppp").toJString() );
+		assertEquals( "nil", fb.get(123).toJString() );
+		assertEquals( "ghi", fb.get("qqq").toJString() );
+		assertEquals( "jkl", fb.get(456).toJString() );
+		assertEquals( "nil", mt.get("ppp").toJString() );
+		assertEquals( "nil", mt.get(123).toJString() );
+		assertEquals( "nil", mt.get("qqq").toJString() );
+		assertEquals( "nil", mt.get(456).toJString() );
 
 		// set metatable to metatable without values
 		t.setmetatable(fb);
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "nil", t.get("qqq").tojstring() );
-		assertEquals( "nil", t.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "nil", t.get("qqq").toJString() );
+		assertEquals( "nil", t.get(456).toJString() );
 		
 		// set metatable to null
 		t.setmetatable(null);
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "nil", t.get("qqq").tojstring() );
-		assertEquals( "nil", t.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "nil", t.get("qqq").toJString() );
+		assertEquals( "nil", t.get(456).toJString() );
 	}		
 
 	public void testIndexFunction() {
@@ -168,42 +165,42 @@ public class TableHashTest extends TestCase {
 		mt.set(LuaValue.INDEX, fb);
 		
 		// check before setting metatable
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "nil", t.get("qqq").tojstring() );
-		assertEquals( "nil", t.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "nil", t.get("qqq").toJString() );
+		assertEquals( "nil", t.get(456).toJString() );
 		
 		
 		// check before setting metatable
 		t.setmetatable(mt);
 		assertEquals( mt, t.getmetatable() );
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "from mt: qqq", t.get("qqq").tojstring() );
-		assertEquals( "from mt: 456", t.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "from mt: qqq", t.get("qqq").toJString() );
+		assertEquals( "from mt: 456", t.get(456).toJString() );
 		
 		// use raw set
 		t.rawset("qqq", "alt-qqq");
 		t.rawset(456, "alt-456");
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "alt-qqq", t.get("qqq").tojstring() );
-		assertEquals( "alt-456", t.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "alt-qqq", t.get("qqq").toJString() );
+		assertEquals( "alt-456", t.get(456).toJString() );
 
 		// remove using raw set
 		t.rawset("qqq", LuaValue.NIL);
 		t.rawset(456, LuaValue.NIL);
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "from mt: qqq", t.get("qqq").tojstring() );
-		assertEquals( "from mt: 456", t.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "from mt: qqq", t.get("qqq").toJString() );
+		assertEquals( "from mt: 456", t.get(456).toJString() );
 
 		// set metatable to null
 		t.setmetatable(null);
-		assertEquals( "abc", t.get("ppp").tojstring() );
-		assertEquals( "def", t.get(123).tojstring() );
-		assertEquals( "nil", t.get("qqq").tojstring() );
-		assertEquals( "nil", t.get(456).tojstring() );
+		assertEquals( "abc", t.get("ppp").toJString() );
+		assertEquals( "def", t.get(123).toJString() );
+		assertEquals( "nil", t.get("qqq").toJString() );
+		assertEquals( "nil", t.get(456).toJString() );
 	}
 	
 	public void testNext() {
@@ -257,10 +254,10 @@ public class TableHashTest extends TestCase {
 		t.set( LuaValue.valueOf(63), LuaValue.valueOf("11") );
 
 		Varargs entry = t.next(LuaValue.NIL);
-		while ( !entry.isnil(1) ) {
+		while ( !entry.isNil(1) ) {
 			LuaValue k = entry.arg1();
 			LuaValue v = entry.arg(2);
-			if ( ( k.toint() & 1 ) == 0 ) {
+			if ( ( k.toInt() & 1 ) == 0 ) {
 				t.set( k, LuaValue.NIL );
 			}
 			entry = t.next(k);
@@ -268,10 +265,10 @@ public class TableHashTest extends TestCase {
 
 		int numEntries = 0;
 		entry = t.next(LuaValue.NIL);
-		while ( !entry.isnil(1) ) {
+		while ( !entry.isNil(1) ) {
 			LuaValue k = entry.arg1();
 			// Only odd keys should remain
-			assertTrue( ( k.toint() & 1 ) == 1 );
+			assertTrue( ( k.toInt() & 1 ) == 1 );
 			numEntries++;
 			entry = t.next(k);
 		}
@@ -293,13 +290,13 @@ public class TableHashTest extends TestCase {
 
 		Varargs entry = t.next(LuaValue.NIL);
 		Varargs entry2 = entry;
-		while ( !entry.isnil(1) ) {
+		while ( !entry.isNil(1) ) {
 			LuaValue k = entry.arg1();
 			LuaValue v = entry.arg(2);
-			if ( ( k.toint() & 1 ) == 0 ) {
+			if ( ( k.toInt() & 1 ) == 0 ) {
 				t.set( k, LuaValue.NIL );
 			} else {
-				t.set( k, v.tonumber() );
+				t.set( k, v.toNumber() );
 				entry2 = t.next(entry2.arg1());
 			}
 			entry = t.next(k);
@@ -307,11 +304,11 @@ public class TableHashTest extends TestCase {
 
 		int numEntries = 0;
 		entry = t.next(LuaValue.NIL);
-		while ( !entry.isnil(1) ) {
+		while ( !entry.isNil(1) ) {
 			LuaValue k = entry.arg1();
 			// Only odd keys should remain
-			assertTrue( ( k.toint() & 1 ) == 1 );
-			assertTrue( entry.arg(2).type() == LuaValue.TNUMBER );
+			assertTrue( ( k.toInt() & 1 ) == 1 );
+			assertTrue( entry.arg(2).getType() == LuaValue.TNUMBER );
 			numEntries++;
 			entry = t.next(k);
 		}

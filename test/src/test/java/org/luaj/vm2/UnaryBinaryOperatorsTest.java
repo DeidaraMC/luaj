@@ -62,8 +62,8 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		assertEquals(LuaValue.FALSE, LuaValue.TRUE.neq(LuaValue.TRUE));
 		assertEquals(LuaValue.TRUE, LuaValue.FALSE.neq(LuaValue.TRUE));
 		assertEquals(LuaValue.TRUE, LuaValue.TRUE.neq(LuaValue.FALSE));
-		assertTrue(LuaValue.TRUE.toboolean());
-		assertFalse(LuaValue.FALSE.toboolean());
+		assertTrue(LuaValue.TRUE.toBoolean());
+		assertFalse(LuaValue.FALSE.toBoolean());
 	}
 	
 	public void testNot() {
@@ -86,12 +86,12 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue sa=LuaValue.valueOf("1.5"), sb=LuaValue.valueOf("-2.0");
 		
 		// like kinds
-		assertEquals(-3., ia.neg().todouble());
-		assertEquals(-.25,  da.neg().todouble());
-		assertEquals(-1.5,  sa.neg().todouble());
-		assertEquals(4.,  ib.neg().todouble());
-		assertEquals(.5,    db.neg().todouble());
-		assertEquals(2.0,   sb.neg().todouble());
+		assertEquals(-3., ia.neg().toDouble());
+		assertEquals(-.25,  da.neg().toDouble());
+		assertEquals(-1.5,  sa.neg().toDouble());
+		assertEquals(4.,  ib.neg().toDouble());
+		assertEquals(.5,    db.neg().toDouble());
+		assertEquals(2.0,   sb.neg().toDouble());
 	}
 	
 	public void testDoublesBecomeInts() {
@@ -103,19 +103,19 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		assertTrue(ia instanceof LuaInteger);
 		assertTrue(da instanceof LuaInteger);
 		assertTrue(db instanceof LuaDouble);
-		assertEquals( ia.toint(), 345 );
-		assertEquals( da.toint(), 345 );
-		assertEquals( da.todouble(), 345.0 );
-		assertEquals( db.todouble(), 345.5 );
+		assertEquals( ia.toInt(), 345 );
+		assertEquals( da.toInt(), 345 );
+		assertEquals( da.toDouble(), 345.0 );
+		assertEquals( db.toDouble(), 345.5 );
 		
 		assertTrue(sa instanceof LuaString);
 		assertTrue(sb instanceof LuaString);
 		assertTrue(sc instanceof LuaString);
 		assertTrue(sd instanceof LuaString);
-		assertEquals( 3.,  sa.todouble() );
-		assertEquals( 3.,  sb.todouble() );
-		assertEquals( -2., sc.todouble() );
-		assertEquals( -2., sd.todouble() );
+		assertEquals( 3.,  sa.toDouble() );
+		assertEquals( 3.,  sb.toDouble() );
+		assertEquals( -2., sc.toDouble() );
+		assertEquals( -2., sd.toDouble() );
 		
 	}
 	
@@ -236,11 +236,11 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue tbl2 = new LuaTable();
 		LuaValue tbl3 = new LuaTable();
 		LuaValue uda  = new LuaUserdata(new Object());
-		LuaValue udb  = new LuaUserdata(uda.touserdata());
+		LuaValue udb  = new LuaUserdata(uda.toUserdata());
 		LuaValue uda2 = new LuaUserdata(new Object());
-		LuaValue uda3 = new LuaUserdata(uda.touserdata());
-		LuaValue nilb = LuaValue.valueOf( LuaValue.NIL.toboolean() );
-		LuaValue oneb = LuaValue.valueOf( LuaValue.ONE.toboolean() );
+		LuaValue uda3 = new LuaUserdata(uda.toUserdata());
+		LuaValue nilb = LuaValue.valueOf( LuaValue.NIL.toBoolean() );
+		LuaValue oneb = LuaValue.valueOf( LuaValue.ONE.toBoolean() );
 		assertEquals( LuaValue.FALSE, nilb );
 		assertEquals( LuaValue.TRUE, oneb );
 		LuaValue smt = LuaString.s_metatable;
@@ -375,17 +375,17 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		assertTrue( sb instanceof LuaString );
 		
 		// like kinds
-		assertEquals(155.0,  ia.add(ib).todouble());
-		assertEquals(58.75,  da.add(db).todouble());
-		assertEquals(29.375, sa.add(sb).todouble());
+		assertEquals(155.0,  ia.add(ib).toDouble());
+		assertEquals(58.75,  da.add(db).toDouble());
+		assertEquals(29.375, sa.add(sb).toDouble());
 		
 		// unlike kinds
-		assertEquals(166.25, ia.add(da).todouble());
-		assertEquals(166.25, da.add(ia).todouble());
-		assertEquals(133.125,ia.add(sa).todouble());
-		assertEquals(133.125,sa.add(ia).todouble());
-		assertEquals(77.375, da.add(sa).todouble());
-		assertEquals(77.375, sa.add(da).todouble());
+		assertEquals(166.25, ia.add(da).toDouble());
+		assertEquals(166.25, da.add(ia).toDouble());
+		assertEquals(133.125,ia.add(sa).toDouble());
+		assertEquals(133.125,sa.add(ia).toDouble());
+		assertEquals(77.375, da.add(sa).toDouble());
+		assertEquals(77.375, sa.add(da).toDouble());
 	}
 	
 	public void testSub() {
@@ -394,17 +394,17 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue sa=LuaValue.valueOf("22.125"), sb=LuaValue.valueOf("7.25");
 		
 		// like kinds
-		assertEquals(67.0,    ia.sub(ib).todouble());
-		assertEquals(51.75,   da.sub(db).todouble());
-		assertEquals(14.875,  sa.sub(sb).todouble());
+		assertEquals(67.0,    ia.sub(ib).toDouble());
+		assertEquals(51.75,   da.sub(db).toDouble());
+		assertEquals(14.875,  sa.sub(sb).toDouble());
 		
 		// unlike kinds
-		assertEquals(55.75,   ia.sub(da).todouble());
-		assertEquals(-55.75,  da.sub(ia).todouble());
-		assertEquals(88.875,  ia.sub(sa).todouble());
-		assertEquals(-88.875, sa.sub(ia).todouble());
-		assertEquals(33.125,  da.sub(sa).todouble());
-		assertEquals(-33.125, sa.sub(da).todouble());		
+		assertEquals(55.75,   ia.sub(da).toDouble());
+		assertEquals(-55.75,  da.sub(ia).toDouble());
+		assertEquals(88.875,  ia.sub(sa).toDouble());
+		assertEquals(-88.875, sa.sub(ia).toDouble());
+		assertEquals(33.125,  da.sub(sa).toDouble());
+		assertEquals(-33.125, sa.sub(da).toDouble());
 	}
 	
 	public void testMul() {
@@ -413,17 +413,17 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue sa=LuaValue.valueOf("1.5"), sb=LuaValue.valueOf("2.0");
 		
 		// like kinds
-		assertEquals(12.0,    ia.mul(ib).todouble());
-		assertEquals(.125,    da.mul(db).todouble());
-		assertEquals(3.0,     sa.mul(sb).todouble());
+		assertEquals(12.0,    ia.mul(ib).toDouble());
+		assertEquals(.125,    da.mul(db).toDouble());
+		assertEquals(3.0,     sa.mul(sb).toDouble());
 		
 		// unlike kinds
-		assertEquals(.75,     ia.mul(da).todouble());
-		assertEquals(.75,     da.mul(ia).todouble());
-		assertEquals(4.5,     ia.mul(sa).todouble());
-		assertEquals(4.5,     sa.mul(ia).todouble());
-		assertEquals(.375,    da.mul(sa).todouble());
-		assertEquals(.375,    sa.mul(da).todouble());		
+		assertEquals(.75,     ia.mul(da).toDouble());
+		assertEquals(.75,     da.mul(ia).toDouble());
+		assertEquals(4.5,     ia.mul(sa).toDouble());
+		assertEquals(4.5,     sa.mul(ia).toDouble());
+		assertEquals(.375,    da.mul(sa).toDouble());
+		assertEquals(.375,    sa.mul(da).toDouble());
 	}
 	
 	public void testDiv() {
@@ -432,17 +432,17 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue sa=LuaValue.valueOf("1.5"), sb=LuaValue.valueOf("2.0");
 		
 		// like kinds
-		assertEquals(3./4.,     ia.div(ib).todouble());
-		assertEquals(.25/.5,    da.div(db).todouble());
-		assertEquals(1.5/2.,    sa.div(sb).todouble());
+		assertEquals(3./4.,     ia.div(ib).toDouble());
+		assertEquals(.25/.5,    da.div(db).toDouble());
+		assertEquals(1.5/2.,    sa.div(sb).toDouble());
 		
 		// unlike kinds
-		assertEquals(3./.25,    ia.div(da).todouble());
-		assertEquals(.25/3.,    da.div(ia).todouble());
-		assertEquals(3./1.5,    ia.div(sa).todouble());
-		assertEquals(1.5/3.,    sa.div(ia).todouble());
-		assertEquals(.25/1.5,   da.div(sa).todouble());
-		assertEquals(1.5/.25,   sa.div(da).todouble());		
+		assertEquals(3./.25,    ia.div(da).toDouble());
+		assertEquals(.25/3.,    da.div(ia).toDouble());
+		assertEquals(3./1.5,    ia.div(sa).toDouble());
+		assertEquals(1.5/3.,    sa.div(ia).toDouble());
+		assertEquals(.25/1.5,   da.div(sa).toDouble());
+		assertEquals(1.5/.25,   sa.div(da).toDouble());
 	}
 	
 	public void testPow() {
@@ -451,17 +451,17 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue sa=LuaValue.valueOf("1.5"), sb=LuaValue.valueOf("2.0");
 		
 		// like kinds
-		assertEquals(Math.pow(3.,4.),     ia.pow(ib).todouble());
-		assertEquals(Math.pow(4.,.5),    da.pow(db).todouble());
-		assertEquals(Math.pow(1.5,2.),    sa.pow(sb).todouble());
+		assertEquals(Math.pow(3.,4.),     ia.pow(ib).toDouble());
+		assertEquals(Math.pow(4.,.5),    da.pow(db).toDouble());
+		assertEquals(Math.pow(1.5,2.),    sa.pow(sb).toDouble());
 		
 		// unlike kinds
-		assertEquals(Math.pow(3.,4.),    ia.pow(da).todouble());
-		assertEquals(Math.pow(4.,3.),    da.pow(ia).todouble());
-		assertEquals(Math.pow(3.,1.5),    ia.pow(sa).todouble());
-		assertEquals(Math.pow(1.5,3.),    sa.pow(ia).todouble());
-		assertEquals(Math.pow(4.,1.5),   da.pow(sa).todouble());
-		assertEquals(Math.pow(1.5,4.),   sa.pow(da).todouble());		
+		assertEquals(Math.pow(3.,4.),    ia.pow(da).toDouble());
+		assertEquals(Math.pow(4.,3.),    da.pow(ia).toDouble());
+		assertEquals(Math.pow(3.,1.5),    ia.pow(sa).toDouble());
+		assertEquals(Math.pow(1.5,3.),    sa.pow(ia).toDouble());
+		assertEquals(Math.pow(4.,1.5),   da.pow(sa).toDouble());
+		assertEquals(Math.pow(1.5,4.),   sa.pow(da).toDouble());
 	}
 
 	private static double luaMod(double x, double y) {
@@ -474,17 +474,17 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue sa=LuaValue.valueOf("1.5"), sb=LuaValue.valueOf("-2.0");
 		
 		// like kinds
-		assertEquals(luaMod(3.,-4.),     ia.mod(ib).todouble());
-		assertEquals(luaMod(.25,-.5),    da.mod(db).todouble());
-		assertEquals(luaMod(1.5,-2.),    sa.mod(sb).todouble());
+		assertEquals(luaMod(3.,-4.),     ia.mod(ib).toDouble());
+		assertEquals(luaMod(.25,-.5),    da.mod(db).toDouble());
+		assertEquals(luaMod(1.5,-2.),    sa.mod(sb).toDouble());
 		
 		// unlike kinds
-		assertEquals(luaMod(3.,.25),    ia.mod(da).todouble());
-		assertEquals(luaMod(.25,3.),    da.mod(ia).todouble());
-		assertEquals(luaMod(3.,1.5),    ia.mod(sa).todouble());
-		assertEquals(luaMod(1.5,3.),    sa.mod(ia).todouble());
-		assertEquals(luaMod(.25,1.5),   da.mod(sa).todouble());
-		assertEquals(luaMod(1.5,.25),   sa.mod(da).todouble());		
+		assertEquals(luaMod(3.,.25),    ia.mod(da).toDouble());
+		assertEquals(luaMod(.25,3.),    da.mod(ia).toDouble());
+		assertEquals(luaMod(3.,1.5),    ia.mod(sa).toDouble());
+		assertEquals(luaMod(1.5,3.),    sa.mod(ia).toDouble());
+		assertEquals(luaMod(.25,1.5),   da.mod(sa).toDouble());
+		assertEquals(luaMod(1.5,.25),   sa.mod(da).toDouble());
 	}
 
 	public void testArithErrors() {
@@ -498,8 +498,8 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		for ( int i=0; i<ops.length; i++ ) {
 			for ( int j=0; j<vals.length; j++ ) {
 				for ( int k=0; k<numerics.length; k++ ) {
-					checkArithError( vals[j], numerics[k], ops[i], vals[j].typename() );
-					checkArithError( numerics[k], vals[j], ops[i], vals[j].typename() );
+					checkArithError( vals[j], numerics[k], ops[i], vals[j].getTypeName() );
+					checkArithError( numerics[k], vals[j], ops[i], vals[j].getTypeName() );
 				}
 			}
 		}
@@ -511,9 +511,9 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		} catch ( InvocationTargetException ite ) {
 			String actual = ite.getTargetException().getMessage();
 			if ( (!actual.startsWith("attempt to perform arithmetic")) || actual.indexOf(type)<0 ) 
-				fail( "("+a.typename()+","+op+","+b.typename()+") reported '"+actual+"'" );
+				fail( "("+a.getTypeName()+","+op+","+b.getTypeName()+") reported '"+actual+"'" );
 		} catch ( Exception e ) {
-			fail( "("+a.typename()+","+op+","+b.typename()+") threw "+e );
+			fail( "("+a.getTypeName()+","+op+","+b.getTypeName()+") threw "+e );
 		}
 	}
 	
@@ -707,14 +707,14 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue da=LuaValue.valueOf(.25), db=LuaValue.valueOf(.5);
 		
 		// like kinds
-		assertEquals(3.<4.,     ia.lt(ib).toboolean());
-		assertEquals(.25<.5,    da.lt(db).toboolean());
+		assertEquals(3.<4.,     ia.lt(ib).toBoolean());
+		assertEquals(.25<.5,    da.lt(db).toBoolean());
 		assertEquals(3.<4.,     ia.lt_b(ib));
 		assertEquals(.25<.5,    da.lt_b(db));
 		
 		// unlike kinds
-		assertEquals(3.<.25,    ia.lt(da).toboolean());
-		assertEquals(.25<3.,    da.lt(ia).toboolean());
+		assertEquals(3.<.25,    ia.lt(da).toBoolean());
+		assertEquals(.25<3.,    da.lt(ia).toBoolean());
 		assertEquals(3.<.25,    ia.lt_b(da));
 		assertEquals(.25<3.,    da.lt_b(ia));
 	}
@@ -724,14 +724,14 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue da=LuaValue.valueOf(.25), db=LuaValue.valueOf(.5);
 		
 		// like kinds
-		assertEquals(3.<=4.,     ia.lteq(ib).toboolean());
-		assertEquals(.25<=.5,    da.lteq(db).toboolean());
+		assertEquals(3.<=4.,     ia.lteq(ib).toBoolean());
+		assertEquals(.25<=.5,    da.lteq(db).toBoolean());
 		assertEquals(3.<=4.,     ia.lteq_b(ib));
 		assertEquals(.25<=.5,    da.lteq_b(db));
 		
 		// unlike kinds
-		assertEquals(3.<=.25,    ia.lteq(da).toboolean());
-		assertEquals(.25<=3.,    da.lteq(ia).toboolean());
+		assertEquals(3.<=.25,    ia.lteq(da).toBoolean());
+		assertEquals(.25<=3.,    da.lteq(ia).toBoolean());
 		assertEquals(3.<=.25,    ia.lteq_b(da));
 		assertEquals(.25<=3.,    da.lteq_b(ia));
 	}
@@ -741,14 +741,14 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue da=LuaValue.valueOf(.25), db=LuaValue.valueOf(.5);
 		
 		// like kinds
-		assertEquals(3.>4.,     ia.gt(ib).toboolean());
-		assertEquals(.25>.5,    da.gt(db).toboolean());
+		assertEquals(3.>4.,     ia.gt(ib).toBoolean());
+		assertEquals(.25>.5,    da.gt(db).toBoolean());
 		assertEquals(3.>4.,     ia.gt_b(ib));
 		assertEquals(.25>.5,    da.gt_b(db));
 		
 		// unlike kinds
-		assertEquals(3.>.25,    ia.gt(da).toboolean());
-		assertEquals(.25>3.,    da.gt(ia).toboolean());
+		assertEquals(3.>.25,    ia.gt(da).toBoolean());
+		assertEquals(.25>3.,    da.gt(ia).toBoolean());
 		assertEquals(3.>.25,    ia.gt_b(da));
 		assertEquals(.25>3.,    da.gt_b(ia));
 	}
@@ -758,14 +758,14 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue da=LuaValue.valueOf(.25), db=LuaValue.valueOf(.5);
 		
 		// like kinds
-		assertEquals(3.>=4.,     ia.gteq(ib).toboolean());
-		assertEquals(.25>=.5,    da.gteq(db).toboolean());
+		assertEquals(3.>=4.,     ia.gteq(ib).toBoolean());
+		assertEquals(.25>=.5,    da.gteq(db).toBoolean());
 		assertEquals(3.>=4.,     ia.gteq_b(ib));
 		assertEquals(.25>=.5,    da.gteq_b(db));
 		
 		// unlike kinds
-		assertEquals(3.>=.25,    ia.gteq(da).toboolean());
-		assertEquals(.25>=3.,    da.gteq(ia).toboolean());
+		assertEquals(3.>=.25,    ia.gteq(da).toBoolean());
+		assertEquals(.25>=3.,    da.gteq(ia).toBoolean());
 		assertEquals(3.>=.25,    ia.gteq_b(da));
 		assertEquals(.25>=3.,    da.gteq_b(ia));
 	}
@@ -776,20 +776,20 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue sa=LuaValue.valueOf("1.5"), sb=LuaValue.valueOf("2.0");
 		
 		// like kinds
-		assertEquals(3.!=4.,     ia.neq(ib).toboolean());
-		assertEquals(.25!=.5,    da.neq(db).toboolean());
-		assertEquals(1.5!=2.,    sa.neq(sb).toboolean());
+		assertEquals(3.!=4.,     ia.neq(ib).toBoolean());
+		assertEquals(.25!=.5,    da.neq(db).toBoolean());
+		assertEquals(1.5!=2.,    sa.neq(sb).toBoolean());
 		assertEquals(3.!=4.,     ia.neq_b(ib));
 		assertEquals(.25!=.5,    da.neq_b(db));
 		assertEquals(1.5!=2.,    sa.neq_b(sb));
 		
 		// unlike kinds
-		assertEquals(3.!=.25,    ia.neq(da).toboolean());
-		assertEquals(.25!=3.,    da.neq(ia).toboolean());
-		assertEquals(3.!=1.5,    ia.neq(sa).toboolean());
-		assertEquals(1.5!=3.,    sa.neq(ia).toboolean());
-		assertEquals(.25!=1.5,   da.neq(sa).toboolean());
-		assertEquals(1.5!=.25,   sa.neq(da).toboolean());		
+		assertEquals(3.!=.25,    ia.neq(da).toBoolean());
+		assertEquals(.25!=3.,    da.neq(ia).toBoolean());
+		assertEquals(3.!=1.5,    ia.neq(sa).toBoolean());
+		assertEquals(1.5!=3.,    sa.neq(ia).toBoolean());
+		assertEquals(.25!=1.5,   da.neq(sa).toBoolean());
+		assertEquals(1.5!=.25,   sa.neq(da).toBoolean());
 		assertEquals(3.!=.25,    ia.neq_b(da));
 		assertEquals(.25!=3.,    da.neq_b(ia));
 		assertEquals(3.!=1.5,    ia.neq_b(sa));
@@ -810,8 +810,8 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		for ( int i=0; i<ops.length; i++ ) {
 			for ( int j=0; j<vals.length; j++ ) {
 				for ( int k=0; k<numerics.length; k++ ) {
-					checkCompareError( vals[j], numerics[k], ops[i], vals[j].typename() );
-					checkCompareError( numerics[k], vals[j], ops[i], vals[j].typename() );
+					checkCompareError( vals[j], numerics[k], ops[i], vals[j].getTypeName() );
+					checkCompareError( numerics[k], vals[j], ops[i], vals[j].getTypeName() );
 				}
 			}
 		}
@@ -823,9 +823,9 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		} catch ( InvocationTargetException ite ) {
 			String actual = ite.getTargetException().getMessage();
 			if ( (!actual.startsWith("attempt to compare")) || actual.indexOf(type)<0 ) 
-				fail( "("+a.typename()+","+op+","+b.typename()+") reported '"+actual+"'" );
+				fail( "("+a.getTypeName()+","+op+","+b.getTypeName()+") reported '"+actual+"'" );
 		} catch ( Exception e ) {
-			fail( "("+a.typename()+","+op+","+b.typename()+") threw "+e );
+			fail( "("+a.getTypeName()+","+op+","+b.getTypeName()+") threw "+e );
 		}
 	}
 	
@@ -1004,37 +1004,37 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue n123 = LuaValue.valueOf(123);
 
 		// basic append
-		Buffer b = new Buffer(); assertEquals( "", b.value().tojstring() );
-		b.append(def); assertEquals( "def", b.value().tojstring() );
-		b.append(abc); assertEquals( "defabc", b.value().tojstring() );
-		b.append(ghi); assertEquals( "defabcghi", b.value().tojstring() );
-		b.append(n123); assertEquals( "defabcghi123", b.value().tojstring() );		
+		Buffer b = new Buffer(); assertEquals( "", b.value().toJString() );
+		b.append(def); assertEquals( "def", b.value().toJString() );
+		b.append(abc); assertEquals( "defabc", b.value().toJString() );
+		b.append(ghi); assertEquals( "defabcghi", b.value().toJString() );
+		b.append(n123); assertEquals( "defabcghi123", b.value().toJString() );
 
 		// basic prepend
-		b = new Buffer(); assertEquals( "", b.value().tojstring() );
-		b.prepend(def.strvalue()); assertEquals( "def", b.value().tojstring() );
-		b.prepend(ghi.strvalue()); assertEquals( "ghidef", b.value().tojstring() );
-		b.prepend(abc.strvalue()); assertEquals( "abcghidef", b.value().tojstring() );
-		b.prepend(n123.strvalue()); assertEquals( "123abcghidef", b.value().tojstring() );
+		b = new Buffer(); assertEquals( "", b.value().toJString() );
+		b.prepend(def.strvalue()); assertEquals( "def", b.value().toJString() );
+		b.prepend(ghi.strvalue()); assertEquals( "ghidef", b.value().toJString() );
+		b.prepend(abc.strvalue()); assertEquals( "abcghidef", b.value().toJString() );
+		b.prepend(n123.strvalue()); assertEquals( "123abcghidef", b.value().toJString() );
 
 		// mixed append, prepend
-		b = new Buffer(); assertEquals( "", b.value().tojstring() );
-		b.append(def); assertEquals( "def", b.value().tojstring() );
-		b.append(abc); assertEquals( "defabc", b.value().tojstring() );
-		b.prepend(ghi.strvalue()); assertEquals( "ghidefabc", b.value().tojstring() );
-		b.prepend(n123.strvalue()); assertEquals( "123ghidefabc", b.value().tojstring() );		
-		b.append(def); assertEquals( "123ghidefabcdef", b.value().tojstring() );
-		b.append(abc); assertEquals( "123ghidefabcdefabc", b.value().tojstring() );
-		b.prepend(ghi.strvalue()); assertEquals( "ghi123ghidefabcdefabc", b.value().tojstring() );
-		b.prepend(n123.strvalue()); assertEquals( "123ghi123ghidefabcdefabc", b.value().tojstring() );		
+		b = new Buffer(); assertEquals( "", b.value().toJString() );
+		b.append(def); assertEquals( "def", b.value().toJString() );
+		b.append(abc); assertEquals( "defabc", b.value().toJString() );
+		b.prepend(ghi.strvalue()); assertEquals( "ghidefabc", b.value().toJString() );
+		b.prepend(n123.strvalue()); assertEquals( "123ghidefabc", b.value().toJString() );
+		b.append(def); assertEquals( "123ghidefabcdef", b.value().toJString() );
+		b.append(abc); assertEquals( "123ghidefabcdefabc", b.value().toJString() );
+		b.prepend(ghi.strvalue()); assertEquals( "ghi123ghidefabcdefabc", b.value().toJString() );
+		b.prepend(n123.strvalue()); assertEquals( "123ghi123ghidefabcdefabc", b.value().toJString() );
 		
 		// value
-		b = new Buffer(def); assertEquals( "def", b.value().tojstring() );
-		b.append(abc); assertEquals( "defabc", b.value().tojstring() );
-		b.prepend(ghi.strvalue()); assertEquals( "ghidefabc", b.value().tojstring() );
-		b.setvalue(def); assertEquals( "def", b.value().tojstring() );
-		b.prepend(ghi.strvalue()); assertEquals( "ghidef", b.value().tojstring() );
-		b.append(abc); assertEquals( "ghidefabc", b.value().tojstring() );
+		b = new Buffer(def); assertEquals( "def", b.value().toJString() );
+		b.append(abc); assertEquals( "defabc", b.value().toJString() );
+		b.prepend(ghi.strvalue()); assertEquals( "ghidefabc", b.value().toJString() );
+		b.setvalue(def); assertEquals( "def", b.value().toJString() );
+		b.prepend(ghi.strvalue()); assertEquals( "ghidef", b.value().toJString() );
+		b.append(abc); assertEquals( "ghidefabc", b.value().toJString() );
 	}
 	
 	public void testConcat() {
@@ -1043,16 +1043,16 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue ghi = LuaValue.valueOf("abcdefghi").substring(6,9);
 		LuaValue n123 = LuaValue.valueOf(123);
 		
-		assertEquals( "abc", abc.tojstring() );
-		assertEquals( "def", def.tojstring() );
-		assertEquals( "ghi", ghi.tojstring() );
-		assertEquals( "123", n123.tojstring() );
-		assertEquals( "abcabc", abc.concat(abc).tojstring() );
-		assertEquals( "defghi", def.concat(ghi).tojstring() );
-		assertEquals( "ghidef", ghi.concat(def).tojstring() );
-		assertEquals( "ghidefabcghi", ghi.concat(def).concat(abc).concat(ghi).tojstring() );
-		assertEquals( "123def", n123.concat(def).tojstring() );
-		assertEquals( "def123", def.concat(n123).tojstring() );
+		assertEquals( "abc", abc.toJString() );
+		assertEquals( "def", def.toJString() );
+		assertEquals( "ghi", ghi.toJString() );
+		assertEquals( "123", n123.toJString() );
+		assertEquals( "abcabc", abc.concat(abc).toJString() );
+		assertEquals( "defghi", def.concat(ghi).toJString() );
+		assertEquals( "ghidef", ghi.concat(def).toJString() );
+		assertEquals( "ghidefabcghi", ghi.concat(def).concat(abc).concat(ghi).toJString() );
+		assertEquals( "123def", n123.concat(def).toJString() );
+		assertEquals( "def123", def.concat(n123).toJString() );
 	}
 	
 	public void testConcatBuffer() {
@@ -1062,13 +1062,13 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue n123 = LuaValue.valueOf(123);
 		Buffer b;
 
-		b = new Buffer(def); assertEquals( "def", b.value().tojstring() );
-		b = ghi.concat(b); assertEquals( "ghidef", b.value().tojstring() );
-		b = abc.concat(b); assertEquals( "abcghidef", b.value().tojstring() );
-		b = n123.concat(b); assertEquals( "123abcghidef", b.value().tojstring() );
+		b = new Buffer(def); assertEquals( "def", b.value().toJString() );
+		b = ghi.concat(b); assertEquals( "ghidef", b.value().toJString() );
+		b = abc.concat(b); assertEquals( "abcghidef", b.value().toJString() );
+		b = n123.concat(b); assertEquals( "123abcghidef", b.value().toJString() );
 		b.setvalue(n123);
-		b = def.concat(b); assertEquals( "def123", b.value().tojstring() );
-		b = abc.concat(b); assertEquals( "abcdef123", b.value().tojstring() );
+		b = def.concat(b); assertEquals( "def123", b.value().toJString() );
+		b = abc.concat(b); assertEquals( "abcdef123", b.value().toJString() );
 	}
 	
 	public void testConcatMetatag() {
@@ -1127,8 +1127,8 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		for ( int i=0; i<ops.length; i++ ) {
 			for ( int j=0; j<vals.length; j++ ) {
 				for ( int k=0; k<numerics.length; k++ ) {
-					checkConcatError( vals[j], numerics[k], ops[i], vals[j].typename() );
-					checkConcatError( numerics[k], vals[j], ops[i], vals[j].typename() );
+					checkConcatError( vals[j], numerics[k], ops[i], vals[j].getTypeName() );
+					checkConcatError( numerics[k], vals[j], ops[i], vals[j].getTypeName() );
 				}
 			}
 		}
@@ -1140,9 +1140,9 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		} catch ( InvocationTargetException ite ) {
 			String actual = ite.getTargetException().getMessage();
 			if ( (!actual.startsWith("attempt to concatenate")) || actual.indexOf(type)<0 ) 
-				fail( "("+a.typename()+","+op+","+b.typename()+") reported '"+actual+"'" );
+				fail( "("+a.getTypeName()+","+op+","+b.getTypeName()+") reported '"+actual+"'" );
 		} catch ( Exception e ) {
-			fail( "("+a.typename()+","+op+","+b.typename()+") threw "+e );
+			fail( "("+a.getTypeName()+","+op+","+b.getTypeName()+") threw "+e );
 		}
 	}
 	

@@ -74,9 +74,9 @@ public class TailcallVarargs extends Varargs {
 		return result.narg();
 	}
 
-	public Varargs subargs(int start) {
+	public Varargs subArgs(int start) {
 		if (result == null)
 			eval();
-		return result.subargs(start);
+		return result.subArgs(start);
 	}
 }

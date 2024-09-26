@@ -77,7 +77,7 @@ abstract public class WeakTableTest extends TableTest {
 			// check that table can be used to get elements 
 			assertEquals(tableValue, t.get("table"));
 			assertEquals(stringValue, t.get("string"));
-			assertEquals(obj, t.get("userdata").checkuserdata());
+			assertEquals(obj, t.get("userdata").checkUserdata());
 			assertEquals(tableValue2, t.get(1));
 
 			// nothing should be collected, since we have strong references here
@@ -86,7 +86,7 @@ abstract public class WeakTableTest extends TableTest {
 			// check that elements are still there 
 			assertEquals(tableValue, t.get("table"));
 			assertEquals(stringValue, t.get("string"));
-			assertEquals(obj, t.get("userdata").checkuserdata());
+			assertEquals(obj, t.get("userdata").checkUserdata());
 			assertEquals(tableValue2, t.get(1));
 
 			// drop our strong references
@@ -102,7 +102,7 @@ abstract public class WeakTableTest extends TableTest {
 			assertEquals(LuaValue.NIL, t.get("table"));
 			assertEquals(LuaValue.NIL, t.get("userdata"));
 			assertEquals(LuaValue.NIL, t.get(1));
-			assertFalse("strings should not be in weak references", t.get("string").isnil());
+			assertFalse("strings should not be in weak references", t.get("string").isNil());
 		}
 	}
 	
@@ -165,7 +165,7 @@ abstract public class WeakTableTest extends TableTest {
 			
 			// table should have 2 entries
 			int size = 0;
-			for ( LuaValue k = t.next(LuaValue.NIL).arg1(); !k.isnil();
+			for ( LuaValue k = t.next(LuaValue.NIL).arg1(); !k.isNil();
 					k = t.next(k).arg1() ) {
 				size++;
 			}
@@ -251,7 +251,7 @@ abstract public class WeakTableTest extends TableTest {
 			// table should have 3 entries
 			int size = 0;
 			for ( LuaValue k = t.next(LuaValue.NIL).arg1();
-				  !k.isnil() && size < 1000;
+				  !k.isNil() && size < 1000;
 				  k = t.next(k).arg1() ) {
 				size++;
 			}

@@ -504,7 +504,7 @@ public class JavaBuilder {
 
 	public void subargs(int firstarg) {
 		append(new PUSH(cp, firstarg));
-		append(factory.createInvoke(STR_VARARGS, "subargs", TYPE_VARARGS, ARG_TYPES_INT, Constants.INVOKEVIRTUAL));
+		append(factory.createInvoke(STR_VARARGS, "subArgs", TYPE_VARARGS, ARG_TYPES_INT, Constants.INVOKEVIRTUAL));
 	}
 	
 	public void getTable() {
@@ -556,15 +556,15 @@ public class JavaBuilder {
 	}
 	
 	public void toBoolean() {
-        append(factory.createInvoke(STR_LUAVALUE, "toboolean", Type.BOOLEAN, Type.NO_ARGS, Constants.INVOKEVIRTUAL));
+        append(factory.createInvoke(STR_LUAVALUE, "toBoolean", Type.BOOLEAN, Type.NO_ARGS, Constants.INVOKEVIRTUAL));
 	}
 
 	public void tostring() {
-        append(factory.createInvoke(STR_BUFFER, "tostring", TYPE_LUASTRING, Type.NO_ARGS, Constants.INVOKEVIRTUAL));
+        append(factory.createInvoke(STR_BUFFER, "toLuaString", TYPE_LUASTRING, Type.NO_ARGS, Constants.INVOKEVIRTUAL));
 	}
 
 	public void isNil() {
-        append(factory.createInvoke(STR_LUAVALUE, "isnil", Type.BOOLEAN, Type.NO_ARGS, Constants.INVOKEVIRTUAL));
+        append(factory.createInvoke(STR_LUAVALUE, "isNil", Type.BOOLEAN, Type.NO_ARGS, Constants.INVOKEVIRTUAL));
 	}
 
 	public void testForLoop() {
@@ -663,28 +663,28 @@ public class JavaBuilder {
 	private Map<LuaValue,String> constants = new HashMap<LuaValue,String>();
 	
 	public void loadConstant(LuaValue value) {
-		switch ( value.type() ) {
+		switch ( value.getType() ) {
 		case LuaValue.TNIL: 
 			loadNil();
 			break;
 		case LuaValue.TBOOLEAN:
-			loadBoolean( value.toboolean() );
+			loadBoolean( value.toBoolean() );
 			break;
 		case LuaValue.TNUMBER:
 		case LuaValue.TSTRING:
 			String name = (String) constants.get(value);
 			if ( name == null ) {
-				name = value.type() == LuaValue.TNUMBER? 
-						value.isinttype()? 
-							createLuaIntegerField(value.checkint()):
-							createLuaDoubleField(value.checkdouble()):
-						createLuaStringField(value.checkstring());
+				name = value.getType() == LuaValue.TNUMBER?
+						value.isInteger()?
+							createLuaIntegerField(value.checkInt()):
+							createLuaDoubleField(value.checkDouble()):
+						createLuaStringField(value.checkLuaString());
 				constants.put(value, name);
 			}
 			append(factory.createGetStatic(classname, name, TYPE_LUAVALUE));
 			break;
 		default:
-			throw new IllegalArgumentException("bad constant type: "+value.type());
+			throw new IllegalArgumentException("bad constant type: "+value.getType());
 		}
 	}
 
@@ -717,9 +717,9 @@ public class JavaBuilder {
 		FieldGen fg = new FieldGen(Constants.ACC_STATIC | Constants.ACC_FINAL, 
 				TYPE_LUAVALUE, name, cp);
 		cg.addField(fg.getField());
-		LuaString ls = value.checkstring();
+		LuaString ls = value.checkLuaString();
 		if ( ls.isValidUtf8() ) {
-			init.append(new PUSH(cp, value.tojstring()));
+			init.append(new PUSH(cp, value.toJString()));
 			init.append(factory.createInvoke(STR_LUASTRING, "valueOf",
 					TYPE_LUASTRING, ARG_TYPES_STRING, Constants.INVOKESTATIC));
 		} else {

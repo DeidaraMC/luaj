@@ -491,21 +491,21 @@ public class ProtoInfo {
 					case Lua.OP_SETTABUP: {
 						final int b = Lua.GETARG_B(i);
 						if (Lua.ISK(b))
-							name = prototype.k[b&0x0ff].tojstring();
+							name = prototype.k[b&0x0ff].toJString();
 						break;
 					}
 					case Lua.OP_SETUPVAL: {
 						final int b = Lua.GETARG_B(i);
 						final LuaString s = prototype.upvalues[b].name;
 						if (s != null)
-							name = s.tojstring();
+							name = s.toJString();
 						break;
 					}
 					default: // Local variable
 						final int a = Lua.GETARG_A(code[pc]);
 						final LuaString s = prototype.getlocalname(a+1, pc+1);
 						if (s != null)
-							name = s.tojstring();
+							name = s.toJString();
 						break;
 				}
 				name = name != null? toJavaClassPart(name): String.valueOf(bx);

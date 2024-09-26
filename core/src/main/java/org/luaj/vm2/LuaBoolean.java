@@ -11,7 +11,7 @@ package org.luaj.vm2;
  * return one of these two values. 
  * <p>
  * Any {@link LuaValue} can be converted to its equivalent 
- * boolean representation using {@link LuaValue#toboolean()}
+ * boolean representation using {@link LuaValue#toBoolean()}
  * <p>
  * @see LuaValue
  * @see LuaValue#valueOf(boolean)
@@ -36,15 +36,15 @@ public final class LuaBoolean extends LuaValue {
 		this.v = b;
 	}
 
-	public int type() {
+	public int getType() {
 		return LuaValue.TBOOLEAN;
 	}
 
-	public String typename() {
+	public String getTypeName() {
 		return "boolean";
 	}
 
-	public boolean isboolean() {
+	public boolean isBoolean() {
 		return true;
 	}
 
@@ -60,19 +60,19 @@ public final class LuaBoolean extends LuaValue {
 		return v;
 	}
 
-	public boolean toboolean() {
+	public boolean toBoolean() {
 		return v;
 	}
 
-	public String tojstring() {
+	public String toJString() {
 		return v ? "true" : "false";
 	}
 
-	public boolean optboolean(boolean defval) {
+	public boolean optionalBoolean(boolean defval) {
 		return this.v;
 	}
 	
-	public boolean checkboolean() {
+	public boolean checkBoolean() {
 		return v;
 	}
 	

@@ -102,23 +102,23 @@ public class LuaThread extends LuaValue {
 		this.globals = globals;
 	}
 	
-	public int type() {
+	public int getType() {
 		return LuaValue.TTHREAD;
 	}
 	
-	public String typename() {
+	public String getTypeName() {
 		return "thread";
 	}
 	
-	public boolean isthread() {
+	public boolean isThread() {
 		return true;
 	}
 	
-	public LuaThread optthread(LuaThread defval) {
+	public LuaThread optionalThread(LuaThread defval) {
 		return this;
 	}
 	
-	public LuaThread checkthread() {
+	public LuaThread checkThread() {
 		return this;
 	}
 	

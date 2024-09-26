@@ -203,8 +203,8 @@ public class lua {
 			} finally {
 				script.close();
 			}
-			if (print && c.isclosure())
-				Print.print(c.checkclosure().p);
+			if (print && c.isClosure())
+				Print.print(c.checkClosure().p);
 			Varargs scriptargs = setGlobalArg(chunkname, args, firstarg, globals);
 			c.invoke( scriptargs );
 		} catch ( Exception e ) {

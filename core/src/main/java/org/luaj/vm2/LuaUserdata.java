@@ -14,15 +14,15 @@ public class LuaUserdata extends LuaValue {
 		m_metatable = metatable;
 	}
 	
-	public String tojstring() {
+	public String toJString() {
 		return String.valueOf(m_instance);
 	}
 	
-	public int type() {
+	public int getType() {
 		return LuaValue.TUSERDATA;
 	}
 	
-	public String typename() {
+	public String getTypeName() {
 		return "userdata";
 	}
 
@@ -34,15 +34,15 @@ public class LuaUserdata extends LuaValue {
 		return m_instance;
 	}
 	
-	public boolean isuserdata()                        { return true; }
-	public boolean isuserdata(Class c)                 { return c.isAssignableFrom(m_instance.getClass()); }
-	public Object  touserdata()                        { return m_instance; }
-	public Object  touserdata(Class c)                 { return c.isAssignableFrom(m_instance.getClass())? m_instance: null; }
-	public Object  optuserdata(Object defval)          { return m_instance; }
-	public Object optuserdata(Class c, Object defval) {
-		if (!c.isAssignableFrom(m_instance.getClass()))
-			typerror(c.getName());
-		return m_instance;
+	public boolean isUserdata()                        { return true; }
+	public boolean isUserdata(Class<?> type)                 { return type.isAssignableFrom(m_instance.getClass()); }
+	public Object toUserdata()                        { return m_instance; }
+	public <T> T toUserdata(Class<T> type)                 { return type.isAssignableFrom(m_instance.getClass())? (T) m_instance: null; }
+	public Object optionalUserdata(Object defval)          { return m_instance; }
+	public <T> T optionalUserdata(Class<T> type, Object defval) {
+		if (!type.isAssignableFrom(m_instance.getClass()))
+			typerror(type.getName());
+		return (T) m_instance;
 	}
 	
 	public LuaValue getmetatable() {
@@ -54,14 +54,14 @@ public class LuaUserdata extends LuaValue {
 		return this;
 	}
 
-	public Object checkuserdata() {
+	public Object checkUserdata() {
 		return m_instance;
 	}
 	
-	public Object checkuserdata(Class c) { 
-		if ( c.isAssignableFrom(m_instance.getClass()) )
-			return m_instance;		
-		return typerror(c.getName());
+	public <T> T checkUserdata(Class<T> type) {
+		if ( type.isAssignableFrom(m_instance.getClass()) )
+			return (T) m_instance;
+		return (T) typerror(type.getName());
 	}
 	
 	public LuaValue get( LuaValue key ) {
@@ -86,7 +86,7 @@ public class LuaUserdata extends LuaValue {
 	public LuaValue eq( LuaValue val )     { return eq_b(val)? TRUE: FALSE; } 
 	public boolean eq_b( LuaValue val ) { 
 		if ( val.raweq(this) ) return true;
-		if ( m_metatable == null || !val.isuserdata() ) return false;
+		if ( m_metatable == null || !val.isUserdata() ) return false;
 		LuaValue valmt = val.getmetatable();
 		return valmt!=null && LuaValue.eqmtcall(this, m_metatable, val, valmt); 
 	}
@@ -99,6 +99,6 @@ public class LuaUserdata extends LuaValue {
 	
 	// __eq metatag processing
 	public boolean eqmt( LuaValue val ) {
-		return m_metatable!=null && val.isuserdata()? LuaValue.eqmtcall(this, m_metatable, val, val.getmetatable()): false; 
+		return m_metatable!=null && val.isUserdata()? LuaValue.eqmtcall(this, m_metatable, val, val.getmetatable()): false;
 	}
 }

@@ -56,9 +56,9 @@ import org.luaj.vm2.lib.DebugLib.CallFrame;
  * </ul>
  * @see LuaValue
  * @see LuaFunction
- * @see LuaValue#isclosure()
- * @see LuaValue#checkclosure()
- * @see LuaValue#optclosure(LuaClosure)
+ * @see LuaValue#isClosure()
+ * @see LuaValue#checkClosure()
+ * @see LuaValue#optionalClosure(LuaClosure)
  * @see LoadState
  * @see Globals#compiler
  */
@@ -92,19 +92,19 @@ public class LuaClosure extends LuaFunction {
 	}
 
 	
-	public boolean isclosure() {
+	public boolean isClosure() {
 		return true;
 	}
 	
-	public LuaClosure optclosure(LuaClosure defval) {
+	public LuaClosure optionalClosure(LuaClosure defval) {
 		return this;
 	}
 
-	public LuaClosure checkclosure() {
+	public LuaClosure checkClosure() {
 		return this;
 	}
 	
-	public String tojstring() {
+	public String toJString() {
 		return "function: " + p.toString();
 	}
 	
@@ -155,7 +155,7 @@ public class LuaClosure extends LuaFunction {
 		LuaValue[] stack = getNewStack();
 		for ( int i=0; i<p.numparams; i++ )
 			stack[i] = varargs.arg(i+1);
-		return execute(stack,p.is_vararg!=0? varargs.subargs(p.numparams+1): NONE);
+		return execute(stack,p.is_vararg!=0? varargs.subArgs(p.numparams+1): NONE);
 	}
 	
 	protected Varargs execute( LuaValue[] stack, Varargs varargs ) {
@@ -328,13 +328,13 @@ public class LuaClosure extends LuaFunction {
 					continue;
 					
 				case Lua.OP_TEST: /*	A C	if not (R(A) <=> C) then pc++			*/
-					if ( stack[a].toboolean() != ((i&(0x1ff<<14))!=0) )
+					if ( stack[a].toBoolean() != ((i&(0x1ff<<14))!=0) )
 						++pc;
 					continue;
 					
 				case Lua.OP_TESTSET: /*	A B C	if (R(B) <=> C) then R(A):= R(B) else pc++	*/
 					/* note: doc appears to be reversed */
-					if ( (o=stack[i>>>23]).toboolean() != ((i&(0x1ff<<14))!=0) )
+					if ( (o=stack[i>>>23]).toBoolean() != ((i&(0x1ff<<14))!=0) )
 						++pc;
 					else
 						stack[a] = o; // TODO: should be sBx?
@@ -359,11 +359,11 @@ public class LuaClosure extends LuaFunction {
 							varargsOf(stack, a+1, b-1): // exact arg count
 							varargsOf(stack, a+1, top-v.narg()-(a+1), v));  // from prev top
 						if ( c > 0 ) {
-							v.copyto(stack, a, c-1);
+							v.copyTo(stack, a, c-1);
 							v = NONE;
 						} else {
 							top = a + v.narg();
-							v = v.dealias();
+							v = v.deAlias();
 						}
 						continue;
 					}
@@ -407,9 +407,9 @@ public class LuaClosure extends LuaFunction {
 					
 				case Lua.OP_FORPREP: /*	A sBx	R(A)-=R(A+2): pc+=sBx				*/
 					{
-						LuaValue init  = stack[a].checknumber("'for' initial value must be a number");
-						LuaValue limit = stack[a + 1].checknumber("'for' limit must be a number");
-						LuaValue step  = stack[a + 2].checknumber("'for' step must be a number");
+						LuaValue init  = stack[a].checkNumber("'for' initial value must be a number");
+						LuaValue limit = stack[a + 1].checkNumber("'for' limit must be a number");
+						LuaValue step  = stack[a + 2].checkNumber("'for' step must be a number");
 						stack[a] = init.sub(step);
 						stack[a + 1] = limit;
 						stack[a + 2] = step;
@@ -426,7 +426,7 @@ public class LuaClosure extends LuaFunction {
 					continue;
 
 				case Lua.OP_TFORLOOP: /* A sBx	if R(A+1) ~= nil then { R(A)=R(A+1); pc += sBx */
-					if (!stack[a+1].isnil()) { /* continue loop? */
+					if (!stack[a+1].isNil()) { /* continue loop? */
 						stack[a] = stack[a+1];  /* save control varible. */
 						pc += (i>>>14)-0x1ffff;
 					}
@@ -519,7 +519,7 @@ public class LuaClosure extends LuaFunction {
 		final LuaValue e = r.errorfunc;
 		r.errorfunc = null;
 		try {
-			return e.call( LuaValue.valueOf(msg) ).tojstring();
+			return e.call( LuaValue.valueOf(msg) ).toJString();
 		} catch ( Throwable t ) {
 			return "error in error handling";
 		} finally {
@@ -541,7 +541,7 @@ public class LuaClosure extends LuaFunction {
 				}
 			}
 			if (frame == null) {
-				file = p.source != null? p.source.tojstring(): "?";
+				file = p.source != null? p.source.toJString(): "?";
 				line = p.lineinfo != null && pc >= 0 && pc < p.lineinfo.length ? p.lineinfo[pc] : -1;
 			}
 		}

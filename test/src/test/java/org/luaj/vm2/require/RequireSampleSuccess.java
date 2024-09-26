@@ -12,7 +12,7 @@ public class RequireSampleSuccess extends TwoArgFunction {
 	}
 	
 	public LuaValue call(LuaValue modname, LuaValue env) {
-		env.checkglobals();
-		return LuaValue.valueOf("require-sample-success-"+modname.tojstring());
+		env.checkGlobals();
+		return LuaValue.valueOf("require-sample-success-"+modname.toJString());
 	}	
 }

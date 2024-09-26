@@ -125,8 +125,8 @@ public class LuaValue extends Varargs {
 	public static final int TVALUE          = 9;
 
 	/** String array constant containing names of each of the lua value types
-	 * @see #type()
-	 * @see #typename()
+	 * @see #getType()
+	 * @see #getTypeName()
 	 */
 	public static final String[] TYPE_NAMES = {
 		"nil",
@@ -248,9 +248,9 @@ public class LuaValue extends Varargs {
 	 * {@link #TFUNCTION},
 	 * {@link #TUSERDATA},
 	 * {@link #TTHREAD}
-	 * @see #typename()
+	 * @see #getTypeName()
 	 */
-	abstract public int type();
+	abstract public int getType();
 	
 	/** Get the String name of the type of this value.
 	 * <p>
@@ -259,38 +259,38 @@ public class LuaValue extends Varargs {
 	 * corresponding to the type of this value:
 	 * "nil", "boolean", "number", "string",
 	 * "table", "function", "userdata", "thread"
-	 * @see #type()
+	 * @see #getType()
 	 */
-	abstract public String  typename();
+	abstract public String getTypeName();
 
 	/** Check if {@code this} is a {@code boolean}
 	 * @return true if this is a {@code boolean}, otherwise false
-	 * @see #isboolean()
-	 * @see #toboolean()
-	 * @see #checkboolean()
-	 * @see #optboolean(boolean)
+	 * @see #isBoolean()
+	 * @see #toBoolean()
+	 * @see #checkBoolean()
+	 * @see #optionalBoolean(boolean)
 	 * @see #TBOOLEAN
 	 */
-	public boolean isboolean()           { return false; }
+	public boolean isBoolean()           { return false; }
 
 	/** Check if {@code this} is a {@code function} that is a closure,
 	 * meaning interprets lua bytecode for its execution
 	 * @return true if this is a {@code closure}, otherwise false
-	 * @see #isfunction()
-	 * @see #checkclosure()
-	 * @see #optclosure(LuaClosure)
+	 * @see #isFunction()
+	 * @see #checkClosure()
+	 * @see #optionalClosure(LuaClosure)
 	 * @see #TFUNCTION
 	 */
-	public boolean isclosure()           { return false; }
+	public boolean isClosure()           { return false; }
 
 	/** Check if {@code this} is a {@code function}
 	 * @return true if this is a {@code function}, otherwise false
-	 * @see #isclosure()
-	 * @see #checkfunction()
-	 * @see #optfunction(LuaFunction)
+	 * @see #isClosure()
+	 * @see #checkFunction()
+	 * @see #optionalFunction(LuaFunction)
 	 * @see #TFUNCTION
 	 */
-	public boolean isfunction()          { return false; }
+	public boolean isFunction()          { return false; }
 	
 	/** Check if {@code this} is a {@code number} and is representable by java int
 	 * without rounding or truncation
@@ -299,26 +299,26 @@ public class LuaValue extends Varargs {
 	 * or derives from {@link LuaString} and is convertible to a number,
 	 * and can be represented by int,
 	 * otherwise false
-	 * @see #isinttype()
-	 * @see #islong()
-	 * @see #tonumber()
-	 * @see #checkint()
-	 * @see #optint(int)
+	 * @see #isInteger()
+	 * @see #isLong()
+	 * @see #toNumber()
+	 * @see #checkInt()
+	 * @see #optionalInt(int)
 	 * @see #TNUMBER
 	 */
-	public boolean isint()               { return false; }
+	public boolean isInt()               { return false; }
 
 	/** Check if {@code this} is a {@link LuaInteger}
 	 * <p>
 	 * No attempt to convert from string will be made by this call.
 	 * @return true if this is a {@code LuaInteger},
 	 * otherwise false
-	 * @see #isint()
-	 * @see #isnumber()
-	 * @see #tonumber()
+	 * @see #isInt()
+	 * @see #isNumber()
+	 * @see #toNumber()
 	 * @see #TNUMBER
 	 */
-	public boolean isinttype()           { return false; }
+	public boolean isInteger()           { return false; }
 	
 	/** Check if {@code this} is a {@code number} and is representable by java long
 	 * without rounding or truncation
@@ -327,218 +327,218 @@ public class LuaValue extends Varargs {
 	 * or derives from {@link LuaString} and is convertible to a number,
 	 * and can be represented by long,
 	 * otherwise false
-	 * @see #tonumber()
-	 * @see #checklong()
-	 * @see #optlong(long)
+	 * @see #toNumber()
+	 * @see #checkLong()
+	 * @see #optionalLong(long)
 	 * @see #TNUMBER
 	 */
-	public boolean islong()              { return false; }
+	public boolean isLong()              { return false; }
 	
 	/** Check if {@code this} is {@code #NIL}
 	 * @return true if this is {@code #NIL}, otherwise false
 	 * @see #NIL
 	 * @see #NONE
-	 * @see #checknotnil()
-	 * @see #optvalue(LuaValue)
-	 * @see Varargs#isnoneornil(int)
+	 * @see #checkNotNil()
+	 * @see #optionalValue(LuaValue)
+	 * @see Varargs#isNoneOrNil(int)
 	 * @see #TNIL
 	 * @see #TNONE
 	 */
-	public boolean isnil()               { return false; }
+	public boolean isNil()               { return false; }
 	
 	/** Check if {@code this} is a {@code number}
 	 * @return true if this is a {@code number},
 	 * meaning derives from {@link LuaNumber}
 	 * or derives from {@link LuaString} and is convertible to a number,
 	 * otherwise false
-	 * @see #tonumber()
-	 * @see #checknumber()
-	 * @see #optnumber(LuaNumber)
+	 * @see #toNumber()
+	 * @see #checkNumber()
+	 * @see #optionalNumber(LuaNumber)
 	 * @see #TNUMBER
 	 */
-	public boolean isnumber()            { return false; } // may convert from string
+	public boolean isNumber()            { return false; } // may convert from string
 	
 	/** Check if {@code this} is a {@code string}
 	 * @return true if this is a {@code string},
 	 * meaning derives from {@link LuaString} or {@link LuaNumber},
 	 * otherwise false
-	 * @see #tostring()
-	 * @see #checkstring()
-	 * @see #optstring(LuaString)
+	 * @see #toLuaString()
+	 * @see #checkLuaString()
+	 * @see #optionalLuaString(LuaString)
 	 * @see #TSTRING
 	 */
-	public boolean isstring()            { return false; }
+	public boolean isString()            { return false; }
 	
 	/** Check if {@code this} is a {@code thread}
 	 * @return true if this is a {@code thread}, otherwise false
-	 * @see #checkthread()
-	 * @see #optthread(LuaThread)
+	 * @see #checkThread()
+	 * @see #optionalThread(LuaThread)
 	 * @see #TTHREAD
 	 */
-	public boolean isthread()            { return false; }
+	public boolean isThread()            { return false; }
 	
 	/** Check if {@code this} is a {@code table}
 	 * @return true if this is a {@code table}, otherwise false
-	 * @see #checktable()
-	 * @see #opttable(LuaTable)
+	 * @see #checkTable()
+	 * @see #optionalTable(LuaTable)
 	 * @see #TTABLE
 	 */
-	public boolean istable()             { return false; }
+	public boolean isTable()             { return false; }
 	
 	/** Check if {@code this} is a {@code userdata}
 	 * @return true if this is a {@code userdata}, otherwise false
-	 * @see #isuserdata(Class)
-	 * @see #touserdata()
-	 * @see #checkuserdata()
-	 * @see #optuserdata(Object)
+	 * @see #isUserdata(Class)
+	 * @see #toUserdata()
+	 * @see #checkUserdata()
+	 * @see #optionalUserdata(Object)
 	 * @see #TUSERDATA
 	 */
-	public boolean isuserdata()          { return false; }
+	public boolean isUserdata()          { return false; }
 	
 	/** Check if {@code this} is a {@code userdata} of type {@code c}
 	 * @param c Class to test instance against
 	 * @return true if this is a {@code userdata}
 	 * and the instance is assignable to {@code c},
 	 * otherwise false
-	 * @see #isuserdata()
-	 * @see #touserdata(Class)
-	 * @see #checkuserdata(Class)
-	 * @see #optuserdata(Class, Object)
+	 * @see #isUserdata()
+	 * @see #toUserdata(Class)
+	 * @see #checkUserdata(Class)
+	 * @see #optionalUserdata(Class, Object)
 	 * @see #TUSERDATA
 	 */
-	public boolean isuserdata(Class c)   { return false; }
+	public boolean isUserdata(Class<?> c)   { return false; }
 	
 	/** Convert to boolean false if {@link #NIL} or {@link #FALSE}, true if anything else
 	 * @return Value cast to byte if number or string convertible to number, otherwise 0
-	 * @see #optboolean(boolean)
-	 * @see #checkboolean()
-	 * @see #isboolean()
+	 * @see #optionalBoolean(boolean)
+	 * @see #checkBoolean()
+	 * @see #isBoolean()
 	 * @see #TBOOLEAN
 	 */
-	public boolean toboolean()           { return true; }
+	public boolean toBoolean()           { return true; }
 	
 	/** Convert to byte if numeric, or 0 if not.
 	 * @return Value cast to byte if number or string convertible to number, otherwise 0
-	 * @see #toint()
-	 * @see #todouble()
-	 * @see #checknumber()
-	 * @see #isnumber()
+	 * @see #toInt()
+	 * @see #toDouble()
+	 * @see #checkNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public byte    tobyte()              { return 0; }
+	public byte toByte()              { return 0; }
 	
 	/** Convert to char if numeric, or 0 if not.
 	 * @return Value cast to char if number or string convertible to number, otherwise 0
-	 * @see #toint()
-	 * @see #todouble()
-	 * @see #checknumber()
-	 * @see #isnumber()
+	 * @see #toInt()
+	 * @see #toDouble()
+	 * @see #checkNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
 	public char    tochar()              { return 0; }
 	
 	/** Convert to double if numeric, or 0 if not.
 	 * @return Value cast to double if number or string convertible to number, otherwise 0
-	 * @see #toint()
-	 * @see #tobyte()
+	 * @see #toInt()
+	 * @see #toByte()
 	 * @see #tochar()
-	 * @see #toshort()
-	 * @see #tolong()
-	 * @see #tofloat()
-	 * @see #optdouble(double)
-	 * @see #checknumber()
-	 * @see #isnumber()
+	 * @see #toShort()
+	 * @see #toLong()
+	 * @see #toFloat()
+	 * @see #optionalDouble(double)
+	 * @see #checkNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public double  todouble()            { return 0; }
+	public double toDouble()            { return 0; }
 	
 	/** Convert to float if numeric, or 0 if not.
 	 * @return Value cast to float if number or string convertible to number, otherwise 0
-	 * @see #toint()
-	 * @see #todouble()
-	 * @see #checknumber()
-	 * @see #isnumber()
+	 * @see #toInt()
+	 * @see #toDouble()
+	 * @see #checkNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public float   tofloat()             { return 0; }
+	public float toFloat()             { return 0; }
 	
 	/** Convert to int if numeric, or 0 if not.
 	 * @return Value cast to int if number or string convertible to number, otherwise 0
-	 * @see #tobyte()
+	 * @see #toByte()
 	 * @see #tochar()
-	 * @see #toshort()
-	 * @see #tolong()
-	 * @see #tofloat()
-	 * @see #todouble()
-	 * @see #optint(int)
-	 * @see #checknumber()
-	 * @see #isnumber()
+	 * @see #toShort()
+	 * @see #toLong()
+	 * @see #toFloat()
+	 * @see #toDouble()
+	 * @see #optionalInt(int)
+	 * @see #checkNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public int     toint()               { return 0; }
+	public int toInt()               { return 0; }
 	
 	/** Convert to long if numeric, or 0 if not.
 	 * @return Value cast to long if number or string convertible to number, otherwise 0
-	 * @see #isint()
-	 * @see #isinttype()
-	 * @see #toint()
-	 * @see #todouble()
-	 * @see #optlong(long)
-	 * @see #checknumber()
-	 * @see #isnumber()
+	 * @see #isInt()
+	 * @see #isInteger()
+	 * @see #toInt()
+	 * @see #toDouble()
+	 * @see #optionalLong(long)
+	 * @see #checkNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public long    tolong()              { return 0; }
+	public long toLong()              { return 0; }
 	
 	/** Convert to short if numeric, or 0 if not.
 	 * @return Value cast to short if number or string convertible to number, otherwise 0
-	 * @see #toint()
-	 * @see #todouble()
-	 * @see #checknumber()
-	 * @see #isnumber()
+	 * @see #toInt()
+	 * @see #toDouble()
+	 * @see #checkNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public short   toshort()             { return 0; }
+	public short toShort()             { return 0; }
 	
 	/** Convert to human readable String for any type.
 	 * @return String for use by human readers based on type.
-	 * @see #tostring()
-	 * @see #optjstring(String)
-	 * @see #checkjstring()
-	 * @see #isstring()
+	 * @see #toLuaString()
+	 * @see #optionalJString(String)
+	 * @see #checkJString()
+	 * @see #isString()
 	 * @see #TSTRING
 	 */
-	public String  tojstring()           { return typename() + ": " + Integer.toHexString(hashCode()); }
+	public String toJString()           { return getTypeName() + ": " + Integer.toHexString(hashCode()); }
 	
 	/** Convert to userdata instance, or null.
 	 * @return userdata instance if userdata, or null if not {@link LuaUserdata}
-	 * @see #optuserdata(Object)
-	 * @see #checkuserdata()
-	 * @see #isuserdata()
+	 * @see #optionalUserdata(Object)
+	 * @see #checkUserdata()
+	 * @see #isUserdata()
 	 * @see #TUSERDATA
 	 */
-	public Object  touserdata()          { return null; }
+	public Object toUserdata()          { return null; }
 	
 	/** Convert to userdata instance if specific type, or null.
 	 * @return userdata instance if is a userdata whose instance derives from {@code c},
 	 * or null if not {@link LuaUserdata}
-	 * @see #optuserdata(Class,Object)
-	 * @see #checkuserdata(Class)
-	 * @see #isuserdata(Class)
+	 * @see #optionalUserdata(Class,Object)
+	 * @see #checkUserdata(Class)
+	 * @see #isUserdata(Class)
 	 * @see #TUSERDATA
 	 */
-	public Object  touserdata(Class c)   { return null; }
+	public <T> T toUserdata(Class<T> type)   { return null; }
 
 	/**
-	 * Convert the value to a human readable string using {@link #tojstring()}
+	 * Convert the value to a human readable string using {@link #toJString()}
 	 * @return String value intended to be human readible.
-	 * @see #tostring()
-	 * @see #tojstring()
-	 * @see #optstring(LuaString)
-	 * @see #checkstring()
+	 * @see #toLuaString()
+	 * @see #toJString()
+	 * @see #optionalLuaString(LuaString)
+	 * @see #checkLuaString()
 	 * @see #toString()
 	 */
-	public String toString() { return tojstring(); }
+	public String toString() { return toJString(); }
 	
 	/** Conditionally convert to lua number without throwing errors.
 	 * <p>
@@ -554,13 +554,13 @@ public class LuaValue extends Varargs {
 	 * @return {@code this} if it is a {@link LuaNumber}
 	 * or {@link LuaString} that can be converted to a number,
 	 * otherwise {@link #NIL}
-	 * @see #tostring()
-	 * @see #optnumber(LuaNumber)
-	 * @see #checknumber()
-	 * @see #toint()
-	 * @see #todouble()
+	 * @see #toLuaString()
+	 * @see #optionalNumber(LuaNumber)
+	 * @see #checkNumber()
+	 * @see #toInt()
+	 * @see #toDouble()
 	 */
-	public LuaValue    tonumber()     { return NIL; }
+	public LuaValue toNumber()     { return NIL; }
 	
 	/** Conditionally convert to lua string without throwing errors.
 	 * <p>
@@ -572,13 +572,13 @@ public class LuaValue extends Varargs {
 	 * the penalty of throwing exceptions.
 	 * @return {@code this} if it is a {@link LuaString} or {@link LuaNumber},
 	 * otherwise {@link #NIL}
-	 * @see #tonumber()
-	 * @see #tojstring()
-	 * @see #optstring(LuaString)
-	 * @see #checkstring()
+	 * @see #toNumber()
+	 * @see #toJString()
+	 * @see #optionalLuaString(LuaString)
+	 * @see #checkLuaString()
 	 * @see #toString()
 	 */
-	public LuaValue    tostring()     { return NIL; }
+	public LuaValue toLuaString()     { return NIL; }
 
 	/** Check that optional argument is a boolean and return its boolean value
 	 * @param defval boolean value to return if {@code this} is nil or none
@@ -586,11 +586,11 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} otherwise
 	 * @throws LuaError if was not a boolean or nil or none.
-	 * @see #checkboolean()
-	 * @see #isboolean()
+	 * @see #checkBoolean()
+	 * @see #isBoolean()
 	 * @see #TBOOLEAN
 	 */
-	public boolean     optboolean(boolean defval)          { argerror("boolean");   return false; }
+	public boolean optionalBoolean(boolean defval)          { argerror("boolean");   return false; }
 
 	/** Check that optional argument is a closure and return as {@link LuaClosure}
 	 * <p>
@@ -600,11 +600,11 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} otherwise
 	 * @throws LuaError if was not a closure or nil or none.
-	 * @see #checkclosure()
-	 * @see #isclosure()
+	 * @see #checkClosure()
+	 * @see #isClosure()
 	 * @see #TFUNCTION
 	 */
-	public LuaClosure  optclosure(LuaClosure defval)       { argerror("closure");   return null;  }
+	public LuaClosure optionalClosure(LuaClosure defval)       { argerror("closure");   return null;  }
 
 	/** Check that optional argument is a number or string convertible to number and return as double
 	 * @param defval double to return if {@code this} is nil or none
@@ -612,15 +612,15 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} otherwise
 	 * @throws LuaError if was not numeric or nil or none.
-	 * @see #optint(int)
-	 * @see #optinteger(LuaInteger)
-	 * @see #checkdouble()
-	 * @see #todouble()
-	 * @see #tonumber()
-	 * @see #isnumber()
+	 * @see #optionalInt(int)
+	 * @see #optionalInteger(LuaInteger)
+	 * @see #checkDouble()
+	 * @see #toDouble()
+	 * @see #toNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public double      optdouble(double defval)            { argerror("number");    return 0;     }
+	public double optionalDouble(double defval)            { argerror("number");    return 0;     }
 
 	/** Check that optional argument is a function and return as {@link LuaFunction}
 	 * <p>
@@ -632,11 +632,11 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} otherwise
 	 * @throws LuaError if was not a function or nil or none.
-	 * @see #checkfunction()
-	 * @see #isfunction()
+	 * @see #checkFunction()
+	 * @see #isFunction()
 	 * @see #TFUNCTION
 	 */
-	public LuaFunction optfunction(LuaFunction defval)     { argerror("function");  return null;  }
+	public LuaFunction optionalFunction(LuaFunction defval)     { argerror("function");  return null;  }
 
 	/** Check that optional argument is a number or string convertible to number and return as int
 	 * @param defval int to return if {@code this} is nil or none
@@ -644,16 +644,16 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} otherwise
 	 * @throws LuaError if was not numeric or nil or none.
-	 * @see #optdouble(double)
-	 * @see #optlong(long)
-	 * @see #optinteger(LuaInteger)
-	 * @see #checkint()
-	 * @see #toint()
-	 * @see #tonumber()
-	 * @see #isnumber()
+	 * @see #optionalDouble(double)
+	 * @see #optionalLong(long)
+	 * @see #optionalInteger(LuaInteger)
+	 * @see #checkInt()
+	 * @see #toInt()
+	 * @see #toNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public int         optint(int defval)                  { argerror("int");       return 0;     }
+	public int optionalInt(int defval)                  { argerror("int");       return 0;     }
 
 	/** Check that optional argument is a number or string convertible to number and return as {@link LuaInteger}
 	 * @param defval {@link LuaInteger} to return if {@code this} is nil or none
@@ -661,15 +661,15 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} otherwise
 	 * @throws LuaError if was not numeric or nil or none.
-	 * @see #optdouble(double)
-	 * @see #optint(int)
-	 * @see #checkint()
-	 * @see #toint()
-	 * @see #tonumber()
-	 * @see #isnumber()
+	 * @see #optionalDouble(double)
+	 * @see #optionalInt(int)
+	 * @see #checkInt()
+	 * @see #toInt()
+	 * @see #toNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public LuaInteger  optinteger(LuaInteger defval)       { argerror("integer");   return null;  }
+	public LuaInteger optionalInteger(LuaInteger defval)       { argerror("integer");   return null;  }
 
 	/** Check that optional argument is a number or string convertible to number and return as long
 	 * @param defval long to return if {@code this} is nil or none
@@ -677,15 +677,15 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} otherwise
 	 * @throws LuaError if was not numeric or nil or none.
-	 * @see #optdouble(double)
-	 * @see #optint(int)
-	 * @see #checkint()
-	 * @see #toint()
-	 * @see #tonumber()
-	 * @see #isnumber()
+	 * @see #optionalDouble(double)
+	 * @see #optionalInt(int)
+	 * @see #checkInt()
+	 * @see #toInt()
+	 * @see #toNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public long        optlong(long defval)                { argerror("long");      return 0;     }
+	public long optionalLong(long defval)                { argerror("long");      return 0;     }
 
 	/** Check that optional argument is a number or string convertible to number and return as {@link LuaNumber}
 	 * @param defval {@link LuaNumber} to return if {@code this} is nil or none
@@ -693,16 +693,16 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} otherwise
 	 * @throws LuaError if was not numeric or nil or none.
-	 * @see #optdouble(double)
-	 * @see #optlong(long)
-	 * @see #optint(int)
-	 * @see #checkint()
-	 * @see #toint()
-	 * @see #tonumber()
-	 * @see #isnumber()
+	 * @see #optionalDouble(double)
+	 * @see #optionalLong(long)
+	 * @see #optionalInt(int)
+	 * @see #checkInt()
+	 * @see #toInt()
+	 * @see #toNumber()
+	 * @see #isNumber()
 	 * @see #TNUMBER
 	 */
-	public LuaNumber   optnumber(LuaNumber defval)         { argerror("number");    return null;  }
+	public LuaNumber optionalNumber(LuaNumber defval)         { argerror("number");    return null;  }
 
 	/** Check that optional argument is a string or number and return as Java String
 	 * @param defval {@link LuaString} to return if {@code this} is nil or none
@@ -710,13 +710,13 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} if some other type
 	 * @throws LuaError if was not a string or number or nil or none.
-	 * @see #tojstring()
-	 * @see #optstring(LuaString)
-	 * @see #checkjstring()
+	 * @see #toJString()
+	 * @see #optionalLuaString(LuaString)
+	 * @see #checkJString()
 	 * @see #toString()
 	 * @see #TSTRING
 	 */
-	public String      optjstring(String defval)           { argerror("String");    return null;  }
+	public String optionalJString(String defval)           { argerror("String");    return null;  }
 
 	/** Check that optional argument is a string or number and return as {@link LuaString}
 	 * @param defval {@link LuaString} to return if {@code this} is nil or none
@@ -724,13 +724,13 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} if some other type
 	 * @throws LuaError if was not a string or number or nil or none.
-	 * @see #tojstring()
-	 * @see #optjstring(String)
-	 * @see #checkstring()
+	 * @see #toJString()
+	 * @see #optionalJString(String)
+	 * @see #checkLuaString()
 	 * @see #toString()
 	 * @see #TSTRING
 	 */
-	public LuaString   optstring(LuaString defval)         { argerror("string");    return null;  }
+	public LuaString optionalLuaString(LuaString defval)         { argerror("string");    return null;  }
 
 	/** Check that optional argument is a table and return as {@link LuaTable}
 	 * @param defval {@link LuaTable} to return if {@code this} is nil or none
@@ -738,11 +738,11 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} if some other type
 	 * @throws LuaError if was not a table or nil or none.
-	 * @see #checktable()
-	 * @see #istable()
+	 * @see #checkTable()
+	 * @see #isTable()
 	 * @see #TTABLE
 	 */
-	public LuaTable    opttable(LuaTable defval)           { argerror("table");     return null;  }
+	public LuaTable optionalTable(LuaTable defval)           { argerror("table");     return null;  }
 
 	/** Check that optional argument is a thread and return as {@link LuaThread}
 	 * @param defval {@link LuaThread} to return if {@code this} is nil or none
@@ -750,11 +750,11 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} if some other type
 	 * @throws LuaError if was not a thread or nil or none.
-	 * @see #checkthread()
-	 * @see #isthread()
+	 * @see #checkThread()
+	 * @see #isThread()
 	 * @see #TTHREAD
 	 */
-	public LuaThread   optthread(LuaThread defval)         { argerror("thread");    return null;  }
+	public LuaThread optionalThread(LuaThread defval)         { argerror("thread");    return null;  }
 
 	/** Check that optional argument is a userdata and return the Object instance
 	 * @param defval Object to return if {@code this} is nil or none
@@ -762,49 +762,49 @@ public class LuaValue extends Varargs {
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} if some other type
 	 * @throws LuaError if was not a userdata or nil or none.
-	 * @see #checkuserdata()
-	 * @see #isuserdata()
-	 * @see #optuserdata(Class, Object)
+	 * @see #checkUserdata()
+	 * @see #isUserdata()
+	 * @see #optionalUserdata(Class, Object)
 	 * @see #TUSERDATA
 	 */
-	public Object      optuserdata(Object defval)          { argerror("object");    return null;  }
+	public Object optionalUserdata(Object defval)          { argerror("object");    return null;  }
 
 	/** Check that optional argument is a userdata whose instance is of a type
 	 * and return the Object instance
-	 * @param c Class to test userdata instance against
+	 * @param type Class to test userdata instance against
 	 * @param defval Object to return if {@code this} is nil or none
 	 * @return Object instance of the userdata if a {@link LuaUserdata} and instance is assignable to {@code c},
 	 * {@code defval} if nil or none,
 	 * throws {@link LuaError} if some other type
 	 * @throws LuaError if was not a userdata whose instance is assignable to {@code c} or nil or none.
-	 * @see #checkuserdata(Class)
-	 * @see #isuserdata(Class)
-	 * @see #optuserdata(Object)
+	 * @see #checkUserdata(Class)
+	 * @see #isUserdata(Class)
+	 * @see #optionalUserdata(Object)
 	 * @see #TUSERDATA
 	 */
-	public Object      optuserdata(Class c, Object defval) { argerror(c.getName()); return null;  }
+	public <T> T optionalUserdata(Class<T> type, Object defval) { argerror(type.getName()); return null;  }
 
 	/** Perform argument check that this is not nil or none.
 	 * @param defval {@link LuaValue} to return if {@code this} is nil or none
 	 * @return {@code this} if not nil or none, else {@code defval}
 	 * @see #NIL
 	 * @see #NONE
-	 * @see #isnil()
-	 * @see Varargs#isnoneornil(int)
+	 * @see #isNil()
+	 * @see Varargs#isNoneOrNil(int)
 	 * @see #TNIL
 	 * @see #TNONE
 	 */
-	public LuaValue    optvalue(LuaValue defval)           { return this; }
+	public LuaValue optionalValue(LuaValue defval)           { return this; }
 
 	
 	/** Check that the value is a {@link LuaBoolean},
 	 * or throw {@link LuaError} if not
 	 * @return boolean value for {@code this} if it is a {@link LuaBoolean}
 	 * @throws LuaError if not a {@link LuaBoolean}
-	 * @see #optboolean(boolean)
+	 * @see #optionalBoolean(boolean)
 	 * @see #TBOOLEAN
 	 */
-	public boolean     checkboolean()          { argerror("boolean");   return false; }
+	public boolean checkBoolean()          { argerror("boolean");   return false; }
 	
 	/** Check that the value is a {@link LuaClosure} ,
 	 * or throw {@link LuaError} if not
@@ -812,12 +812,12 @@ public class LuaValue extends Varargs {
 	 * {@link LuaClosure} is a subclass of {@link LuaFunction} that interprets lua bytecode.
 	 * @return {@code this} cast as {@link LuaClosure}
 	 * @throws LuaError if not a {@link LuaClosure}
-	 * @see #checkfunction()
-	 * @see #optclosure(LuaClosure)
-	 * @see #isclosure()
+	 * @see #checkFunction()
+	 * @see #optionalClosure(LuaClosure)
+	 * @see #isClosure()
 	 * @see #TFUNCTION
 	 */
-	public LuaClosure  checkclosure()          { argerror("closure");   return null;  }
+	public LuaClosure checkClosure()          { argerror("closure");   return null;  }
 	
 	/** Check that the value is numeric and return the value as a double,
 	 * or throw {@link LuaError} if not numeric
@@ -826,13 +826,13 @@ public class LuaValue extends Varargs {
 	 * that can be converted to a number will be converted to double.
 	 * @return value cast to a double if numeric
 	 * @throws LuaError if not a {@link LuaNumber} or is a {@link LuaString} that can't be converted to number
-	 * @see #checkint()
-	 * @see #checkinteger()
-	 * @see #checklong()
-	 * @see #optdouble(double)
+	 * @see #checkInt()
+	 * @see #checkInteger()
+	 * @see #checkLong()
+	 * @see #optionalDouble(double)
 	 * @see #TNUMBER
 	 */
-	public double      checkdouble()           { argerror("number");    return 0; }
+	public double checkDouble()           { argerror("number");    return 0; }
 	
 	/** Check that the value is a function , or throw {@link LuaError} if not
 	 * <p>
@@ -841,9 +841,9 @@ public class LuaValue extends Varargs {
 	 * which is a {@link LuaFunction} that executes lua bytecode.
 	 * @return {@code this} if it is a lua function or closure
 	 * @throws LuaError if not a function
-	 * @see #checkclosure()
+	 * @see #checkClosure()
 	 */
-	public LuaFunction    checkfunction()         { argerror("function");  return null; }
+	public LuaFunction checkFunction()         { argerror("function");  return null; }
 
 
 	/** Check that the value is a Globals instance, or throw {@link LuaError} if not
@@ -852,7 +852,7 @@ public class LuaValue extends Varargs {
 	 * @return {@code this} if if an instance fof {@link Globals}
 	 * @throws LuaError if not a {@link Globals} instance.
 	 */
-	public Globals checkglobals() { argerror("globals");  return null; }
+	public Globals checkGlobals() { argerror("globals");  return null; }
 
 	/** Check that the value is numeric, and convert and cast value to int, or throw {@link LuaError} if not numeric
 	 * <p>
@@ -861,13 +861,13 @@ public class LuaValue extends Varargs {
 	 * then cast to int, so may also lose precision.
 	 * @return value cast to a int if numeric
 	 * @throws LuaError if not a {@link LuaNumber} or is a {@link LuaString} that can't be converted to number
-	 * @see #checkinteger()
-	 * @see #checklong()
-	 * @see #checkdouble()
-	 * @see #optint(int)
+	 * @see #checkInteger()
+	 * @see #checkLong()
+	 * @see #checkDouble()
+	 * @see #optionalInt(int)
 	 * @see #TNUMBER
 	 */
-	public int         checkint()              { argerror("int");       return 0; }
+	public int checkInt()              { argerror("int");       return 0; }
 
 	/** Check that the value is numeric, and convert and cast value to int, or throw {@link LuaError} if not numeric
 	 * <p>
@@ -876,13 +876,13 @@ public class LuaValue extends Varargs {
 	 * then cast to int, so may also lose precision.
 	 * @return value cast to a int and wrapped in {@link LuaInteger} if numeric
 	 * @throws LuaError if not a {@link LuaNumber} or is a {@link LuaString} that can't be converted to number
-	 * @see #checkint()
-	 * @see #checklong()
-	 * @see #checkdouble()
-	 * @see #optinteger(LuaInteger)
+	 * @see #checkInt()
+	 * @see #checkLong()
+	 * @see #checkDouble()
+	 * @see #optionalInteger(LuaInteger)
 	 * @see #TNUMBER
 	 */
-	public LuaInteger  checkinteger()          { argerror("integer");   return null; }
+	public LuaInteger checkInteger()          { argerror("integer");   return null; }
 	
 	/** Check that the value is numeric, and convert and cast value to long, or throw {@link LuaError} if not numeric
 	 * <p>
@@ -891,27 +891,27 @@ public class LuaValue extends Varargs {
 	 * then cast to long, so may also lose precision.
 	 * @return value cast to a long if numeric
 	 * @throws LuaError if not a {@link LuaNumber} or is a {@link LuaString} that can't be converted to number
-	 * @see #checkint()
-	 * @see #checkinteger()
-	 * @see #checkdouble()
-	 * @see #optlong(long)
+	 * @see #checkInt()
+	 * @see #checkInteger()
+	 * @see #checkDouble()
+	 * @see #optionalLong(long)
 	 * @see #TNUMBER
 	 */
-	public long        checklong()             { argerror("long");      return 0; }
+	public long checkLong()             { argerror("long");      return 0; }
 	
 	/** Check that the value is numeric, and return as a LuaNumber if so, or throw {@link LuaError}
 	 * <p>
 	 * Values that are {@link LuaString} that can be converted to a number will be converted and returned.
 	 * @return value as a {@link LuaNumber} if numeric
 	 * @throws LuaError if not a {@link LuaNumber} or is a {@link LuaString} that can't be converted to number
-	 * @see #checkint()
-	 * @see #checkinteger()
-	 * @see #checkdouble()
-	 * @see #checklong()
-	 * @see #optnumber(LuaNumber)
+	 * @see #checkInt()
+	 * @see #checkInteger()
+	 * @see #checkDouble()
+	 * @see #checkLong()
+	 * @see #optionalNumber(LuaNumber)
 	 * @see #TNUMBER
 	 */
-	public LuaNumber   checknumber()           { argerror("number");    return null; }
+	public LuaNumber checkNumber()           { argerror("number");    return null; }
 	
 	/** Check that the value is numeric, and return as a LuaNumber if so, or throw {@link LuaError}
 	 * <p>
@@ -919,14 +919,14 @@ public class LuaValue extends Varargs {
 	 * @param msg String message to supply if conversion fails
 	 * @return value as a {@link LuaNumber} if numeric
 	 * @throws LuaError if not a {@link LuaNumber} or is a {@link LuaString} that can't be converted to number
-	 * @see #checkint()
-	 * @see #checkinteger()
-	 * @see #checkdouble()
-	 * @see #checklong()
-	 * @see #optnumber(LuaNumber)
+	 * @see #checkInt()
+	 * @see #checkInteger()
+	 * @see #checkDouble()
+	 * @see #checkLong()
+	 * @see #optionalNumber(LuaNumber)
 	 * @see #TNUMBER
 	 */
-	public LuaNumber   checknumber(String msg) { throw new LuaError(msg); }
+	public LuaNumber checkNumber(String msg) { throw new LuaError(msg); }
 	
 	/** Convert this value to a Java String.
 	 * <p>
@@ -934,13 +934,13 @@ public class LuaValue extends Varargs {
 	 * C lua distribution, however hash codes have no relationship,
 	 * and there may be differences in number formatting.
 	 * @return String representation of the value
-	 * @see #checkstring()
-	 * @see #optjstring(String)
-	 * @see #tojstring()
-	 * @see #isstring
+	 * @see #checkLuaString()
+	 * @see #optionalJString(String)
+	 * @see #toJString()
+	 * @see #isString
 	 * @see #TSTRING
 	 */
-	public String      checkjstring()          { argerror("string");    return null; }
+	public String checkJString()          { argerror("string");    return null; }
 	
 	/** Check that this is a lua string, or throw {@link LuaError} if it is not.
 	 * <p>
@@ -950,65 +950,65 @@ public class LuaValue extends Varargs {
 	 * 
 	 * @return {@link LuaString} representation of the value if it is a {@link LuaString} or {@link LuaNumber}
 	 * @throws LuaError if {@code this} is not a {@link LuaTable}
-	 * @see #checkjstring()
-	 * @see #optstring(LuaString)
-	 * @see #tostring()
-	 * @see #isstring()
+	 * @see #checkJString()
+	 * @see #optionalLuaString(LuaString)
+	 * @see #toLuaString()
+	 * @see #isString()
 	 * @see #TSTRING
 	 */
-	public LuaString   checkstring()           { argerror("string");    return null; }
+	public LuaString checkLuaString()           { argerror("string");    return null; }
 	
 	/** Check that this is a {@link LuaTable}, or throw {@link LuaError} if it is not
 	 * @return {@code this} if it is a {@link LuaTable}
 	 * @throws LuaError if {@code this} is not a {@link LuaTable}
-	 * @see #istable()
-	 * @see #opttable(LuaTable)
+	 * @see #isTable()
+	 * @see #optionalTable(LuaTable)
 	 * @see #TTABLE
 	 */
-	public LuaTable    checktable()            { argerror("table");     return null; }
+	public LuaTable checkTable()            { argerror("table");     return null; }
 	
 	/** Check that this is a {@link LuaThread}, or throw {@link LuaError} if it is not
 	 * @return {@code this} if it is a {@link LuaThread}
 	 * @throws LuaError if {@code this} is not a {@link LuaThread}
-	 * @see #isthread()
-	 * @see #optthread(LuaThread)
+	 * @see #isThread()
+	 * @see #optionalThread(LuaThread)
 	 * @see #TTHREAD
 	 */
-	public LuaThread   checkthread()           { argerror("thread");    return null; }
+	public LuaThread checkThread()           { argerror("thread");    return null; }
 	
 	/** Check that this is a {@link LuaUserdata}, or throw {@link LuaError} if it is not
 	 * @return {@code this} if it is a {@link LuaUserdata}
 	 * @throws LuaError if {@code this} is not a {@link LuaUserdata}
-	 * @see #isuserdata()
-	 * @see #optuserdata(Object)
-	 * @see #checkuserdata(Class)
+	 * @see #isUserdata()
+	 * @see #optionalUserdata(Object)
+	 * @see #checkUserdata(Class)
 	 * @see #TUSERDATA
 	 */
-	public Object      checkuserdata()         { argerror("userdata");  return null; }
+	public Object checkUserdata()         { argerror("userdata");  return null; }
 	
 	/** Check that this is a {@link LuaUserdata}, or throw {@link LuaError} if it is not
 	 * @return {@code this} if it is a {@link LuaUserdata}
 	 * @throws LuaError if {@code this} is not a {@link LuaUserdata}
-	 * @see #isuserdata(Class)
-	 * @see #optuserdata(Class, Object)
-	 * @see #checkuserdata()
+	 * @see #isUserdata(Class)
+	 * @see #optionalUserdata(Class, Object)
+	 * @see #checkUserdata()
 	 * @see #TUSERDATA
 	 */
-	public Object      checkuserdata(Class c)  { argerror("userdata");  return null; }
+	public <T> T checkUserdata(Class<T> type)  { argerror("userdata");  return null; }
 	
 	/** Check that this is not the value {@link #NIL}, or throw {@link LuaError} if it is
 	 * @return {@code this} if it is not {@link #NIL}
 	 * @throws LuaError if {@code this} is {@link #NIL}
-	 * @see #optvalue(LuaValue)
+	 * @see #optionalValue(LuaValue)
 	 */
-	public LuaValue    checknotnil()           { return this; }
+	public LuaValue checkNotNil()           { return this; }
 	
 	/** Return true if this is a valid key in a table index operation.
 	 * @return true if valid as a table key, otherwise false
-	 * @see #isnil()
-	 * @see #isinttype()
+	 * @see #isNil()
+	 * @see #isInteger()
 	 */
-	public boolean isvalidkey()         { return true; }
+	public boolean isValidKey()         { return true; }
 	
 	/**
 	 * Throw a {@link LuaError} with a particular message
@@ -1032,7 +1032,7 @@ public class LuaValue extends Varargs {
 	 * @param expected String naming the type that was expected
 	 * @throws LuaError in all cases
 	 */
-	protected LuaValue argerror(String expected) { throw new LuaError("bad argument: "+expected+" expected, got "+typename()); }
+	protected LuaValue argerror(String expected) { throw new LuaError("bad argument: "+expected+" expected, got "+ getTypeName()); }
 	
 	/**
 	 * Throw a {@link LuaError} indicating an invalid argument was supplied to a function
@@ -1047,13 +1047,13 @@ public class LuaValue extends Varargs {
 	 * @param expected String naming the type that was expected
 	 * @throws LuaError in all cases
 	 */
-	protected LuaValue typerror(String expected) { throw new LuaError(expected+" expected, got "+typename()); }
+	protected LuaValue typerror(String expected) { throw new LuaError(expected+" expected, got "+ getTypeName()); }
 	
 	/**
 	 * Throw a {@link LuaError} indicating an operation is not implemented
 	 * @throws LuaError in all cases
 	 */
-	protected LuaValue unimplemented(String fun) { throw new LuaError("'"+fun+"' not implemented for "+typename()); }
+	protected LuaValue unimplemented(String fun) { throw new LuaError("'"+fun+"' not implemented for "+ getTypeName()); }
 	
 	/**
 	 * Throw a {@link LuaError} indicating an illegal operation occurred,
@@ -1067,14 +1067,14 @@ public class LuaValue extends Varargs {
 	 * typically due to an invalid operand type
 	 * @throws LuaError in all cases
 	 */
-	protected LuaValue lenerror() { throw new LuaError("attempt to get length of "+typename()); }
+	protected LuaValue lenerror() { throw new LuaError("attempt to get length of "+ getTypeName()); }
 	
 	/**
 	 * Throw a {@link LuaError} based on an arithmetic error such as add, or pow,
 	 * typically due to an invalid operand type
 	 * @throws LuaError in all cases
 	 */
-	protected LuaValue aritherror() { throw new LuaError("attempt to perform arithmetic on "+typename()); }
+	protected LuaValue aritherror() { throw new LuaError("attempt to perform arithmetic on "+ getTypeName()); }
 	
 	/**
 	 * Throw a {@link LuaError} based on an arithmetic error such as add, or pow,
@@ -1082,7 +1082,7 @@ public class LuaValue extends Varargs {
 	 * @param fun String description of the function that was attempted
 	 * @throws LuaError in all cases
 	 */
-	protected LuaValue aritherror(String fun) { throw new LuaError("attempt to perform arithmetic '"+fun+"' on "+typename()); }
+	protected LuaValue aritherror(String fun) { throw new LuaError("attempt to perform arithmetic '"+fun+"' on "+ getTypeName()); }
 	
 	/**
 	 * Throw a {@link LuaError} based on a comparison error such as greater-than or less-than,
@@ -1090,7 +1090,7 @@ public class LuaValue extends Varargs {
 	 * @param rhs String description of what was on the right-hand-side of the comparison that resulted in the error.
 	 * @throws LuaError in all cases
 	 */
-	protected LuaValue compareerror(String rhs) { throw new LuaError("attempt to compare "+typename()+" with "+rhs); }
+	protected LuaValue compareerror(String rhs) { throw new LuaError("attempt to compare "+ getTypeName()+" with "+rhs); }
 	
 	/**
 	 * Throw a {@link LuaError} based on a comparison error such as greater-than or less-than,
@@ -1098,7 +1098,7 @@ public class LuaValue extends Varargs {
 	 * @param rhs Right-hand-side of the comparison that resulted in the error.
 	 * @throws LuaError in all cases
 	 */
-	protected LuaValue compareerror(LuaValue rhs) { throw new LuaError("attempt to compare "+typename()+" with "+rhs.typename()); }
+	protected LuaValue compareerror(LuaValue rhs) { throw new LuaError("attempt to compare "+ getTypeName()+" with "+rhs.getTypeName()); }
 	
 	/** Get a value in a table including metatag processing using {@link #INDEX}.
 	 * @param key the key to look up, must not be {@link #NIL} or null
@@ -1299,7 +1299,7 @@ public class LuaValue extends Varargs {
 	 * @see #valueOf(int)
 	 * @see Varargs#arg1()
 	 * @see Varargs#arg(int)
-	 * @see #isnil()
+	 * @see #isNil()
 	 */
 	public Varargs next(LuaValue index) { return typerror("table"); }
 	
@@ -1327,7 +1327,7 @@ public class LuaValue extends Varargs {
 	 * @see #valueOf(int)
 	 * @see Varargs#arg1()
 	 * @see Varargs#arg(int)
-	 * @see #isnil()
+	 * @see #isNil()
 	 */
 	public Varargs inext(LuaValue index) { return typerror("table"); }
 	
@@ -1996,10 +1996,10 @@ public class LuaValue extends Varargs {
 
 	/** Length operator: return lua length of object {@code (#this)} including metatag processing as java int
 	 * @return length as defined by the lua # operator
-	 * or metatag processing result converted to java int using {@link #toint()}
+	 * or metatag processing result converted to java int using {@link #toInt()}
 	 * @throws LuaError if  {@code this} is not a table or string, and has no {@link #LEN} metatag
 	 */
-	public int length()    { return len().toint(); }
+	public int length()    { return len().toInt(); }
 	
 	/** Get raw length of table or string without metatag processing.
 	 * @return the length of the table or string.
@@ -2131,7 +2131,7 @@ public class LuaValue extends Varargs {
 	 */
 	public static final boolean eqmtcall(LuaValue lhs, LuaValue lhsmt, LuaValue rhs, LuaValue rhsmt) {
 		LuaValue h = lhsmt.rawget(EQ);
-		return h.isnil() || h!=rhsmt.rawget(EQ)? false: h.call(lhs,rhs).toboolean();
+		return h.isNil() || h!=rhsmt.rawget(EQ)? false: h.call(lhs,rhs).toBoolean();
 	}
 	
 	/** Add: Perform numeric add operation with another value
@@ -2507,10 +2507,10 @@ public class LuaValue extends Varargs {
 	 */
 	protected LuaValue arithmt(LuaValue tag, LuaValue op2) {
 		LuaValue h = this.metatag(tag);
-		if ( h.isnil() ) {
+		if ( h.isNil() ) {
 			h = op2.metatag(tag);
-			if ( h.isnil() )
-				error( "attempt to perform arithmetic "+tag+" on "+typename()+" and "+op2.typename() );
+			if ( h.isNil() )
+				error( "attempt to perform arithmetic "+tag+" on "+ getTypeName()+" and "+op2.getTypeName() );
 		}
 		return h.call( this, op2 );
 	}
@@ -2538,8 +2538,8 @@ public class LuaValue extends Varargs {
 	 */
 	protected LuaValue arithmtwith(LuaValue tag, double op1) {
 		LuaValue h = metatag(tag);
-		if ( h.isnil() )
-			error( "attempt to perform arithmetic "+tag+" on number and "+typename() );
+		if ( h.isNil() )
+			error( "attempt to perform arithmetic "+tag+" on number and "+ getTypeName() );
 		return h.call( LuaValue.valueOf(op1), this );
 	}
 	
@@ -2607,7 +2607,7 @@ public class LuaValue extends Varargs {
 	 * @see #gteq(LuaValue)
 	 * @see #comparemt(LuaValue, LuaValue)
 	 */
-	public boolean lt_b( LuaValue rhs )     { return comparemt(LT,rhs).toboolean(); }
+	public boolean lt_b( LuaValue rhs )     { return comparemt(LT,rhs).toBoolean(); }
 
 	/** Less than: Perform numeric comparison with another value
 	 * of int type,
@@ -2707,7 +2707,7 @@ public class LuaValue extends Varargs {
 	 * @see #gteq(LuaValue)
 	 * @see #comparemt(LuaValue, LuaValue)
 	 */
-	public boolean lteq_b( LuaValue rhs )     { return comparemt(LE,rhs).toboolean(); }
+	public boolean lteq_b( LuaValue rhs )     { return comparemt(LE,rhs).toBoolean(); }
 
 	/** Less than or equals: Perform numeric comparison with another value
 	 * of int type,
@@ -2807,7 +2807,7 @@ public class LuaValue extends Varargs {
 	 * @see #gteq(LuaValue)
 	 * @see #comparemt(LuaValue, LuaValue)
 	 */
-	public boolean gt_b( LuaValue rhs )       { return rhs.comparemt(LE,this).toboolean(); }
+	public boolean gt_b( LuaValue rhs )       { return rhs.comparemt(LE,this).toBoolean(); }
 
 	/** Greater than: Perform numeric comparison with another value
 	 * of int type,
@@ -2890,7 +2890,7 @@ public class LuaValue extends Varargs {
 	 * @see #gteq_b(int)
 	 * @see #comparemt(LuaValue, LuaValue)
 	 */
-	public LuaValue   gteq( int rhs )         { return valueOf(todouble() >= rhs); }
+	public LuaValue   gteq( int rhs )         { return valueOf(toDouble() >= rhs); }
 
 	/** Greater than or equals: Perform numeric or string comparison with another value
 	 * of unknown type, including metatag processing,
@@ -2907,7 +2907,7 @@ public class LuaValue extends Varargs {
 	 * @see #gteq(LuaValue)
 	 * @see #comparemt(LuaValue, LuaValue)
 	 */
-	public boolean gteq_b( LuaValue rhs )     { return rhs.comparemt(LT,this).toboolean(); }
+	public boolean gteq_b( LuaValue rhs )     { return rhs.comparemt(LT,this).toBoolean(); }
 
 	/** Greater than or equals: Perform numeric comparison with another value
 	 * of int type,
@@ -2960,11 +2960,11 @@ public class LuaValue extends Varargs {
 	 */
 	public LuaValue comparemt( LuaValue tag, LuaValue op1 ) {
 		LuaValue h;
-		if (!(h = metatag(tag)).isnil() || !(h = op1.metatag(tag)).isnil())
+		if (!(h = metatag(tag)).isNil() || !(h = op1.metatag(tag)).isNil())
 			return h.call(this, op1);
-		if (LuaValue.LE.raweq(tag) && (!(h = metatag(LT)).isnil() || !(h = op1.metatag(LT)).isnil()))
+		if (LuaValue.LE.raweq(tag) && (!(h = metatag(LT)).isNil() || !(h = op1.metatag(LT)).isNil()))
 			return h.call(op1, this).not();
-		return error("attempt to compare "+tag+" on "+typename()+" and "+op1.typename());
+		return error("attempt to compare "+tag+" on "+ getTypeName()+" and "+op1.getTypeName());
 	}
 	
 	/** Perform string comparison with another value
@@ -2978,7 +2978,7 @@ public class LuaValue extends Varargs {
 	 * @return  int < 0 for {@code (this < rhs)}, int > 0 for {@code (this > rhs)}, or 0 when same string.
 	 * @throws LuaError if either operand is not a string
 	 */
-	public int strcmp( LuaValue rhs )         { error("attempt to compare "+typename()); return 0; }
+	public int strcmp( LuaValue rhs )         { error("attempt to compare "+ getTypeName()); return 0; }
 
 	/** Perform string comparison with another value
 	 * known to be a {@link LuaString}
@@ -2991,7 +2991,7 @@ public class LuaValue extends Varargs {
 	 * @return  int < 0 for {@code (this < rhs)}, int > 0 for {@code (this > rhs)}, or 0 when same string.
 	 * @throws LuaError if this is not a string
 	 */
-	public int strcmp( LuaString rhs )      { error("attempt to compare "+typename()); return 0; }
+	public int strcmp( LuaString rhs )      { error("attempt to compare "+ getTypeName()); return 0; }
 
 	/** Concatenate another value onto this value and return the result
 	 * using rules of lua string concatenation including metatag processing.
@@ -3083,8 +3083,8 @@ public class LuaValue extends Varargs {
 	 */
 	public LuaValue concatmt(LuaValue rhs) {
 		LuaValue h=metatag(CONCAT);
-		if ( h.isnil() && (h=rhs.metatag(CONCAT)).isnil())
-			error("attempt to concatenate "+typename()+" and "+rhs.typename());
+		if ( h.isNil() && (h=rhs.metatag(CONCAT)).isNil())
+			error("attempt to concatenate "+ getTypeName()+" and "+rhs.getTypeName());
 		return h.call(this,rhs);
 	}
 	
@@ -3094,7 +3094,7 @@ public class LuaValue extends Varargs {
 	 * @param rhs The right-hand-side value to perform the operation with
 	 * @return {@code this} if {@code this.toboolean()} is false, {@code rhs} otherwise.
 	 */
-	public LuaValue   and( LuaValue rhs )      { return this.toboolean()? rhs: this; }
+	public LuaValue   and( LuaValue rhs )      { return this.toBoolean()? rhs: this; }
 	
 	/** Perform boolean {@code or} with another operand, based on lua rules for boolean evaluation.
 	 * This returns either {@code this} or {@code rhs} depending on the boolean value for {@code this}.
@@ -3102,7 +3102,7 @@ public class LuaValue extends Varargs {
 	 * @param rhs The right-hand-side value to perform the operation with
 	 * @return {@code this} if {@code this.toboolean()} is true, {@code rhs} otherwise.
 	 */
-	public LuaValue   or( LuaValue rhs )       { return this.toboolean()? this: rhs; }
+	public LuaValue   or( LuaValue rhs )       { return this.toBoolean()? this: rhs; }
 	
 	/** Perform end-condition test in for-loop processing.
 	 * <p>
@@ -3270,13 +3270,13 @@ public class LuaValue extends Varargs {
 		LuaValue tm;
 		int loop = 0;
 		do {
-			if (t.istable()) {
+			if (t.isTable()) {
 				LuaValue res = t.rawget(key);
-				if ((!res.isnil()) || (tm = t.metatag(INDEX)).isnil())
+				if ((!res.isNil()) || (tm = t.metatag(INDEX)).isNil())
 					return res;
-			} else if ((tm = t.metatag(INDEX)).isnil())
-				t.indexerror(key.tojstring());
-			if (tm.isfunction())
+			} else if ((tm = t.metatag(INDEX)).isNil())
+				t.indexerror(key.toJString());
+			if (tm.isFunction())
 				return tm.call(t, key);
 			t = tm;
 		}
@@ -3297,14 +3297,14 @@ public class LuaValue extends Varargs {
 		LuaValue tm;
 		int loop = 0;
 		do {
-			if (t.istable()) {
-				if ((!t.rawget(key).isnil()) || (tm = t.metatag(NEWINDEX)).isnil()) {
+			if (t.isTable()) {
+				if ((!t.rawget(key).isNil()) || (tm = t.metatag(NEWINDEX)).isNil()) {
 					t.rawset(key, value);
 					return true;
 				}
-			} else if ((tm = t.metatag(NEWINDEX)).isnil())
-				throw new LuaError("table expected for set index ('" + key + "') value, got " + t.typename());
-			if (tm.isfunction()) {
+			} else if ((tm = t.metatag(NEWINDEX)).isNil())
+				throw new LuaError("table expected for set index ('" + key + "') value, got " + t.getTypeName());
+			if (tm.isFunction()) {
 				tm.call(t, key, value);
 				return true;
 			}
@@ -3338,17 +3338,17 @@ public class LuaValue extends Varargs {
      */
 	protected LuaValue checkmetatag(LuaValue tag, String reason) {
 		LuaValue h = this.metatag(tag);
-		if ( h.isnil() )
-			throw new LuaError(reason + "a " + typename() + " value");
+		if ( h.isNil() )
+			throw new LuaError(reason + "a " + getTypeName() + " value");
 		return h;
 	}
 
 	/** Construct a Metatable instance from the given LuaValue */
 	protected static Metatable metatableOf(LuaValue mt) {
-		if ( mt != null && mt.istable() ) {
+		if ( mt != null && mt.isTable() ) {
 			LuaValue mode = mt.rawget(MODE);
-			if ( mode.isstring() ) {
-				String m = mode.tojstring();
+			if ( mode.isString() ) {
+				String m = mode.toJString();
 				boolean weakkeys = m.indexOf('k') >= 0;
 				boolean weakvalues = m.indexOf('v') >= 0;
 				if ( weakkeys || weakvalues ) {
@@ -3367,7 +3367,7 @@ public class LuaValue extends Varargs {
 	 * @throws LuaError when called.
 	 */
     private void indexerror(String key) {
-		error( "attempt to index ? (a "+typename()+" value) with key '" + key + "'" );
+		error( "attempt to index ? (a "+ getTypeName()+" value) with key '" + key + "'" );
 	}
  	
 	/** Construct a {@link Varargs} around an array of {@link LuaValue}s.
@@ -3543,9 +3543,9 @@ public class LuaValue extends Varargs {
 		public LuaValue arg(int i) { return NIL; }
 		public int narg() { return 0; }
 		public LuaValue arg1() { return NIL; }
-		public String tojstring() { return "none"; }
-		public Varargs subargs(final int start) { return start > 0? this: argerror(1, "start must be > 0"); }
-		void copyto(LuaValue[] dest, int offset, int length) { for(;length>0; length--) dest[offset++] = NIL; }
+		public String toJString() { return "none"; }
+		public Varargs subArgs(final int start) { return start > 0? this: argerror(1, "start must be > 0"); }
+		void copyTo(LuaValue[] dest, int offset, int length) { for(; length>0; length--) dest[offset++] = NIL; }
 	}
 	
 	/**
@@ -3553,7 +3553,7 @@ public class LuaValue extends Varargs {
 	 * @param start the index from which to include arguments, where 1 is the first argument.
 	 * @return Varargs containing argument { start, start+1,  ... , narg-start-1 }
 	 */
-	public Varargs subargs(final int start) {
+	public Varargs subArgs(final int start) {
 		if (start == 1)
 			return this;
 		if (start > 1)

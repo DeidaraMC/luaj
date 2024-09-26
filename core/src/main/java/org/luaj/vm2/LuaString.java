@@ -218,7 +218,7 @@ public class LuaString extends LuaValue {
 		this.m_hashcode = hashCode(bytes, offset, length);
 	}
 
-	public boolean isstring() {
+	public boolean isString() {
 		return true;
 	}
 		
@@ -226,15 +226,15 @@ public class LuaString extends LuaValue {
 		return s_metatable;
 	}
 	
-	public int type() {
+	public int getType() {
 		return LuaValue.TSTRING;
 	}
 
-	public String typename() {
+	public String getTypeName() {
 		return "string";
 	}
 	
-	public String tojstring() {
+	public String toJString() {
 		return decodeAsUtf8(m_bytes, m_offset, m_length);
 	}
 
@@ -267,20 +267,20 @@ public class LuaString extends LuaValue {
 	public LuaValue   modFrom( double lhs )    { return LuaDouble.dmod(lhs, checkarith()); }
 	
 	// relational operators, these only work with other strings
-	public LuaValue   lt( LuaValue rhs )         { return rhs.isstring() ? (rhs.strcmp(this)>0? LuaValue.TRUE: FALSE) : super.lt(rhs); }
-	public boolean lt_b( LuaValue rhs )       { return rhs.isstring() ? rhs.strcmp(this)>0 : super.lt_b(rhs); }
+	public LuaValue   lt( LuaValue rhs )         { return rhs.isString() ? (rhs.strcmp(this)>0? LuaValue.TRUE: FALSE) : super.lt(rhs); }
+	public boolean lt_b( LuaValue rhs )       { return rhs.isString() ? rhs.strcmp(this)>0 : super.lt_b(rhs); }
 	public boolean lt_b( int rhs )         { typerror("attempt to compare string with number"); return false; }
 	public boolean lt_b( double rhs )      { typerror("attempt to compare string with number"); return false; }
-	public LuaValue   lteq( LuaValue rhs )       { return rhs.isstring() ? (rhs.strcmp(this)>=0? LuaValue.TRUE: FALSE) : super.lteq(rhs); }
-	public boolean lteq_b( LuaValue rhs )     { return rhs.isstring() ? rhs.strcmp(this)>=0 : super.lteq_b(rhs); }
+	public LuaValue   lteq( LuaValue rhs )       { return rhs.isString() ? (rhs.strcmp(this)>=0? LuaValue.TRUE: FALSE) : super.lteq(rhs); }
+	public boolean lteq_b( LuaValue rhs )     { return rhs.isString() ? rhs.strcmp(this)>=0 : super.lteq_b(rhs); }
 	public boolean lteq_b( int rhs )       { typerror("attempt to compare string with number"); return false; }
 	public boolean lteq_b( double rhs )    { typerror("attempt to compare string with number"); return false; }
-	public LuaValue   gt( LuaValue rhs )         { return rhs.isstring() ? (rhs.strcmp(this)<0? LuaValue.TRUE: FALSE) : super.gt(rhs); }
-	public boolean gt_b( LuaValue rhs )       { return rhs.isstring() ? rhs.strcmp(this)<0 : super.gt_b(rhs); }
+	public LuaValue   gt( LuaValue rhs )         { return rhs.isString() ? (rhs.strcmp(this)<0? LuaValue.TRUE: FALSE) : super.gt(rhs); }
+	public boolean gt_b( LuaValue rhs )       { return rhs.isString() ? rhs.strcmp(this)<0 : super.gt_b(rhs); }
 	public boolean gt_b( int rhs )         { typerror("attempt to compare string with number"); return false; }
 	public boolean gt_b( double rhs )      { typerror("attempt to compare string with number"); return false; }
-	public LuaValue   gteq( LuaValue rhs )       { return rhs.isstring() ? (rhs.strcmp(this)<=0? LuaValue.TRUE: FALSE) : super.gteq(rhs); }
-	public boolean gteq_b( LuaValue rhs )     { return rhs.isstring() ? rhs.strcmp(this)<=0 : super.gteq_b(rhs); }
+	public LuaValue   gteq( LuaValue rhs )       { return rhs.isString() ? (rhs.strcmp(this)<=0? LuaValue.TRUE: FALSE) : super.gteq(rhs); }
+	public boolean gteq_b( LuaValue rhs )     { return rhs.isString() ? rhs.strcmp(this)<=0 : super.gteq_b(rhs); }
 	public boolean gteq_b( int rhs )       { typerror("attempt to compare string with number"); return false; }
 	public boolean gteq_b( double rhs )    { typerror("attempt to compare string with number"); return false; }
 
@@ -314,37 +314,37 @@ public class LuaString extends LuaValue {
 		return d;
 	}
 	
-	public int checkint() {
-		return (int) (long) checkdouble();
+	public int checkInt() {
+		return (int) (long) checkDouble();
 	}
-	public LuaInteger checkinteger() {
-		return valueOf(checkint());
+	public LuaInteger checkInteger() {
+		return valueOf(checkInt());
 	}
-	public long checklong() {
-		return (long) checkdouble();
+	public long checkLong() {
+		return (long) checkDouble();
 	}
-	public double checkdouble() {
+	public double checkDouble() {
 		double d = scannumber();
 		if ( Double.isNaN(d) )
 			argerror("number");
 		return d;
 	}
-	public LuaNumber checknumber() {
-		return valueOf(checkdouble());
+	public LuaNumber checkNumber() {
+		return valueOf(checkDouble());
 	}
-	public LuaNumber checknumber(String msg) {
+	public LuaNumber checkNumber(String msg) {
 		double d = scannumber();
 		if ( Double.isNaN(d) )
 			error(msg);
 		return valueOf(d);
 	}
 
-	public boolean isnumber() {
+	public boolean isNumber() {
 		double d = scannumber();
 		return ! Double.isNaN(d);
 	}
 	
-	public boolean isint() {
+	public boolean isInt() {
 		double d = scannumber();
 		if ( Double.isNaN(d) )
 			return false;
@@ -352,7 +352,7 @@ public class LuaString extends LuaValue {
 		return i == d;
 	}
 
-	public boolean islong() {
+	public boolean isLong() {
 		double d = scannumber();
 		if ( Double.isNaN(d) )
 			return false;
@@ -360,44 +360,44 @@ public class LuaString extends LuaValue {
 		return l == d;
 	}
 	
-	public byte    tobyte()        { return (byte) toint(); }
-	public char    tochar()        { return (char) toint(); }
-	public double  todouble()      { double d=scannumber(); return Double.isNaN(d)? 0: d; }
-	public float   tofloat()       { return (float) todouble(); }
-	public int     toint()         { return (int) tolong(); }
-	public long    tolong()        { return (long) todouble(); }
-	public short   toshort()       { return (short) toint(); }
+	public byte toByte()        { return (byte) toInt(); }
+	public char    tochar()        { return (char) toInt(); }
+	public double toDouble()      { double d=scannumber(); return Double.isNaN(d)? 0: d; }
+	public float toFloat()       { return (float) toDouble(); }
+	public int toInt()         { return (int) toLong(); }
+	public long toLong()        { return (long) toDouble(); }
+	public short toShort()       { return (short) toInt(); }
 
-	public double optdouble(double defval) {
-		return checkdouble();
+	public double optionalDouble(double defval) {
+		return checkDouble();
 	}
 	
-	public int optint(int defval) {
-		return checkint();
+	public int optionalInt(int defval) {
+		return checkInt();
 	}
 	
-	public LuaInteger optinteger(LuaInteger defval) {
-		return checkinteger();
+	public LuaInteger optionalInteger(LuaInteger defval) {
+		return checkInteger();
 	}
 	
-	public long optlong(long defval) {
-		return checklong();
+	public long optionalLong(long defval) {
+		return checkLong();
 	}
 	
-	public LuaNumber optnumber(LuaNumber defval) {
-		return checknumber();
+	public LuaNumber optionalNumber(LuaNumber defval) {
+		return checkNumber();
 	}
 	
-	public LuaString optstring(LuaString defval) {
+	public LuaString optionalLuaString(LuaString defval) {
 		return this;
 	}
 	
-	public LuaValue tostring() {
+	public LuaValue toLuaString() {
 		return this;
 	}
 
-	public String optjstring(String defval) {
-		return tojstring();
+	public String optionalJString(String defval) {
+		return toJString();
 	}
 	
 	public LuaString strvalue() {
@@ -513,11 +513,11 @@ public class LuaString extends LuaValue {
 		return luaByte( index );
 	}
 	
-	public String checkjstring() {
-		return tojstring();
+	public String checkJString() {
+		return toJString();
 	}
 
-	public LuaString checkstring() {
+	public LuaString checkLuaString() {
 		return this;
 	}
 	
@@ -710,9 +710,9 @@ public class LuaString extends LuaValue {
 	 * convert to a number using baee 10 or base 16 if it starts with '0x',
 	 * or NIL if it can't be converted
 	 * @return IntValue, DoubleValue, or NIL depending on the content of the string.
-	 * @see LuaValue#tonumber()
+	 * @see LuaValue#toNumber()
 	 */
-	public LuaValue tonumber() {
+	public LuaValue toNumber() {
 		double d = scannumber();
 		return Double.isNaN(d)? NIL: valueOf(d);
 	}
@@ -721,7 +721,7 @@ public class LuaString extends LuaValue {
 	 * convert to a number using a supplied base, or NIL if it can't be converted
 	 * @param base the base to use, such as 10
 	 * @return IntValue, DoubleValue, or NIL depending on the content of the string.
-	 * @see LuaValue#tonumber()
+	 * @see LuaValue#toNumber()
 	 */
 	public LuaValue tonumber( int base ) {
 		double d = scannumber( base );
