@@ -21,15 +21,18 @@ import org.luaj.vm2.lib.MathLib;
  * @see LuaValue#valueOf(double)
  */
 public class LuaInteger extends LuaNumber {
-
-	private static final LuaInteger[] intValues = new LuaInteger[512];
+	private static final int CACHE_SIZE = 1028;
+	private static final LuaInteger[] POSITIVE_INT_VALUES = new LuaInteger[CACHE_SIZE];
+	private static final LuaInteger[] NEGATIVE_INT_VALUES = new LuaInteger[CACHE_SIZE];
 	static {
-		for ( int i=0; i<512; i++ )
-			intValues[i] = new LuaInteger(i-256);
+		for (int i = 0; i < POSITIVE_INT_VALUES.length; i++) POSITIVE_INT_VALUES[i] = new LuaInteger(i);
+		for (int i = 0; i < NEGATIVE_INT_VALUES.length; i++) NEGATIVE_INT_VALUES[i] = new LuaInteger(i - CACHE_SIZE);
 	}
 
 	public static LuaInteger valueOf(int i) {
-		return i<=255 && i>=-256? intValues[i+256]: new LuaInteger(i);
+		return i < CACHE_SIZE ?
+				(i >= 0 ? POSITIVE_INT_VALUES[i] : (i >= -CACHE_SIZE ? NEGATIVE_INT_VALUES[i + CACHE_SIZE] : new LuaInteger(i))) :
+				new LuaInteger(i);
 	};
 	
 	 // TODO consider moving this to LuaValue
@@ -40,10 +43,7 @@ public class LuaInteger extends LuaNumber {
 	 * @see LuaValue#valueOf(double)
 	 */
 	public static LuaNumber valueOf(long l) {
-		int i = (int) l;
-		return l==i? (i<=255 && i>=-256? intValues[i+256]:
-			(LuaNumber) new LuaInteger(i)):
-			(LuaNumber) LuaDouble.valueOf(l);
+		return (l == (int) l) ? LuaInteger.valueOf((int) l) : LuaDouble.valueOf(l);
 	}
 	
 	/** The value being held by this instance. */

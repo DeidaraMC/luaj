@@ -55,12 +55,11 @@ public class LuaDouble extends LuaNumber {
 	final double v;
 
 	public static LuaNumber valueOf(double d) {
-		int id = (int) d;
-		return d==id? (LuaNumber) LuaInteger.valueOf(id): (LuaNumber) new LuaDouble(d);
+		return d == (int) d ? LuaInteger.valueOf((int) d) : new LuaDouble(d);
 	}
 	
 	/** Don't allow ints to be boxed by DoubleValues  */
-	private LuaDouble(double d) {
+	public LuaDouble(double d) {
 		this.v = d;
 	}
 
