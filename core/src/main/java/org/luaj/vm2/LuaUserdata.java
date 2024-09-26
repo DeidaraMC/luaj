@@ -1,5 +1,8 @@
 package org.luaj.vm2;
 
+import org.luaj.vm2.exception.LuaException;
+import org.luaj.vm2.exception.LuaTypeException;
+
 public class LuaUserdata extends LuaValue {
 	
 	public Object m_instance;
@@ -40,9 +43,8 @@ public class LuaUserdata extends LuaValue {
 	public <T> T toUserdata(Class<T> type)                 { return type.isAssignableFrom(m_instance.getClass())? (T) m_instance: null; }
 	public Object optionalUserdata(Object defval)          { return m_instance; }
 	public <T> T optionalUserdata(Class<T> type, Object defval) {
-		if (!type.isAssignableFrom(m_instance.getClass()))
-			typerror(type.getName());
-		return (T) m_instance;
+		if (type.isAssignableFrom(m_instance.getClass())) return (T) m_instance;
+		throw new LuaTypeException(getTypeName(), type.getName());
 	}
 	
 	public LuaValue getmetatable() {
@@ -59,9 +61,8 @@ public class LuaUserdata extends LuaValue {
 	}
 	
 	public <T> T checkUserdata(Class<T> type) {
-		if ( type.isAssignableFrom(m_instance.getClass()) )
-			return (T) m_instance;
-		return (T) typerror(type.getName());
+		if (type.isAssignableFrom(m_instance.getClass())) return (T) m_instance;
+		throw new LuaTypeException(getTypeName(), type.getName());
 	}
 	
 	public LuaValue get( LuaValue key ) {
@@ -70,7 +71,7 @@ public class LuaUserdata extends LuaValue {
 	
 	public void set( LuaValue key, LuaValue value ) {
 		if ( m_metatable==null || ! settable(this,key,value) )
-			error( "cannot set "+key+" for userdata" );
+			throw new LuaException( "cannot set "+key+" for userdata" );
 	}
 
 	public boolean equals( Object val ) {

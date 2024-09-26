@@ -9,6 +9,8 @@ import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaArgumentException;
+import org.luaj.vm2.exception.LuaException;
 
 /**
  * Abstract base class extending {@link LibFunction} which implements the
@@ -308,7 +310,7 @@ public class IoLib extends TwoArgFunction {
 			} catch ( IOException ioe ) {
 				if (opcode == LINES_ITER) {
 					String s = ioe.getMessage();
-					error(s != null ? s : ioe.toString());
+					throw new LuaException(s != null ? s : ioe.toString());
 				}
 				return errorresult(ioe);
 			}
@@ -365,7 +367,7 @@ public class IoLib extends TwoArgFunction {
 
 	// io.popen(prog, [mode]) -> file
 	public Varargs _io_popen(String prog, String mode) throws IOException {
-		if (!"r".equals(mode) && !"w".equals(mode)) argerror(2, "invalid value: '" + mode + "'; must be one of 'r' or 'w'");
+		if (!"r".equals(mode) && !"w".equals(mode)) throw new LuaArgumentException(2, "invalid value: '" + mode + "'; must be one of 'r' or 'w'");
 		return openProgram(prog, mode);
 	}
 
@@ -411,7 +413,7 @@ public class IoLib extends TwoArgFunction {
 		} else if ("full".equals(mode)) {
 		} else if ("line".equals(mode)) {
 		} else {
-			argerror(1, "invalid value: '" + mode + "'; must be one of 'no', 'full' or 'line'");
+			throw new LuaArgumentException(1, "invalid value: '" + mode + "'; must be one of 'no', 'full' or 'line'");
 		}
 		checkfile(file).setvbuf(mode,size);
 		return LuaValue.TRUE;
@@ -433,7 +435,7 @@ public class IoLib extends TwoArgFunction {
 		} else if ("end".equals(whence)) {
 		} else if ("cur".equals(whence)) {
 		} else {
-			argerror(1, "invalid value: '" + whence + "'; must be one of 'set', 'cur' or 'end'");
+			throw new LuaArgumentException(1, "invalid value: '" + whence + "'; must be one of 'set', 'cur' or 'end'");
 		}
 		return valueOf( checkfile(file).seek(whence,offset) );
 	}
@@ -453,8 +455,8 @@ public class IoLib extends TwoArgFunction {
 	//	lines iterator(s,var) -> var'
 	public Varargs _lines_iter(LuaValue file, boolean toclose, Varargs args) throws IOException {
 		File f = optfile(file);
-		if ( f == null ) argerror(1, "not a file: " + file);
-		if ( f.isclosed() )	error("file is already closed");
+		if ( f == null ) throw new LuaArgumentException(1, "not a file: " + file);
+		if ( f.isclosed() )	throw new LuaException("file is already closed");
 		Varargs ret = ioread(f, args);
 		if (toclose && ret.isNil(1) && f.eof()) f.close();
 		return ret;
@@ -472,8 +474,7 @@ public class IoLib extends TwoArgFunction {
 		try {
 			return rawopenfile(filetype, filename, mode);
 		} catch ( Exception e ) {
-			error("io error: "+e.getMessage());
-			return null;
+			throw new LuaException("io error: "+e.getMessage());
 		}
 	}
 
@@ -503,7 +504,7 @@ public class IoLib extends TwoArgFunction {
 		try {
 			return new IoLibV(f,"lnext",LINES_ITER,this,toclose,args);
 		} catch ( Exception e ) {
-			return error("lines: "+e);
+			throw new LuaException("lines: "+e);
 		}
 	}
 
@@ -535,7 +536,7 @@ public class IoLib extends TwoArgFunction {
 						}
 					}
 				default:
-					return argerror( i+1, "(invalid format)" );
+					throw new LuaArgumentException(i+1, "(invalid format)" );
 			}
 			if ( (v[i++] = vi).isNil() )
 				break;
@@ -546,7 +547,7 @@ public class IoLib extends TwoArgFunction {
 	private static File checkfile(LuaValue val) {
 		File f = optfile(val);
 		if ( f == null )
-			argerror(1,"file");
+			throw new LuaArgumentException(1,"file");
 		checkopen( f );
 		return f;
 	}
@@ -557,7 +558,7 @@ public class IoLib extends TwoArgFunction {
 	
 	private static File checkopen(File file) {
 		if ( file.isclosed() )
-			error("attempt to use a closed file");
+			throw new LuaException("attempt to use a closed file");
 		return file;
 	}
 
@@ -571,7 +572,7 @@ public class IoLib extends TwoArgFunction {
 			len = -1;
 			break;
 		}
-		if (len <= 0) argerror(2, "invalid mode: '" + mode + "'");
+		if (len <= 0) throw new LuaArgumentException(2, "invalid mode: '" + mode + "'");
 		
 		switch (filetype) {
 		case FTYPE_STDIN: return wrapStdin();

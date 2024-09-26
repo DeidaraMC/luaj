@@ -171,7 +171,7 @@ public class OrphanedThreadTest extends TestCase {
 			System.out.println("in abnormal.1, arg is "+arg);
 			arg = globals.yield(ONE).arg1();
 			System.out.println("in abnormal.2, arg is "+arg);
-			error("abnormal condition");
+			LuaValue.valueOf"abnormal condition");
 			return ZERO;
 		}		
 	}

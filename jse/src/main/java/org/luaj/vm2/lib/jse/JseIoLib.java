@@ -30,7 +30,7 @@ import java.io.PrintStream;
 import java.io.RandomAccessFile;
 
 import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.IoLib;
@@ -108,7 +108,7 @@ public class JseIoLib extends IoLib {
 	}
 	
 	private static void notimplemented() {
-		throw new LuaError("not implemented");
+		throw new LuaException("not implemented");
 	}
 	
 

@@ -5,12 +5,14 @@ import java.io.InputStream;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.Lua;
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaArgumentException;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaThread;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaException;
 
 /**
  * Subclass of {@link LibFunction} which implements the lua basic library functions.
@@ -111,7 +113,7 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 	static final class _assert extends VarArgFunction {
 		public Varargs invoke(Varargs args) {
 			if ( !args.arg1().toBoolean() )
-				error( args.narg()>1? args.optionalJString(2,"assertion failed!"): "assertion failed!" );
+				throw new LuaException( args.narg()>1? args.optionalJString(2,"assertion failed!"): "assertion failed!" );
 			return args;
 		}
 	}
@@ -130,10 +132,8 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 			} else if ( "step".equals(s) ) {
 				System.gc();
 				return LuaValue.TRUE;
-			} else {
-				argerror(1, "invalid option '" + s + "'");
 			}
-			return NIL;
+			throw new LuaArgumentException(1, "invalid option '" + s + "'");
 		}
 	}
 
@@ -145,23 +145,24 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 			Varargs v = filename == null?
 					loadStream( globals.STDIN, "=stdin", "bt", globals ):
 					loadFile( args.checkJString(1), "bt", globals );
-			return v.isNil(1)? error(v.toJString(2)): v.arg1().invoke();
+			if (v.isNil(1)) throw new LuaException(v.toJString(2));
+			return v.arg1().invoke();
 		}
 	}
 
 	// "error", // ( message [,level] ) -> ERR
 	static final class error extends TwoArgFunction {
 		public LuaValue call(LuaValue arg1, LuaValue arg2) {
-			if (arg1.isNil()) throw new LuaError(NIL);
-			if (!arg1.isString() || arg2.optionalInt(1) == 0) throw new LuaError(arg1);
-			throw new LuaError(arg1.toJString(), arg2.optionalInt(1));
+			if (arg1.isNil()) throw new LuaException(NIL);
+			if (!arg1.isString() || arg2.optionalInt(1) == 0) throw new LuaException(arg1);
+			throw new LuaException(arg1.toJString(), arg2.optionalInt(1));
 		}
 	}
 
 	// "getmetatable", // ( object ) -> table
 	static final class getmetatable extends LibFunction {
 		public LuaValue call() {
-			return argerror(1, "value expected");
+			throw new LuaArgumentException(1, "value expected");
 		}
 		public LuaValue call(LuaValue arg) {
 			LuaValue mt = arg.getmetatable();
@@ -173,7 +174,7 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 		public Varargs invoke(Varargs args) {
 			LuaValue ld = args.arg1();
 			if (!ld.isString() && !ld.isFunction()) {
-				throw new LuaError("bad argument #1 to 'load' (string or function expected, got " + ld.getTypeName() + ")");
+				throw new LuaException("bad argument #1 to 'load' (string or function expected, got " + ld.getTypeName() + ")");
 			}
 			String source = args.optionalJString(2, ld.isString()? ld.toJString(): "=(load)");
 			String mode = args.optionalJString(3, "bt");
@@ -204,7 +205,7 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 				globals.debuglib.onCall(this);
 			try {
 				return varargsOf(TRUE, func.invoke(args.subArgs(2)));
-			} catch ( LuaError le ) {
+			} catch ( LuaException le ) {
 				final LuaValue m = le.getMessageObject();
 				return varargsOf(FALSE, m!=null? m: NIL);
 			} catch ( Exception e ) {
@@ -239,10 +240,10 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 	// "rawequal", // (v1, v2) -> boolean
 	static final class rawequal extends LibFunction {
 		public LuaValue call() {
-			return argerror(1, "value expected");
+			throw new LuaArgumentException(1, "value expected");
 		}
 		public LuaValue call(LuaValue arg) {
-			return argerror(2, "value expected");
+			throw new LuaArgumentException(2, "value expected");
 		}
 		public LuaValue call(LuaValue arg1, LuaValue arg2) {
 			return valueOf(arg1.raweq(arg2));
@@ -252,7 +253,7 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 	// "rawget", // (table, index) -> value
 	static final class rawget extends TableLibFunction {
 		public LuaValue call(LuaValue arg) {
-			return argerror(2, "value expected");
+			throw new LuaArgumentException(2, "value expected");
 		}
 		public LuaValue call(LuaValue arg1, LuaValue arg2) {
 			return arg1.checkTable().rawget(arg2);
@@ -270,14 +271,14 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 	// "rawset", // (table, index, value) -> table
 	static final class rawset extends TableLibFunction {
 		public LuaValue call(LuaValue table) {
-			return argerror(2,"value expected");
+			throw new LuaArgumentException(2,"value expected");
 		}
 		public LuaValue call(LuaValue table, LuaValue index) {
-			return argerror(3,"value expected");
+			throw new LuaArgumentException(3,"value expected");
 		}
 		public LuaValue call(LuaValue table, LuaValue index, LuaValue value) {
 			LuaTable t = table.checkTable();
-			if (!index.isValidKey()) argerror(2, "table index is nil");
+			if (!index.isValidKey()) throw new LuaArgumentException(2, "table index is nil");
 			t.rawset(index, value);
 			return t;
 		}
@@ -291,7 +292,7 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 				return valueOf(n);
 			int i = args.checkInt(1);
 			if ( i == 0 || i < -n )
-				argerror(1,"index out of range");
+				throw new LuaArgumentException(1,"index out of range");
 			return args.subArgs(i<0? n+i+2: i+1);
 		}
 	}
@@ -299,12 +300,12 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 	// "setmetatable", // (table, metatable) -> table
 	static final class setmetatable extends TableLibFunction {
 		public LuaValue call(LuaValue table) {
-			return argerror(2,"nil or table expected");
+			throw new LuaArgumentException(2,"nil or table expected");
 		}
 		public LuaValue call(LuaValue table, LuaValue metatable) {
 			final LuaValue mt0 = table.checkTable().getmetatable();
 			if ( mt0!=null && !mt0.rawget(METATABLE).isNil() )
-				error("cannot change a protected metatable");
+				throw new LuaException("cannot change a protected metatable");
 			return table.setmetatable(metatable.isNil()? null: metatable.checkTable());
 		}
 	}
@@ -319,7 +320,7 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 				return e.toNumber();
 			final int b = base.checkInt();
 			if ( b < 2 || b > 36 )
-				argerror(2, "base out of range");
+				throw new LuaArgumentException(2, "base out of range");
 			return e.checkLuaString().tonumber(b);
 		}
 	}
@@ -355,7 +356,7 @@ public class BaseLib extends TwoArgFunction implements ResourceFinder {
 					globals.debuglib.onCall(this);
 				try {
 					return varargsOf(TRUE, args.arg1().invoke(args.subArgs(3)));
-				} catch ( LuaError le ) {
+				} catch ( LuaException le ) {
 					final LuaValue m = le.getMessageObject();
 					return varargsOf(FALSE, m!=null? m: NIL);
 				} catch ( Exception e ) {

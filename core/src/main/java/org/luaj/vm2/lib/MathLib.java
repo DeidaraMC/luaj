@@ -6,6 +6,7 @@ import org.luaj.vm2.LuaDouble;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaArgumentException;
 
 /**
  * Subclass of {@link LibFunction} which implements the lua standard {@code math}
@@ -216,13 +217,13 @@ public class MathLib extends TwoArgFunction {
 		}
 		public LuaValue call(LuaValue a) {
 			int m = a.checkInt();
-			if (m<1) argerror(1, "interval is empty");
+			if (m<1) throw new LuaArgumentException(1, "interval is empty");
 			return valueOf( 1 + random.nextInt(m) );
 		}
 		public LuaValue call(LuaValue a, LuaValue b) {
 			int m = a.checkInt();
 			int n = b.checkInt();
-			if (n<m) argerror(2, "interval is empty");
+			if (n<m) throw new LuaArgumentException(2, "interval is empty");
 			return valueOf( m + random.nextInt(n+1-m) );
 		}
 		

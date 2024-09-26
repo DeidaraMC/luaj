@@ -535,55 +535,55 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue tbl = new LuaTable();
 		LuaValue tbl2 = new LuaTable();
 		try {
-			try { tru.add(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.mul(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.div(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.pow(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.mod(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tru.add(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.mul(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.div(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.pow(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.mod(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 			
 			// always use left argument
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.ADD, RETURN_LHS, } );
 			assertEquals( tru, tru.add(fal) );
 			assertEquals( tru, tru.add(tbl) );
 			assertEquals( tbl, tbl.add(tru) );
-			try { tbl.add(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.add(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.SUB, RETURN_LHS, } );
 			assertEquals( tru, tru.sub(fal) );
 			assertEquals( tru, tru.sub(tbl) );
 			assertEquals( tbl, tbl.sub(tru) );
-			try { tbl.sub(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.add(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.sub(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.add(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 			
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.MUL, RETURN_LHS, } );
 			assertEquals( tru, tru.mul(fal) );
 			assertEquals( tru, tru.mul(tbl) );
 			assertEquals( tbl, tbl.mul(tru) );
-			try { tbl.mul(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.mul(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.DIV, RETURN_LHS, } );
 			assertEquals( tru, tru.div(fal) );
 			assertEquals( tru, tru.div(tbl) );
 			assertEquals( tbl, tbl.div(tru) );
-			try { tbl.div(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.div(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.POW, RETURN_LHS, } );
 			assertEquals( tru, tru.pow(fal) );
 			assertEquals( tru, tru.pow(tbl) );
 			assertEquals( tbl, tbl.pow(tru) );
-			try { tbl.pow(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.pow(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.MOD, RETURN_LHS, } );
 			assertEquals( tru, tru.mod(fal) );
 			assertEquals( tru, tru.mod(tbl) );
 			assertEquals( tbl, tbl.mod(tru) );
-			try { tbl.mod(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.mod(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			
 			// always use right argument
@@ -591,43 +591,43 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 			assertEquals( fal, tru.add(fal) );
 			assertEquals( tbl, tru.add(tbl) );
 			assertEquals( tru, tbl.add(tru) );
-			try { tbl.add(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.add(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.SUB, RETURN_RHS, } );
 			assertEquals( fal, tru.sub(fal) );
 			assertEquals( tbl, tru.sub(tbl) );
 			assertEquals( tru, tbl.sub(tru) );
-			try { tbl.sub(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.add(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.sub(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.add(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 			
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.MUL, RETURN_RHS, } );
 			assertEquals( fal, tru.mul(fal) );
 			assertEquals( tbl, tru.mul(tbl) );
 			assertEquals( tru, tbl.mul(tru) );
-			try { tbl.mul(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.mul(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.DIV, RETURN_RHS, } );
 			assertEquals( fal, tru.div(fal) );
 			assertEquals( tbl, tru.div(tbl) );
 			assertEquals( tru, tbl.div(tru) );
-			try { tbl.div(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.div(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.POW, RETURN_RHS, } );
 			assertEquals( fal, tru.pow(fal) );
 			assertEquals( tbl, tru.pow(tbl) );
 			assertEquals( tru, tbl.pow(tru) );
-			try { tbl.pow(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.pow(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.MOD, RETURN_RHS, } );
 			assertEquals( fal, tru.mod(fal) );
 			assertEquals( tbl, tru.mod(tbl) );
 			assertEquals( tru, tbl.mod(tru) );
-			try { tbl.mod(tbl2); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.mod(tbl2); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tru.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 
 
 		} finally { 
@@ -640,38 +640,38 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 		LuaValue one = LuaValue.ONE;
 		LuaValue tbl = new LuaTable();
 
-		try { tbl.add(zero); fail("did not throw error"); } catch ( LuaError le ) { };
-		try { zero.add(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+		try { tbl.add(zero); fail("did not throw error"); } catch ( LuaException le ) { };
+		try { zero.add(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 		tbl.setmetatable(LuaValue.tableOf( new LuaValue[] { LuaValue.ADD, RETURN_ONE, } ));
 		assertEquals( one, tbl.add(zero) );
 		assertEquals( one, zero.add(tbl) );
 
-		try { tbl.sub(zero); fail("did not throw error"); } catch ( LuaError le ) { };
-		try { zero.sub(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+		try { tbl.sub(zero); fail("did not throw error"); } catch ( LuaException le ) { };
+		try { zero.sub(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 		tbl.setmetatable(LuaValue.tableOf( new LuaValue[] { LuaValue.SUB, RETURN_ONE, } ));
 		assertEquals( one, tbl.sub(zero) );
 		assertEquals( one, zero.sub(tbl) );
 
-		try { tbl.mul(zero); fail("did not throw error"); } catch ( LuaError le ) { };
-		try { zero.mul(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+		try { tbl.mul(zero); fail("did not throw error"); } catch ( LuaException le ) { };
+		try { zero.mul(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 		tbl.setmetatable(LuaValue.tableOf( new LuaValue[] { LuaValue.MUL, RETURN_ONE, } ));
 		assertEquals( one, tbl.mul(zero) );
 		assertEquals( one, zero.mul(tbl) );
 		
-		try { tbl.div(zero); fail("did not throw error"); } catch ( LuaError le ) { };
-		try { zero.div(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+		try { tbl.div(zero); fail("did not throw error"); } catch ( LuaException le ) { };
+		try { zero.div(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 		tbl.setmetatable(LuaValue.tableOf( new LuaValue[] { LuaValue.DIV, RETURN_ONE, } ));
 		assertEquals( one, tbl.div(zero) );
 		assertEquals( one, zero.div(tbl) );
 
-		try { tbl.pow(zero); fail("did not throw error"); } catch ( LuaError le ) { };
-		try { zero.pow(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+		try { tbl.pow(zero); fail("did not throw error"); } catch ( LuaException le ) { };
+		try { zero.pow(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 		tbl.setmetatable(LuaValue.tableOf( new LuaValue[] { LuaValue.POW, RETURN_ONE, } ));
 		assertEquals( one, tbl.pow(zero) );
 		assertEquals( one, zero.pow(tbl) );
 
-		try { tbl.mod(zero); fail("did not throw error"); } catch ( LuaError le ) { };
-		try { zero.mod(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
+		try { tbl.mod(zero); fail("did not throw error"); } catch ( LuaException le ) { };
+		try { zero.mod(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
 		tbl.setmetatable(LuaValue.tableOf( new LuaValue[] { LuaValue.MOD, RETURN_ONE, } ));
 		assertEquals( one, tbl.mod(zero) );
 		assertEquals( one, zero.mod(tbl) );
@@ -1089,12 +1089,12 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 			assertEquals( tbl, tbl.concat(tru.buffer()).value() );
 			assertEquals( fal, fal.concat(tbl.concat(tru.buffer())).value() );
 			assertEquals( uda, uda.concat(tru.concat(tbl.buffer())).value() );
-			try { tbl.concat(def); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { def.concat(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tbl.concat(def.buffer()).value(); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { def.concat(tbl.buffer()).value(); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { uda.concat(def.concat(tbl.buffer())).value(); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { ghi.concat(tbl.concat(def.buffer())).value(); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.concat(def); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { def.concat(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tbl.concat(def.buffer()).value(); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { def.concat(tbl.buffer()).value(); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { uda.concat(def.concat(tbl.buffer())).value(); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { ghi.concat(tbl.concat(def.buffer())).value(); fail("did not throw error"); } catch ( LuaException le ) { };
 
 			// always use right argument
 			LuaBoolean.s_metatable = LuaValue.tableOf( new LuaValue[] { LuaValue.CONCAT, RETURN_RHS } );
@@ -1104,12 +1104,12 @@ public class UnaryBinaryOperatorsTest extends TestCase {
 			assertEquals( tru, tbl.concat(tru.buffer()).value() );
 			assertEquals( tru, uda.concat(tbl.concat(tru.buffer())).value() );
 			assertEquals( tbl, fal.concat(tru.concat(tbl.buffer())).value() );
-			try { tbl.concat(def); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { def.concat(tbl); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { tbl.concat(def.buffer()).value(); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { def.concat(tbl.buffer()).value(); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { uda.concat(def.concat(tbl.buffer())).value(); fail("did not throw error"); } catch ( LuaError le ) { };
-			try { uda.concat(tbl.concat(def.buffer())).value(); fail("did not throw error"); } catch ( LuaError le ) { };
+			try { tbl.concat(def); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { def.concat(tbl); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { tbl.concat(def.buffer()).value(); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { def.concat(tbl.buffer()).value(); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { uda.concat(def.concat(tbl.buffer())).value(); fail("did not throw error"); } catch ( LuaException le ) { };
+			try { uda.concat(tbl.concat(def.buffer())).value(); fail("did not throw error"); } catch ( LuaException le ) { };
 			
 		} finally { 
 			LuaBoolean.s_metatable = null;

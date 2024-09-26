@@ -5,7 +5,7 @@ import org.luaj.vm2.lib.ZeroArgFunction;
 
 /**
  * This should fail while trying to load via 
- * "require()" because it throws a LuaError
+ * "require()" because it throws a LuaException
  * 
  */
 public class RequireSampleLoadLuaError extends ZeroArgFunction {
@@ -14,7 +14,7 @@ public class RequireSampleLoadLuaError extends ZeroArgFunction {
 	}
 	
 	public LuaValue call() {
-		error("sample-load-lua-error");
+		LuaValue.valueOf"sample-load-lua-error");
 		return LuaValue.valueOf("require-sample-load-lua-error");
 	}	
 }

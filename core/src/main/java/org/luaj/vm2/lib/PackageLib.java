@@ -8,6 +8,7 @@ import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaException;
 
 /**
  * Subclass of {@link LibFunction} which implements the lua standard package and module
@@ -182,7 +183,7 @@ public class PackageLib extends TwoArgFunction {
 			LuaValue result = loaded.get(name);
 			if ( result.toBoolean() ) {
 				if ( result == _SENTINEL )
-					error("loop or previous error loading module '"+name+"'");
+					throw new LuaException("loop or previous error loading module '"+name+"'");
 				return result;
 			}
 	
@@ -193,7 +194,7 @@ public class PackageLib extends TwoArgFunction {
 			for ( int i=1; true; i++ ) {
 				LuaValue searcher = tbl.get(i);
 				if ( searcher.isNil() ) {
-					error( "module '"+name+"' not found: "+name+sb );
+					throw new LuaException( "module '"+name+"' not found: "+name+sb );
 			    }
 							
 			    /* call loader with module name as argument */

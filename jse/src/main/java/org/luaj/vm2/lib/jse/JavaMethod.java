@@ -27,10 +27,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaException;
 
 /**
  * LuaValue that represents a Java method.
@@ -71,7 +72,7 @@ class JavaMethod extends JavaMember {
 	}
 
 	public LuaValue call() {
-		return error("method cannot be called without instance");
+		throw new LuaException("method cannot be called without instance");
 	}
 
 	public LuaValue call(LuaValue arg) {
@@ -95,9 +96,9 @@ class JavaMethod extends JavaMember {
 		try {
 			return CoerceJavaToLua.coerce( method.invoke(instance, a) );
 		} catch (InvocationTargetException e) {
-			throw new LuaError(e.getTargetException());
+			throw new LuaException(e.getTargetException());
 		} catch (Exception e) {
-			return LuaValue.error("coercion error "+e);
+			throw new LuaException("coercion error "+e);
 		}
 	}
 	
@@ -119,7 +120,7 @@ class JavaMethod extends JavaMember {
 		}
 
 		public LuaValue call() {
-			return error("method cannot be called without instance");
+			throw new LuaException("method cannot be called without instance");
 		}
 
 		public LuaValue call(LuaValue arg) {
@@ -153,7 +154,7 @@ class JavaMethod extends JavaMember {
 			
 			// any match? 
 			if ( best == null )
-				LuaValue.error("no coercible public method");
+				throw new LuaException("no coercible public method");
 			
 			// invoke it
 			return best.invokeMethod(instance, args);

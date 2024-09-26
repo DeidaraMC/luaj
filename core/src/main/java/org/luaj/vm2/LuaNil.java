@@ -1,5 +1,7 @@
 package org.luaj.vm2;
 
+import org.luaj.vm2.exception.LuaArgumentException;
+
 /**
  * Class to encapsulate behavior of the singleton instance {@code nil} 
  * <p>
@@ -61,7 +63,7 @@ public class LuaNil extends LuaValue {
 	}
 
 	public LuaValue checkNotNil() {
-		return argerror("value");
+		throw new LuaArgumentException("value", getTypeName());
 	}
 	
 	public boolean isValidKey() {

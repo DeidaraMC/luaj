@@ -547,13 +547,13 @@ public class TypeTest extends TestCase {
 		try {
 			obj.getClass().getMethod(method,argtype).invoke(obj, argument );
 		} catch (InvocationTargetException e) {
-			if ( ! (e.getTargetException() instanceof LuaError) )
-				fail("not a LuaError: "+e.getTargetException());
+			if ( ! (e.getTargetException() instanceof LuaException) )
+				fail("not a LuaException: "+e.getTargetException());
 			return; // pass
 		} catch ( Exception e ) {
 			fail( "bad exception: "+e );
 		}
-		fail("failed to throw LuaError as required");
+		fail("failed to throw LuaException as required");
 	}
 
 	public void testOptBoolean() {
@@ -835,13 +835,13 @@ public class TypeTest extends TestCase {
 		try {
 			obj.getClass().getMethod("optionalUserdata", Class.class, Object.class ).invoke(obj, arg1, arg2);
 		} catch (InvocationTargetException e) {
-			if ( ! (e.getTargetException() instanceof LuaError) )
-				fail("not a LuaError: "+e.getTargetException());
+			if ( ! (e.getTargetException() instanceof LuaException) )
+				fail("not a LuaException: "+e.getTargetException());
 			return; // pass
 		} catch ( Exception e ) {
 			fail( "bad exception: "+e );
 		}
-		fail("failed to throw LuaError as required");
+		fail("failed to throw LuaException as required");
 	}
 	
 	public void testOptUserdataClass() {
@@ -871,7 +871,7 @@ public class TypeTest extends TestCase {
 			Object o = userdataobj.optionalUserdata(MyData.class, sampledata);
 			fail( "did not throw bad type error" );
 			assertTrue( o instanceof MyData );
-		} catch ( LuaError le ) {
+		} catch ( LuaException le ) {
 			assertEquals( "org.luaj.vm2.TypeTest$MyData expected, got userdata", le.getMessage() );
 		}
 	}
@@ -905,13 +905,13 @@ public class TypeTest extends TestCase {
 		try {
 			obj.getClass().getMethod(method).invoke(obj);
 		} catch (InvocationTargetException e) {
-			if ( ! (e.getTargetException() instanceof LuaError) )
-				fail("not a LuaError: "+e.getTargetException());
+			if ( ! (e.getTargetException() instanceof LuaException) )
+				fail("not a LuaException: "+e.getTargetException());
 			return; // pass
 		} catch ( Exception e ) {
 			fail( "bad exception: "+e );
 		}
-		fail("failed to throw LuaError as required");
+		fail("failed to throw LuaException as required");
 	}
 
 	public void testCheckBoolean() {
@@ -1184,13 +1184,13 @@ public class TypeTest extends TestCase {
 		try {
 			obj.getClass().getMethod("checkUserdata", Class.class ).invoke(obj, arg);
 		} catch (InvocationTargetException e) {
-			if ( ! (e.getTargetException() instanceof LuaError) )
-				fail("not a LuaError: "+e.getTargetException());
+			if ( ! (e.getTargetException() instanceof LuaException) )
+				fail("not a LuaException: "+e.getTargetException());
 			return; // pass
 		} catch ( Exception e ) {
 			fail( "bad exception: "+e );
 		}
-		fail("failed to throw LuaError as required");
+		fail("failed to throw LuaException as required");
 	}
 	
 	public void testCheckUserdataClass() {
@@ -1219,7 +1219,7 @@ public class TypeTest extends TestCase {
 			Object o = userdataobj.checkUserdata(MyData.class);
 			fail( "did not throw bad type error" );
 			assertTrue( o instanceof MyData );
-		} catch ( LuaError le ) {
+		} catch ( LuaException le ) {
 			assertEquals( "org.luaj.vm2.TypeTest$MyData expected, got userdata", le.getMessage() );
 		}
 	}

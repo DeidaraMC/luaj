@@ -33,7 +33,7 @@ public class RequireClassTest extends TestCase {
 		try {
 			LuaValue result = require.call( LuaValue.valueOf(RequireSampleLoadLuaError.class.getName()) );
 			fail( "incorrectly loaded class that threw lua error");
-		} catch ( LuaError le ) {
+		} catch ( LuaException le ) {
 			assertEquals( 
 					"sample-load-lua-error", 
 					le.getMessage() );
@@ -41,7 +41,7 @@ public class RequireClassTest extends TestCase {
 		try {
 			LuaValue result = require.call( LuaValue.valueOf(RequireSampleLoadLuaError.class.getName()) );
 			fail( "incorrectly loaded class that threw lua error");
-		} catch ( LuaError le ) {
+		} catch ( LuaException le ) {
 			assertEquals( 
 					"loop or previous error loading module '"+RequireSampleLoadLuaError.class.getName()+"'", 
 					le.getMessage() );
@@ -60,7 +60,7 @@ public class RequireClassTest extends TestCase {
 		try {
 			LuaValue result = require.call( LuaValue.valueOf(RequireSampleLoadRuntimeExcep.class.getName()) );
 			fail( "incorrectly loaded class that threw runtime exception");
-		} catch ( LuaError le ) {
+		} catch ( LuaException le ) {
 			assertEquals( 
 					"loop or previous error loading module '"+RequireSampleLoadRuntimeExcep.class.getName()+"'", 
 					le.getMessage() );
@@ -72,7 +72,7 @@ public class RequireClassTest extends TestCase {
 		try {
 			LuaValue result = require.call( LuaValue.valueOf(RequireSampleClassCastExcep.class.getName()) );
 			fail( "incorrectly loaded class that threw class cast exception");
-		} catch ( LuaError le ) {
+		} catch ( LuaException le ) {
 			String msg = le.getMessage();
 			if ( msg.indexOf("not found") < 0 )
 				fail( "expected 'not found' message but got "+msg );
@@ -80,7 +80,7 @@ public class RequireClassTest extends TestCase {
 		try {
 			LuaValue result = require.call( LuaValue.valueOf(RequireSampleClassCastExcep.class.getName()) );
 			fail( "incorrectly loaded class that threw class cast exception");
-		} catch ( LuaError le ) {
+		} catch ( LuaException le ) {
 			String msg = le.getMessage();
 			if ( msg.indexOf("not found") < 0 )
 				fail( "expected 'not found' message but got "+msg );

@@ -2,7 +2,7 @@ package org.luaj.vm2.lib.jse;
 
 import junit.framework.TestCase;
 
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaValue;
 
 public class LuajavaClassMembersTest extends TestCase {
@@ -83,7 +83,7 @@ public class LuajavaClassMembersTest extends TestCase {
 		try {
 			c.call();
 			fail( "did not throw lua error as expected" );
-		} catch ( LuaError e ) {
+		} catch ( LuaException e ) {
 		}
 	}
 	public void testUniqueFactoryCoercible() {
@@ -108,7 +108,7 @@ public class LuajavaClassMembersTest extends TestCase {
 			Object b = v.toUserdata();
 			// fail( "did not throw lua error as expected" );
 			assertEquals( 0, ((B)b).m_int_field );
-		} catch ( LuaError e ) {
+		} catch ( LuaException e ) {
 		}
 	}
 	public void testOverloadedFactoryCoercible() {
@@ -139,7 +139,7 @@ public class LuajavaClassMembersTest extends TestCase {
 			// fail( "did not throw lua error as expected" );
 			assertEquals( 0,     ((C)c).m_int_field );
 			assertEquals( null,  ((C)c).m_string_field );
-		} catch ( LuaError e ) {
+		} catch ( LuaException e ) {
 		}
 	}
 	
@@ -150,7 +150,7 @@ public class LuajavaClassMembersTest extends TestCase {
 		try { 
 			f.set("bogus",ONE);			
 			fail( "did not throw lua error as expected" );
-		} catch ( LuaError e ) {}
+		} catch ( LuaException e ) {}
 	}
 	public void testFieldAttributeCoercible() {
 		JavaInstance i = new JavaInstance(new B());

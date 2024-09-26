@@ -65,10 +65,10 @@ public class LuaOperationsTest extends TestCase {
 	private void throwsLuaError(String methodName, Object obj) {
 		try {
 			LuaValue.class.getMethod(methodName).invoke(obj);
-			fail("failed to throw LuaError as required");
+			fail("failed to throw LuaException as required");
 		} catch (InvocationTargetException e) {
-			if ( ! (e.getTargetException() instanceof LuaError) )
-				fail("not a LuaError: "+e.getTargetException());
+			if ( ! (e.getTargetException() instanceof LuaException) )
+				fail("not a LuaException: "+e.getTargetException());
 			return; // pass
 		} catch ( Exception e ) {
 			fail( "bad exception: "+e );
@@ -78,10 +78,10 @@ public class LuaOperationsTest extends TestCase {
 	private void throwsLuaError(String methodName, Object obj, Object arg) {
 		try {
 			LuaValue.class.getMethod(methodName,LuaValue.class).invoke(obj,arg);
-			fail("failed to throw LuaError as required");
+			fail("failed to throw LuaException as required");
 		} catch (InvocationTargetException e) {
-			if ( ! (e.getTargetException() instanceof LuaError) )
-				fail("not a LuaError: "+e.getTargetException());
+			if ( ! (e.getTargetException() instanceof LuaException) )
+				fail("not a LuaException: "+e.getTargetException());
 			return; // pass
 		} catch ( Exception e ) {
 			fail( "bad exception: "+e );

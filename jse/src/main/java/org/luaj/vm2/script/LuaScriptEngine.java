@@ -26,6 +26,7 @@ import java.io.*;
 import javax.script.*;
 
 import org.luaj.vm2.*;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -85,7 +86,7 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 	    		final Globals g = context.globals;
 	    		final LuaFunction f = g.load(script, "script").checkFunction();
 	    		return new LuajCompiledScript(f, g);
-			} catch ( LuaError lee ) {
+			} catch ( LuaException lee ) {
 				throw new ScriptException(lee.getMessage() );
 			} finally { 
 				is.close();

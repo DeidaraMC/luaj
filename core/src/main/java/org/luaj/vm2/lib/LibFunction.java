@@ -1,6 +1,7 @@
 package org.luaj.vm2.lib;
 
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaArgumentException;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
@@ -155,7 +156,7 @@ abstract public class LibFunction extends LuaFunction {
 				env.set(f.name, f);
 			}
 		} catch ( Exception e ) {
-			throw new LuaError( "bind failed: "+e );
+			throw new LuaException( "bind failed: "+e );
 		}
 	}
 
@@ -175,7 +176,7 @@ abstract public class LibFunction extends LuaFunction {
 	}
 
 	public LuaValue call() {
-		return argerror(1,"value expected");
+		throw new LuaArgumentException(1,"value expected");
 	}
 	public LuaValue call(LuaValue a) {
 		return call();

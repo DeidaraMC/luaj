@@ -5,6 +5,7 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaThread;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaException;
 
 /**
  * Subclass of {@link LibFunction} which implements the lua standard {@code coroutine}
@@ -115,9 +116,8 @@ public class CoroutineLib extends TwoArgFunction {
 			final Varargs result = luathread.resume(args);
 			if ( result.arg1().toBoolean() ) {
 				return result.subArgs(2);
-			} else {
-				return error( result.arg(2).toJString() );
 			}
+			throw new LuaException( result.arg(2).toJString() );
 		}
 	}
 }

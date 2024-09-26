@@ -1,5 +1,7 @@
 package org.luaj.vm2;
 
+import org.luaj.vm2.exception.LuaException;
+
 import java.lang.ref.WeakReference;
 import java.util.Vector;
 
@@ -246,7 +248,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	/** caller must ensure key is not nil */
 	public void set( LuaValue key, LuaValue value ) {
 		if (key == null || !key.isValidKey() && !metatag(NEWINDEX).isFunction())
-			throw new LuaError("value ('" + key + "') can not be used as a table index");
+			throw new LuaException("value ('" + key + "') can not be used as a table index");
 		if ( m_metatable==null || ! rawget(key).isNil() ||  ! settable(this,key,value) )
 			rawset(key, value);
 	}
@@ -328,7 +330,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	public int length() {
 		if (m_metatable != null) {
 			LuaValue len = len();
-			if (!len.isInt()) throw new LuaError("table length is not an integer: " + len);
+			if (!len.isInt()) throw new LuaException("table length is not an integer: " + len);
 			return len.toInt();
 		}
 		return rawlen();
@@ -374,7 +376,7 @@ public class LuaTable extends LuaValue implements Metatable {
 					}
 				}
 				if ( hash.length == 0 )
-					error( "invalid key to 'next' 1: " + key );
+					throw new LuaException( "invalid key to 'next' 1: " + key );
 				i = hashSlot( key );
 				boolean found = false;
 				for ( Slot slot = hash[i]; slot != null; slot = slot.rest() ) {
@@ -388,7 +390,7 @@ public class LuaTable extends LuaValue implements Metatable {
 					}
 				}
 				if ( !found ) {
-					error( "invalid key to 'next' 2: " + key );
+					throw new LuaException( "invalid key to 'next' 2: " + key );
 				}
 				i += 1+array.length;
 			}
@@ -765,7 +767,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	 * @param comparator {@link LuaValue} to be called to compare elements.
 	 */
 	public void sort(LuaValue comparator) {
-		if (len().toLong() >= (long)Integer.MAX_VALUE) throw new LuaError("array too big: " + len().toLong());
+		if (len().toLong() >= (long)Integer.MAX_VALUE) throw new LuaException("array too big: " + len().toLong());
 		if (m_metatable != null && m_metatable.useWeakValues()) {
 			dropWeakArrayValues();
 		}
@@ -869,9 +871,9 @@ public class LuaTable extends LuaValue implements Metatable {
 	public Varargs unpack(int i, int j) {
 		if (j < i) return NONE;
 		int count = j - i;
-		if (count < 0) throw new LuaError("too many results to unpack: greater " + Integer.MAX_VALUE); // integer overflow
+		if (count < 0) throw new LuaException("too many results to unpack: greater " + Integer.MAX_VALUE); // integer overflow
 		int max = 0x00ffffff;
-		if (count >= max) throw new LuaError("too many results to unpack: " + count + " (max is " + max + ')');
+		if (count >= max) throw new LuaException("too many results to unpack: " + count + " (max is " + max + ')');
 		int n = j + 1 - i;
 		switch (n) {
 		case 0: return NONE;
@@ -886,7 +888,7 @@ public class LuaTable extends LuaValue implements Metatable {
 					v[n] = get(i+n);
 				return varargsOf(v);
 			} catch (OutOfMemoryError e) {
-				throw new LuaError("too many results to unpack [out of memory]: " + n);
+				throw new LuaException("too many results to unpack [out of memory]: " + n);
 			}
 		}
 	}

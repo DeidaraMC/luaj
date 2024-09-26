@@ -9,6 +9,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaArgumentException;
 
 /**
  * Subclass of {@link LibFunction} which implements the standard lua {@code os} library.
@@ -240,8 +241,7 @@ public class OsLib extends TwoArgFunction {
 				if (i >= n) break;
 				switch ( c = fmt[i++ ] ) {
 				default:
-					LuaValue.argerror(1, "invalid conversion specifier '%"+c+"'");
-					break;
+					throw new LuaArgumentException(1, "invalid conversion specifier '%"+c+"'");
 				case '%':
 					result.append( (byte)'%' );
 					break;

@@ -6,7 +6,7 @@ import java.util.Hashtable;
 
 import org.luaj.vm2.LocVars;
 import org.luaj.vm2.Lua;
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaValue;
@@ -242,7 +242,7 @@ public class LexState extends Constants {
 		L.pushfstring( cid+":"+linenumber+": "+msg );
 		if ( token != 0 )
 			L.pushfstring( "syntax error: "+msg+" near "+txtToken(token) );
-		throw new LuaError(cid+":"+linenumber+": "+msg);
+		throw new LuaException(cid+":"+linenumber+": "+msg);
 	}
 
 	void syntaxerror( String msg ) {

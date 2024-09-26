@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
+import org.luaj.vm2.exception.LuaArgumentException;
+import org.luaj.vm2.exception.LuaArithmeticException;
+import org.luaj.vm2.exception.LuaException;
+import org.luaj.vm2.exception.LuaTypeException;
 import org.luaj.vm2.lib.MathLib;
 
 /**
@@ -269,20 +273,20 @@ public class LuaString extends LuaValue {
 	// relational operators, these only work with other strings
 	public LuaValue   lt( LuaValue rhs )         { return rhs.isString() ? (rhs.strcmp(this)>0? LuaValue.TRUE: FALSE) : super.lt(rhs); }
 	public boolean lt_b( LuaValue rhs )       { return rhs.isString() ? rhs.strcmp(this)>0 : super.lt_b(rhs); }
-	public boolean lt_b( int rhs )         { typerror("attempt to compare string with number"); return false; }
-	public boolean lt_b( double rhs )      { typerror("attempt to compare string with number"); return false; }
+	public boolean lt_b( int rhs )         { throw new LuaTypeException(getTypeName(), "attempt to compare string with number"); }
+	public boolean lt_b( double rhs )      { throw new LuaTypeException(getTypeName(), "attempt to compare string with number"); }
 	public LuaValue   lteq( LuaValue rhs )       { return rhs.isString() ? (rhs.strcmp(this)>=0? LuaValue.TRUE: FALSE) : super.lteq(rhs); }
 	public boolean lteq_b( LuaValue rhs )     { return rhs.isString() ? rhs.strcmp(this)>=0 : super.lteq_b(rhs); }
-	public boolean lteq_b( int rhs )       { typerror("attempt to compare string with number"); return false; }
-	public boolean lteq_b( double rhs )    { typerror("attempt to compare string with number"); return false; }
+	public boolean lteq_b( int rhs )       { throw new LuaTypeException(getTypeName(), "attempt to compare string with number"); }
+	public boolean lteq_b( double rhs )    { throw new LuaTypeException(getTypeName(), "attempt to compare string with number"); }
 	public LuaValue   gt( LuaValue rhs )         { return rhs.isString() ? (rhs.strcmp(this)<0? LuaValue.TRUE: FALSE) : super.gt(rhs); }
 	public boolean gt_b( LuaValue rhs )       { return rhs.isString() ? rhs.strcmp(this)<0 : super.gt_b(rhs); }
-	public boolean gt_b( int rhs )         { typerror("attempt to compare string with number"); return false; }
-	public boolean gt_b( double rhs )      { typerror("attempt to compare string with number"); return false; }
+	public boolean gt_b( int rhs )         { throw new LuaTypeException(getTypeName(), "attempt to compare string with number"); }
+	public boolean gt_b( double rhs )      { throw new LuaTypeException(getTypeName(), "attempt to compare string with number"); }
 	public LuaValue   gteq( LuaValue rhs )       { return rhs.isString() ? (rhs.strcmp(this)<=0? LuaValue.TRUE: FALSE) : super.gteq(rhs); }
 	public boolean gteq_b( LuaValue rhs )     { return rhs.isString() ? rhs.strcmp(this)<=0 : super.gteq_b(rhs); }
-	public boolean gteq_b( int rhs )       { typerror("attempt to compare string with number"); return false; }
-	public boolean gteq_b( double rhs )    { typerror("attempt to compare string with number"); return false; }
+	public boolean gteq_b( int rhs )       { throw new LuaTypeException(getTypeName(), "attempt to compare string with number"); }
+	public boolean gteq_b( double rhs )    { throw new LuaTypeException(getTypeName(), "attempt to compare string with number"); }
 
 	// concatenation
 	public LuaValue concat(LuaValue rhs)      { return rhs.concatTo(this); }
@@ -309,8 +313,7 @@ public class LuaString extends LuaValue {
 	/** Check for number in arithmetic, or throw aritherror */
 	private double checkarith() {
 		double d = scannumber();
-		if ( Double.isNaN(d) )
-			aritherror();
+		if (Double.isNaN(d)) throw new LuaArithmeticException(getTypeName());
 		return d;
 	}
 	
@@ -325,8 +328,7 @@ public class LuaString extends LuaValue {
 	}
 	public double checkDouble() {
 		double d = scannumber();
-		if ( Double.isNaN(d) )
-			argerror("number");
+		if ( Double.isNaN(d) ) throw new LuaArgumentException("number", getTypeName());
 		return d;
 	}
 	public LuaNumber checkNumber() {
@@ -335,7 +337,7 @@ public class LuaString extends LuaValue {
 	public LuaNumber checkNumber(String msg) {
 		double d = scannumber();
 		if ( Double.isNaN(d) )
-			error(msg);
+			throw new LuaException(msg);
 		return valueOf(d);
 	}
 

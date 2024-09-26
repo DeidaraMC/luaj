@@ -3,6 +3,8 @@ package org.luaj.vm2.lib;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaArgumentException;
+import org.luaj.vm2.exception.LuaException;
 
 /**
  * Subclass of LibFunction that implements the Lua standard {@code bit32} library.
@@ -171,26 +173,26 @@ public class Bit32Lib extends TwoArgFunction {
 
 	static LuaValue extract(int n, int field, int width) {
 		if (field < 0) {
-			argerror(2, "field cannot be negative");
+			throw new LuaArgumentException(2, "field cannot be negative");
 		}
 		if (width < 0) {
-			argerror(3, "width must be postive");
+			throw new LuaArgumentException(3, "width must be postive");
 		}
 		if (field + width > 32) {
-			error("trying to access non-existent bits");
+			throw new LuaException("trying to access non-existent bits");
 		}
 		return bitsToValue((n >>> field) & (-1 >>> (32 - width)));
 	}
 
 	static LuaValue replace(int n, int v, int field, int width) {
 		if (field < 0) {
-			argerror(3, "field cannot be negative");
+			throw new LuaArgumentException(3, "field cannot be negative");
 		}
 		if (width < 0) {
-			argerror(4, "width must be postive");
+			throw new LuaArgumentException(4, "width must be postive");
 		}
 		if (field + width > 32) {
-			error("trying to access non-existent bits");
+			throw new LuaException("trying to access non-existent bits");
 		}
 		int mask = (-1 >>> (32 - width)) << field;
 		n = (n & ~mask) | ((v << field) & mask);

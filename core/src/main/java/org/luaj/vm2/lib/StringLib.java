@@ -10,6 +10,8 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.compiler.DumpState;
+import org.luaj.vm2.exception.LuaArgumentException;
+import org.luaj.vm2.exception.LuaException;
 
 /**
  * Subclass of {@link LibFunction} which implements the lua standard {@code string}
@@ -108,7 +110,7 @@ public class StringLib extends TwoArgFunction {
 			if (posi > pose) return NONE;  /* empty interval; return no values */
 			n = (int)(pose -  posi + 1);
 			if (posi + n <= pose)  /* overflow? */
-			    error("string slice too long");
+			    throw new LuaException("string slice too long");
 			LuaValue[] v = new LuaValue[n];
 			for (i=0; i<n; i++)
 				v[i] = valueOf(s.luaByte(posi+i-1));
@@ -133,7 +135,7 @@ public class StringLib extends TwoArgFunction {
 			byte[] bytes = new byte[n];
 			for ( int i=0, a=1; i<n; i++, a++ ) {
 				int c = args.checkInt(a);
-				if (c<0 || c>=256) argerror(a, "invalid value for string.char [0; 255]: " + c);
+				if (c<0 || c>=256) throw new LuaArgumentException(a, "invalid value for string.char [0; 255]: " + c);
 				bytes[i] = (byte) c;
 			}
 			return LuaString.valueUsing( bytes );
@@ -159,7 +161,7 @@ public class StringLib extends TwoArgFunction {
 				DumpState.dump( ((LuaClosure)f).p, baos, args.optionalBoolean(2, true) );
 				return LuaString.valueUsing(baos.toByteArray());
 			} catch (IOException e) {
-				return error( e.getMessage() );
+				throw new LuaException( e.getMessage() );
 			}
 		}
 	}
@@ -267,8 +269,7 @@ public class StringLib extends TwoArgFunction {
 								}
 							}	break;
 							default:
-								error("invalid option '%"+(char)fdsc.conversion+"' to 'format'");
-								break;
+								throw new LuaException("invalid option '%"+(char)fdsc.conversion+"' to 'format'");
 							}
 						}
 					}
@@ -342,7 +343,7 @@ public class StringLib extends TwoArgFunction {
 				}
 			}
 			if ( p - start > MAX_FLAGS )
-				error("invalid format (repeated flags)");
+				throw new LuaException("invalid format (repeated flags)");
 			
 			width = -1;
 			if ( Character.isDigit( (char)c ) ) {
@@ -368,7 +369,7 @@ public class StringLib extends TwoArgFunction {
 			}
 			
 			if ( Character.isDigit( (char) c ) )
-				error("invalid format (width or precision too long)");
+				throw new LuaException("invalid format (width or precision too long)");
 			
 			zeroPad &= !leftAdjust; // '-' overrides '0'
 			conversion = c;
@@ -860,7 +861,7 @@ public class StringLib extends TwoArgFunction {
 					++i; // skip ESC
 					b = (byte)(i < l ? news.luaByte( i ) : 0);
 					if ( !Character.isDigit( (char) b ) ) {
-						if (b != L_ESC) error( "invalid use of '" + (char)L_ESC +
+						if (b != L_ESC) throw new LuaException( "invalid use of '" + (char)L_ESC +
 							"' in replacement string: after '" + (char)L_ESC +
 							"' must be '0'-'9' or '" + (char)L_ESC +
 							"', but found " + (i < l ? "symbol '" + (char)b + "' with code " + b +
@@ -893,14 +894,13 @@ public class StringLib extends TwoArgFunction {
 				break;
 				
 			default:
-				error( "bad argument: string/function/table expected" );
-				return;
+				throw new LuaException( "bad argument: string/function/table expected" );
 			}
 			
 			if ( !repl.toBoolean() ) {
 				repl = s.substring( soffset, end );
 			} else if ( ! repl.isString() ) {
-				error( "invalid replacement value (a "+repl.getTypeName()+")" );
+				throw new LuaException( "invalid replacement value (a "+repl.getTypeName()+")" );
 			}
 			lbuf.append( repl.strvalue() );
 		}
@@ -922,12 +922,12 @@ public class StringLib extends TwoArgFunction {
 				if ( i == 0 ) {
 					return s.substring( soff, end );
 				} else {
-					return error( "invalid capture index %" + (i + 1) );
+					throw new LuaException( "invalid capture index %" + (i + 1) );
 				}
 			} else {
 				int l = clen[i];
 				if ( l == CAP_UNFINISHED ) {
-					return error( "unfinished capture" );
+					throw new LuaException( "unfinished capture" );
 				}
 				if ( l == CAP_POSITION ) {
 					return valueOf( cinit[i] + 1 );
@@ -941,7 +941,7 @@ public class StringLib extends TwoArgFunction {
 		private int check_capture( int l ) {
 			l -= '1';
 			if ( l < 0 || l >= level || this.clen[l] == CAP_UNFINISHED ) {
-				error("invalid capture index %" + (l + 1));
+				throw new LuaException("invalid capture index %" + (l + 1));
 			}
 			return l;
 		}
@@ -951,15 +951,14 @@ public class StringLib extends TwoArgFunction {
 			for ( level--; level >= 0; level-- )
 				if ( clen[level] == CAP_UNFINISHED )
 					return level;
-			error("invalid pattern capture");
-			return 0;
+			throw new LuaException("invalid pattern capture");
 		}
 		
 		int classend( int poffset ) {
 			switch ( p.luaByte( poffset++ ) ) {
 			case L_ESC:
 				if ( poffset == p.length() ) {
-					error( "malformed pattern (ends with '%')" );
+					throw new LuaException( "malformed pattern (ends with '%')" );
 				}
 				return poffset + 1;
 				
@@ -967,7 +966,7 @@ public class StringLib extends TwoArgFunction {
 				if ( poffset != p.length() && p.luaByte( poffset ) == '^' ) poffset++;
 				do {
 					if ( poffset == p.length() ) {
-						error( "malformed pattern (missing ']')" );
+						throw new LuaException( "malformed pattern (missing ']')" );
 					}
 					if ( p.luaByte( poffset++ ) == L_ESC && poffset < p.length() )
 						poffset++; /* skip escapes (e.g. '%]') */
@@ -1036,7 +1035,7 @@ public class StringLib extends TwoArgFunction {
 		 * where match ends, otherwise returns -1.
 		 */
 		int match( int soffset, int poffset ) {
-			if (matchdepth-- == 0) error("pattern too complex");
+			if (matchdepth-- == 0) throw new LuaException("pattern too complex");
 			try {
 				while ( true ) {
 					// Check if we are at the end of the pattern -
@@ -1054,7 +1053,7 @@ public class StringLib extends TwoArgFunction {
 						return end_capture( soffset, poffset + 1 );
 					case L_ESC:
 						if ( poffset + 1 == p.length() )
-							error("malformed pattern (ends with '%')");
+							throw new LuaException("malformed pattern (ends with '%')");
 						switch ( p.luaByte( poffset + 1 ) ) {
 						case 'b':
 							soffset = matchbalance( soffset, poffset + 2 );
@@ -1064,7 +1063,7 @@ public class StringLib extends TwoArgFunction {
 						case 'f': {
 							poffset += 2;
 							if ( poffset == p.length() || p.luaByte( poffset ) != '[' ) {
-								error("missing '[' after '%f' in pattern");
+								throw new LuaException("missing '[' after '%f' in pattern");
 							}
 							int ep = classend( poffset );
 							int previous = ( soffset == 0 ) ? '\0' : s.luaByte( soffset - 1 );
@@ -1148,7 +1147,7 @@ public class StringLib extends TwoArgFunction {
 			int res;
 			int level = this.level;
 			if ( level >= MAX_CAPTURES ) {
-				error( "too many captures" );
+				throw new LuaException( "too many captures" );
 			}
 			cinit[ level ] = soff;
 			clen[ level ] = what;
@@ -1180,7 +1179,7 @@ public class StringLib extends TwoArgFunction {
 		int matchbalance( int soff, int poff ) {
 			final int plen = p.length();
 			if ( poff == plen || poff + 1 == plen ) {
-				error( "malformed pattern (missing arguments to '%b')" );
+				throw new LuaException( "malformed pattern (missing arguments to '%b')" );
 			}
 			final int slen = s.length();
 			if ( soff >= slen )

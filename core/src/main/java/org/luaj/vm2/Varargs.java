@@ -1,5 +1,7 @@
 package org.luaj.vm2;
 
+import org.luaj.vm2.exception.LuaArgumentException;
+
 /**
  * Class to encapsulate varargs values, either as part of a variable argument list, or multiple return values.
  * <p>
@@ -144,201 +146,201 @@ public abstract class Varargs {
 	 * */
 	public boolean isValue(int i)      { return i>0 && i<=narg(); }
 	
-	/** Return argument i as a boolean value, {@code defval} if nil, or throw a LuaError if any other type.
+	/** Return argument i as a boolean value, {@code defval} if nil, or throw a LuaException if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return true if argument i is boolean true, false if it is false, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a lua boolean
+	 * @exception LuaException if the argument is not a lua boolean
 	 * */
 	public boolean optionalBoolean(int i, boolean defval)          { return arg(i).optionalBoolean(defval); }
 
-	/** Return argument i as a closure, {@code defval} if nil, or throw a LuaError if any other type.
+	/** Return argument i as a closure, {@code defval} if nil, or throw a LuaException if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaClosure if argument i is a closure, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a lua closure
+	 * @exception LuaException if the argument is not a lua closure
 	 * */
 	public LuaClosure optionalClosure(int i, LuaClosure defval)       { return arg(i).optionalClosure(defval); }
 
-	/** Return argument i as a double, {@code defval} if nil, or throw a LuaError if it cannot be converted to one.
+	/** Return argument i as a double, {@code defval} if nil, or throw a LuaException if it cannot be converted to one.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return java double value if argument i is a number or string that converts to a number, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a number
+	 * @exception LuaException if the argument is not a number
 	 * */
 	public double optionalDouble(int i, double defval)            { return arg(i).optionalDouble(defval); }
 
-	/** Return argument i as a function, {@code defval} if nil, or throw a LuaError  if an incompatible type.
+	/** Return argument i as a function, {@code defval} if nil, or throw a LuaException  if an incompatible type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaValue that can be called if argument i is lua function or closure, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a lua function or closure
+	 * @exception LuaException if the argument is not a lua function or closure
 	 * */
 	public LuaFunction optionalFunction(int i, LuaFunction defval)     { return arg(i).optionalFunction(defval); }
 
-	/** Return argument i as a java int value, discarding any fractional part, {@code defval} if nil, or throw a LuaError  if not a number.
+	/** Return argument i as a java int value, discarding any fractional part, {@code defval} if nil, or throw a LuaException  if not a number.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return int value with fraction discarded and truncated if necessary if argument i is number, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a number
+	 * @exception LuaException if the argument is not a number
 	 * */
 	public int optionalInt(int i, int defval)                  { return arg(i).optionalInt(defval); }
 
-	/** Return argument i as a java int value, {@code defval} if nil, or throw a LuaError  if not a number or is not representable by a java int.
+	/** Return argument i as a java int value, {@code defval} if nil, or throw a LuaException  if not a number or is not representable by a java int.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaInteger value that fits in a java int without rounding, or defval if not supplied or nil
-	 * @exception LuaError if the argument cannot be represented by a java int value
+	 * @exception LuaException if the argument cannot be represented by a java int value
 	 * */
 	public LuaInteger optionalInteger(int i, LuaInteger defval)       { return arg(i).optionalInteger(defval); }
 
-	/** Return argument i as a java long value, discarding any fractional part, {@code defval} if nil, or throw a LuaError  if not a number.
+	/** Return argument i as a java long value, discarding any fractional part, {@code defval} if nil, or throw a LuaException  if not a number.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return long value with fraction discarded and truncated if necessary if argument i is number, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a number
+	 * @exception LuaException if the argument is not a number
 	 * */
 	public long optionalLong(int i, long defval)                { return arg(i).optionalLong(defval); }
 
-	/** Return argument i as a LuaNumber, {@code defval} if nil, or throw a LuaError  if not a number or string that can be converted to a number.
+	/** Return argument i as a LuaNumber, {@code defval} if nil, or throw a LuaException  if not a number or string that can be converted to a number.
 	 * @param i the index of the argument to test, 1 is the first argument, or defval if not supplied or nil
 	 * @return LuaNumber if argument i is number or can be converted to a number
-	 * @exception LuaError if the argument is not a number
+	 * @exception LuaException if the argument is not a number
 	 * */
 	public LuaNumber optionalNumber(int i, LuaNumber defval)         { return arg(i).optionalNumber(defval); }
 
-	/** Return argument i as a java String if a string or number, {@code defval} if nil, or throw a LuaError  if any other type
+	/** Return argument i as a java String if a string or number, {@code defval} if nil, or throw a LuaException  if any other type
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return String value if argument i is a string or number, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a string or number
+	 * @exception LuaException if the argument is not a string or number
 	 * */
 	public String optionalJString(int i, String defval)           { return arg(i).optionalJString(defval); }
 
-	/** Return argument i as a LuaString if a string or number, {@code defval} if nil, or throw a LuaError  if any other type
+	/** Return argument i as a LuaString if a string or number, {@code defval} if nil, or throw a LuaException  if any other type
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaString value if argument i is a string or number, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a string or number
+	 * @exception LuaException if the argument is not a string or number
 	 * */
 	public LuaString optionalLuaString(int i, LuaString defval)         { return arg(i).optionalLuaString(defval); }
 
-	/** Return argument i as a LuaTable if a lua table, {@code defval} if nil, or throw a LuaError  if any other type.
+	/** Return argument i as a LuaTable if a lua table, {@code defval} if nil, or throw a LuaException  if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaTable value if a table, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a lua table
+	 * @exception LuaException if the argument is not a lua table
 	 * */
 	public LuaTable optionalTable(int i, LuaTable defval)           { return arg(i).optionalTable(defval); }
 
-	/** Return argument i as a LuaThread if a lua thread, {@code defval} if nil, or throw a LuaError  if any other type.
+	/** Return argument i as a LuaThread if a lua thread, {@code defval} if nil, or throw a LuaException  if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaThread value if a thread, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a lua thread
+	 * @exception LuaException if the argument is not a lua thread
 	 * */
 	public LuaThread optionalThread(int i, LuaThread defval)         { return arg(i).optionalThread(defval); }
 
-	/** Return argument i as a java Object if a userdata, {@code defval} if nil, or throw a LuaError  if any other type.
+	/** Return argument i as a java Object if a userdata, {@code defval} if nil, or throw a LuaException  if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return java Object value if argument i is a userdata, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a userdata
+	 * @exception LuaException if the argument is not a userdata
 	 * */
 	public Object optionalUserdata(int i, Object defval)          { return arg(i).optionalUserdata(defval); }
 
 	/** Return argument i as a java Object if it is a userdata whose instance Class c or a subclass,
-	 * {@code defval} if nil, or throw a LuaError  if any other type.
+	 * {@code defval} if nil, or throw a LuaException  if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @param type the class to which the userdata instance must be assignable
 	 * @return java Object value if argument i is a userdata whose instance Class c or a subclass, or defval if not supplied or nil
-	 * @exception LuaError if the argument is not a userdata or from whose instance c is not assignable
+	 * @exception LuaException if the argument is not a userdata or from whose instance c is not assignable
 	 * */
 	public <T> T optionalUserdata(int i, Class<T> type, Object defval) { return arg(i).optionalUserdata(type,defval); }
 
 	/** Return argument i as a LuaValue if it exists, or {@code defval}.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaValue value if the argument exists, defval if not
-	 * @exception LuaError if the argument does not exist.
+	 * @exception LuaException if the argument does not exist.
 	 * */
 	public LuaValue optionalValue(int i, LuaValue defval)           { return i>0 && i<=narg()? arg(i): defval; }
 
 	/** Return argument i as a boolean value, or throw an error if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return true if argument i is boolean true, false if it is false
-	 * @exception LuaError if the argument is not a lua boolean
+	 * @exception LuaException if the argument is not a lua boolean
 	 * */
 	public boolean checkBoolean(int i)          { return arg(i).checkBoolean(); }
 
 	/** Return argument i as a closure, or throw an error if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaClosure if argument i is a closure.
-	 * @exception LuaError if the argument is not a lua closure
+	 * @exception LuaException if the argument is not a lua closure
 	 * */
 	public LuaClosure checkClosure(int i)          { return arg(i).checkClosure(); }
 
 	/** Return argument i as a double, or throw an error if it cannot be converted to one.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return java double value if argument i is a number or string that converts to a number
-	 * @exception LuaError if the argument is not a number
+	 * @exception LuaException if the argument is not a number
 	 * */
 	public double checkDouble(int i)           { return arg(i).checkDouble(); }
 
 	/** Return argument i as a function, or throw an error if an incompatible type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaValue that can be called if argument i is lua function or closure
-	 * @exception LuaError if the argument is not a lua function or closure
+	 * @exception LuaException if the argument is not a lua function or closure
 	 * */
 	public LuaFunction checkFunction(int i)         { return arg(i).checkFunction(); }
 
 	/** Return argument i as a java int value, or throw an error if it cannot be converted to one.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return int value if argument i is a number or string that converts to a number
-	 * @exception LuaError if the argument cannot be represented by a java int value
+	 * @exception LuaException if the argument cannot be represented by a java int value
 	 * */
 	public int checkInt(int i)              { return arg(i).checkInt(); }
 
 	/** Return argument i as a java int value, or throw an error if not a number or is not representable by a java int.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaInteger value that fits in a java int without rounding
-	 * @exception LuaError if the argument cannot be represented by a java int value
+	 * @exception LuaException if the argument cannot be represented by a java int value
 	 * */
 	public LuaInteger checkInteger(int i)          { return arg(i).checkInteger(); }
 
 	/** Return argument i as a java long value, or throw an error if it cannot be converted to one.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return long value if argument i is a number or string that converts to a number
-	 * @exception LuaError if the argument cannot be represented by a java long value
+	 * @exception LuaException if the argument cannot be represented by a java long value
 	 * */
 	public long checkLong(int i)             { return arg(i).checkLong(); }
 
 	/** Return argument i as a LuaNumber, or throw an error if not a number or string that can be converted to a number.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaNumber if argument i is number or can be converted to a number
-	 * @exception LuaError if the argument is not a number
+	 * @exception LuaException if the argument is not a number
 	 * */
 	public LuaNumber checkNumber(int i)           { return arg(i).checkNumber(); }
 
 	/** Return argument i as a java String if a string or number, or throw an error if any other type
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return String value if argument i is a string or number
-	 * @exception LuaError if the argument is not a string or number
+	 * @exception LuaException if the argument is not a string or number
 	 * */
 	public String checkJString(int i)          { return arg(i).checkJString(); }
 
 	/** Return argument i as a LuaString if a string or number, or throw an error if any other type
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaString value if argument i is a string or number
-	 * @exception LuaError if the argument is not a string or number
+	 * @exception LuaException if the argument is not a string or number
 	 * */
 	public LuaString checkLuaString(int i)           { return arg(i).checkLuaString(); }
 
 	/** Return argument i as a LuaTable if a lua table, or throw an error if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaTable value if a table
-	 * @exception LuaError if the argument is not a lua table
+	 * @exception LuaException if the argument is not a lua table
 	 * */
 	public LuaTable checkTable(int i)            { return arg(i).checkTable(); }
 
 	/** Return argument i as a LuaThread if a lua thread, or throw an error if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaThread value if a thread
-	 * @exception LuaError if the argument is not a lua thread
+	 * @exception LuaException if the argument is not a lua thread
 	 * */
 	public LuaThread checkThread(int i)           { return arg(i).checkThread(); }
 
 	/** Return argument i as a java Object if a userdata, or throw an error if any other type.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return java Object value if argument i is a userdata
-	 * @exception LuaError if the argument is not a userdata
+	 * @exception LuaException if the argument is not a userdata
 	 * */
 	public Object checkUserdata(int i)         { return arg(i).checkUserdata(); }
 
@@ -347,21 +349,24 @@ public abstract class Varargs {
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @param type the class to which the userdata instance must be assignable
 	 * @return java Object value if argument i is a userdata whose instance Class type or a subclass
-	 * @exception LuaError if the argument is not a userdata or from whose instance type is not assignable
+	 * @exception LuaException if the argument is not a userdata or from whose instance type is not assignable
 	 * */
 	public <T> T checkUserdata(int i, Class<T> type) { return arg(i).checkUserdata(type); }
 
 	/** Return argument i as a LuaValue if it exists, or throw an error.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaValue value if the argument exists
-	 * @exception LuaError if the argument does not exist.
+	 * @exception LuaException if the argument does not exist.
 	 * */
-	public LuaValue checkValue(int i)            { return i<=narg()? arg(i): LuaValue.argerror(i,"value expected"); }
+	public LuaValue checkValue(int i) {
+		if (i <= narg()) return arg(i);
+		throw new LuaArgumentException(i,"value expected");
+	}
 
 	/** Return argument i as a LuaValue if it is not nil, or throw an error if it is nil.
 	 * @param i the index of the argument to test, 1 is the first argument
 	 * @return LuaValue value if the argument is not nil
-	 * @exception LuaError if the argument doesn't exist or evaluates to nil.
+	 * @exception LuaException if the argument doesn't exist or evaluates to nil.
 	 * */
 	public LuaValue checkNotNil(int i)           { return arg(i).checkNotNil(); }
 	
@@ -371,9 +376,9 @@ public abstract class Varargs {
 	 * @param test user supplied assertion to test against
 	 * @param i the index to report in any error message
 	 * @param msg the error message to use when the test fails
-	 * @exception LuaError if the the value of {@code test} is {@code false}
+	 * @exception LuaException if the the value of {@code test} is {@code false}
 	 * */
-	public void argCheck(boolean test, int i, String msg) { if (!test) LuaValue.argerror(i,msg); }
+	public void argCheck(boolean test, int i, String msg) { if (!test) throw new LuaArgumentException(i,msg); }
 	
 	/** Return true if there is no argument or nil at argument i.
 	 * @param i the index of the argument to test, 1 is the first argument
@@ -560,7 +565,7 @@ public abstract class Varargs {
 				return v2;
 			if (start > 2)
 				return v2.subArgs(start - 1);
-			return LuaValue.argerror(1, "start must be > 0");
+			throw new LuaArgumentException(1, "start must be > 0");
 		}
 	}
 
@@ -596,7 +601,7 @@ public abstract class Varargs {
 		public LuaValue arg1() { return v.length>0? v[0]: r.arg1(); }
 		public Varargs subArgs(int start) {
 			if (start <= 0)
-				LuaValue.argerror(1, "start must be > 0");
+				throw new LuaArgumentException(1, "start must be > 0");
 			if (start == 1)
 				return this;
 			if (start > v.length)
@@ -660,7 +665,7 @@ public abstract class Varargs {
 		}
 		public Varargs subArgs(int start) {
 			if (start <= 0)
-				LuaValue.argerror(1, "start must be > 0");
+				throw new LuaArgumentException(1, "start must be > 0");
 			if (start == 1)
 				return this;
 			if (start > length)

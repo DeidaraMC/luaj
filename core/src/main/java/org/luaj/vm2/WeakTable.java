@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 
 import org.luaj.vm2.LuaTable.Slot;
 import org.luaj.vm2.LuaTable.StrongSlot;
+import org.luaj.vm2.exception.LuaIllegalOperationException;
 
 /**
  * Subclass of {@link LuaTable} that provides weak key and weak value semantics. 
@@ -323,13 +324,11 @@ public class WeakTable implements Metatable {
 		}
 
 		public int getType() {
-			illegal("type","weak value");
-			return 0;
+			throw new LuaIllegalOperationException(getTypeName(), "type");
 		}
 
 		public String getTypeName() {
-			illegal("typename","weak value");
-			return null;
+			throw new LuaIllegalOperationException(getTypeName(), "typename");
 		}
 
 		public String toString() {

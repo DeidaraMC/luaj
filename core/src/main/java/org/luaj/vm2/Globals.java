@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.Reader;
 
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.lib.BaseLib;
 import org.luaj.vm2.lib.DebugLib;
 import org.luaj.vm2.lib.IoLib;
@@ -155,13 +156,13 @@ public class Globals extends LuaTable {
 	/** Convenience function for loading a file that is either binary lua or lua source.
 	 * @param filename Name of the file to load.
 	 * @return LuaValue that can be call()'ed or invoke()'ed.
-	 * @throws LuaError if the file could not be loaded.
+	 * @throws LuaException if the file could not be loaded.
 	 */
 	public LuaValue loadfile(String filename) {
 		try {
 			return load(finder.findResource(filename), "@"+filename, "bt", this);
 		} catch (Exception e) {
-			return error("load "+filename+": "+e);
+			throw new LuaException("load "+filename+": "+e);
 		}
 	}
 
@@ -169,7 +170,7 @@ public class Globals extends LuaTable {
 	 * @param script Contents of a lua script, such as "print 'hello, world.'"
 	 * @param chunkname Name that will be used within the chunk as the source.
 	 * @return LuaValue that may be executed via .call(), .invoke(), or .method() calls.
-	 * @throws LuaError if the script could not be compiled.
+	 * @throws LuaException if the script could not be compiled.
 	 */
 	public LuaValue load(String script, String chunkname) {
 		return load(new StrReader(script), chunkname);
@@ -178,7 +179,7 @@ public class Globals extends LuaTable {
 	/** Convenience function to load a string value as a script.  Must be lua source.
 	 * @param script Contents of a lua script, such as "print 'hello, world.'"
 	 * @return LuaValue that may be executed via .call(), .invoke(), or .method() calls.
-	 * @throws LuaError if the script could not be compiled.
+	 * @throws LuaException if the script could not be compiled.
 	 */
 	public LuaValue load(String script) {
 		return load(new StrReader(script), script);
@@ -190,7 +191,7 @@ public class Globals extends LuaTable {
 	 * @param chunkname Name that will be used within the chunk as the source.
 	 * @param environment LuaTable to be used as the environment for the loaded function.
 	 * @return LuaValue that may be executed via .call(), .invoke(), or .method() calls.
-	 * @throws LuaError if the script could not be compiled.
+	 * @throws LuaException if the script could not be compiled.
 	 */
 	public LuaValue load(String script, String chunkname, LuaTable environment) {
 		return load(new StrReader(script), chunkname, environment);
@@ -202,7 +203,7 @@ public class Globals extends LuaTable {
 	 * @param reader Reader containing text of a lua script, such as "print 'hello, world.'"
 	 * @param chunkname Name that will be used within the chunk as the source.
 	 * @return LuaValue that may be executed via .call(), .invoke(), or .method() calls.
-	 * @throws LuaError if the script could not be compiled.
+	 * @throws LuaException if the script could not be compiled.
 	 */ 
 	public LuaValue load(Reader reader, String chunkname) {
 		return load(new UTF8Stream(reader), chunkname, "t", this);
@@ -216,7 +217,7 @@ public class Globals extends LuaTable {
 	 * @param chunkname Name that will be used within the chunk as the source.
 	 * @param environment LuaTable to be used as the environment for the loaded function.
 	 * @return LuaValue that may be executed via .call(), .invoke(), or .method() calls.
-	 * @throws LuaError if the script could not be compiled.
+	 * @throws LuaException if the script could not be compiled.
 	 */ 
 	public LuaValue load(Reader reader, String chunkname, LuaTable environment) {
 		return load(new UTF8Stream(reader), chunkname, "t", environment);
@@ -232,10 +233,10 @@ public class Globals extends LuaTable {
 		try {
 			Prototype p = loadPrototype(is, chunkname, mode);
 			return loader.load(p, chunkname, environment);
-		} catch (LuaError l) {
+		} catch (LuaException l) {
 			throw l;
 		} catch (Exception e) {
-			return error("load "+chunkname+": "+e);
+			throw new LuaException("load "+chunkname+": "+e);
 		}
 	}
 
@@ -249,7 +250,7 @@ public class Globals extends LuaTable {
 	public Prototype loadPrototype(InputStream is, String chunkname, String mode) throws IOException {
 		if (mode.indexOf('b') >= 0) {
 			if (undumper == null)
-				error("No undumper.");
+				throw new LuaException("No undumper.");
 			if (!is.markSupported())
 				is = new BufferedStream(is);
 			is.mark(4);
@@ -261,8 +262,7 @@ public class Globals extends LuaTable {
 		if (mode.indexOf('t') >= 0) {
 			return compilePrototype(is, chunkname);
 		}
-		error("Failed to load prototype "+chunkname+" using mode '"+mode+"'");
-		return null;
+		throw new LuaException("Failed to load prototype "+chunkname+" using mode '"+mode+"'");
 	}
 	
 	/** Compile lua source from a Reader into a Prototype. The characters in the reader 
@@ -279,7 +279,7 @@ public class Globals extends LuaTable {
 	 */
 	public Prototype compilePrototype(InputStream stream, String chunkname) throws IOException {
 		if (compiler == null)
-			error("No compiler.");
+			throw new LuaException("No compiler.");
 		return compiler.compile(stream, chunkname);
 	}
 
@@ -289,7 +289,7 @@ public class Globals extends LuaTable {
 	 */
 	public Varargs yield(Varargs args) {
 		if (running == null || running.isMainThread())
-			throw new LuaError("cannot yield main thread");
+			throw new LuaException("cannot yield main thread");
 		final LuaThread.State s = running.state;
 		return s.lua_yield(args);
 	}

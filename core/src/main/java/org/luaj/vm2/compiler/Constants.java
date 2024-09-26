@@ -2,7 +2,7 @@ package org.luaj.vm2.compiler;
 
 import org.luaj.vm2.LocVars;
 import org.luaj.vm2.Lua;
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Prototype;
@@ -40,7 +40,7 @@ public class Constants extends Lua {
 
 	protected static void _assert(boolean b) {
 		if (!b)
-			throw new LuaError("compiler assert failed");
+			throw new LuaException("compiler assert failed");
 	}
 
 	static void SET_OPCODE(InstructionPtr i,int o) {

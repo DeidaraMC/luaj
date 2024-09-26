@@ -1,5 +1,6 @@
 package org.luaj.vm2;
 
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.lib.DebugLib.CallFrame;
 
 /**
@@ -200,7 +201,7 @@ public class LuaClosure extends LuaFunction {
 					i = code[pc];
 					if ((i & 0x3f) != Lua.OP_EXTRAARG) {
 						int op = i & 0x3f;
-						throw new LuaError("OP_EXTRAARG expected after OP_LOADKX, got " +
+						throw new LuaException("OP_EXTRAARG expected after OP_LOADKX, got " +
 							(op < Print.OPNAMES.length - 1 ? Print.OPNAMES[op] : "UNKNOWN_OP_" + op));
 					}
 					stack[a] = k[i>>>6];
@@ -487,12 +488,12 @@ public class LuaClosure extends LuaFunction {
 					throw new java.lang.IllegalArgumentException("Illegal opcode: " + (i & 0x3f));
 				}
 			}
-		} catch ( LuaError le ) {
+		} catch ( LuaException le ) {
 			if (le.traceback == null)
 				processErrorHooks(le, p, pc);
 			throw le;
 		} catch ( Exception e ) {
-			LuaError le = new LuaError(e);
+			LuaException le = new LuaException(e);
 			processErrorHooks(le, p, pc);
 			throw le;
 		} finally {
@@ -527,7 +528,7 @@ public class LuaClosure extends LuaFunction {
 		}
 	}
 
-	private void processErrorHooks(LuaError le, Prototype p, int pc) {
+	private void processErrorHooks(LuaException le, Prototype p, int pc) {
 		String file = "?";
 		int line = -1;
 		{
@@ -557,8 +558,7 @@ public class LuaClosure extends LuaFunction {
 		for (int i = 0; i < n; ++i)
 			if (openups[i] == null)
 				return openups[i] = new UpValue(stack, idx);
-		error("No space for upvalue");
-		return null;
+		throw new LuaException("No space for upvalue");
 	}
 
 	protected LuaValue getUpvalue(int i) {

@@ -3,6 +3,8 @@ package org.luaj.vm2.lib;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaArgumentException;
+import org.luaj.vm2.exception.LuaException;
 
 /**
  * Subclass of {@link LibFunction} which implements the lua standard {@code table}
@@ -82,12 +84,12 @@ public class TableLib extends TwoArgFunction {
 				LuaTable table = args.checkTable(1);
 				int pos = args.checkInt(2);
 				int max = table.length() + 1;
-				if (pos < 1 || pos > max) argerror(2, "position out of bounds: " + pos + " not between 1 and " + max);
+				if (pos < 1 || pos > max)  throw new LuaArgumentException(2, "position out of bounds: " + pos + " not between 1 and " + max);
 				table.insert(pos, args.arg(3));
 				return NONE;
 			}
 			default: {
-				return error("wrong number of arguments to 'table.insert': " + args.narg() + " (must be 2 or 3)");
+				throw new LuaException("wrong number of arguments to 'table.insert': " + args.narg() + " (must be 2 or 3)");
 			}
 			}
 		}
@@ -109,7 +111,7 @@ public class TableLib extends TwoArgFunction {
 			int size = table.length();
 			int pos = args.optionalInt(2, size);
 			if (pos != size && (pos < 1 || pos > size + 1)) {
-				argerror(2, "position out of bounds: " + pos + " not between 1 and " + (size + 1));
+				throw new LuaArgumentException(2, "position out of bounds: " + pos + " not between 1 and " + (size + 1));
 			}
 			return table.remove(pos);
 		}

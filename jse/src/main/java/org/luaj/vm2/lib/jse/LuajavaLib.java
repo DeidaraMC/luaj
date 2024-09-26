@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
@@ -131,7 +131,7 @@ public class LuajavaLib extends VarArgFunction {
 			case CREATEPROXY: {
 				final int niface = args.narg()-1;
 				if ( niface <= 0 )
-					throw new LuaError("no interfaces");
+					throw new LuaException("no interfaces");
 				final LuaValue lobj = args.checkTable(niface+1);
 				
 				// get the interfaces
@@ -162,14 +162,14 @@ public class LuajavaLib extends VarArgFunction {
 				}
 			}
 			default:
-				throw new LuaError("not yet supported: "+this);
+				throw new LuaException("not yet supported: "+this);
 			}
-		} catch (LuaError e) {
+		} catch (LuaException e) {
 			throw e;
 		} catch (InvocationTargetException ite) {
-			throw new LuaError(ite.getTargetException());
+			throw new LuaException(ite.getTargetException());
 		} catch (Exception e) {
-			throw new LuaError(e);
+			throw new LuaException(e);
 		}
 	}
 

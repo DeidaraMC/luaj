@@ -1,5 +1,7 @@
 package org.luaj.vm2;
 
+import org.luaj.vm2.exception.LuaException;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -358,7 +360,7 @@ public class LoadState {
 		luacNumberFormat = is.readByte();
 		for (int i=0; i < LUAC_TAIL.length; ++i)
 			if (is.readByte() != LUAC_TAIL[i])
-				throw new LuaError("Unexpeted byte in luac tail of header, index="+i);
+				throw new LuaException("Unexpeted byte in luac tail of header, index="+i);
 	}
 
 	/**
@@ -388,7 +390,7 @@ public class LoadState {
 		case NUMBER_FORMAT_NUM_PATCH_INT32:
 			break;
 		default:
-			throw new LuaError("unsupported int size");
+			throw new LuaException("unsupported int size");
 		}
 		return s.loadFunction( LuaString.valueOf(sname) );
 	}

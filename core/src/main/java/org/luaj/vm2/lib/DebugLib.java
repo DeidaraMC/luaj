@@ -4,7 +4,8 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.Lua;
 import org.luaj.vm2.LuaBoolean;
 import org.luaj.vm2.LuaClosure;
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaArgumentException;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaNil;
 import org.luaj.vm2.LuaNumber;
@@ -156,7 +157,7 @@ public class DebugLib extends TwoArgFunction {
 			} else if ( func.isFunction() ) {
 				frame = callstack.findCallFrame(func);
 			} else {
-				return argerror(a-2, "function or level");
+				throw new LuaArgumentException(a-2, "function or level");
 			}
 
 			// start a table
@@ -371,9 +372,9 @@ public class DebugLib extends TwoArgFunction {
 			LuaClosure f2 = args.checkClosure(3);
 			int n2 = args.checkInt(4);
 			if (n1 < 1 || n1 > f1.upValues.length)
-				argerror("index out of range");
+				throw new LuaArgumentException("index out of range", getTypeName());
 			if (n2 < 1 || n2 > f2.upValues.length)
-				argerror("index out of range");
+				throw new LuaArgumentException("index out of range", getTypeName());
 			f1.upValues[n1-1] = f2.upValues[n2-1];
 			return NONE;
 		}
@@ -430,10 +431,10 @@ public class DebugLib extends TwoArgFunction {
 		s.inhook = true;
 		try {
 			s.hookfunc.call(type, arg);
-		} catch (LuaError e) {
+		} catch (LuaException e) {
 			throw e;
 		} catch (RuntimeException e) {
-			throw new LuaError(e);
+			throw new LuaException(e);
 		} finally {
 			s.inhook = false;
 		}

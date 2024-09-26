@@ -2,7 +2,7 @@ package org.luaj.vm2.lib.jse;
 
 import junit.framework.TestCase;
 
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaTable;
@@ -96,13 +96,13 @@ public class LuaJavaCoercionTest extends TestCase {
 		try {
 			v.set(ZERO, LuaInteger.valueOf(777));
 			fail( "array bound exception not thrown" );
-		} catch ( LuaError lee ) {
+		} catch ( LuaException lee ) {
 			// expected
 		}
 		try {
 			v.set(THREE, LuaInteger.valueOf(777));
 			fail( "array bound exception not thrown" );
-		} catch ( LuaError lee ) {
+		} catch ( LuaException lee ) {
 			// expected
 		}
 	}
@@ -233,7 +233,7 @@ public class LuaJavaCoercionTest extends TestCase {
 		try {
 			chunk.invoke(LuaValue.NONE);
 			fail( "call should not have succeeded" );
-		} catch ( LuaError lee ) {
+		} catch ( LuaException lee ) {
 			Throwable c = lee.getCause();
 			assertEquals( SomeException.class, c.getClass() );
 		}

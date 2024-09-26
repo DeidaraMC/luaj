@@ -217,13 +217,13 @@ public class VarargsTest extends TestCase {
 		try {
 			v.subArgs(0);
 			fail("Failed to throw exception for index 0");
-		} catch ( LuaError e ) {
+		} catch ( LuaException e ) {
 			assertEquals(expected_msg, e.getMessage());
 		}
 		try {
 			v.subArgs(-1);
 			fail("Failed to throw exception for index -1");
-		} catch ( LuaError e ) {
+		} catch ( LuaException e ) {
 			assertEquals(expected_msg, e.getMessage());
 		}
 	}	

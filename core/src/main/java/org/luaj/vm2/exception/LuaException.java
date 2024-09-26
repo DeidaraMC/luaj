@@ -13,7 +13,7 @@ import org.luaj.vm2.LuaValue;
  * be thrown on almost any luaj Java operation.
  * This is analagous to the fact that any lua script can throw a lua error at any time.
  * <p> 
- * The LuaError may be constructed with a message object, in which case the message
+ * The LuaException may be constructed with a message object, in which case the message
  * is the string representation of that object.  getMessageObject will get the object
  * supplied at construct time, or a LuaString containing the message of an object 
  * was not supplied.
@@ -56,9 +56,9 @@ public class LuaException extends RuntimeException {
 		return m != null ? LuaValue.valueOf(m): null;
 	}
 	
-	/** Construct LuaError when a program exception occurs. 
+	/** Construct LuaException when a program exception occurs. 
 	 * <p> 
-	 * All errors generated from lua code should throw LuaError(String) instead.
+	 * All errors generated from lua code should throw LuaException(String) instead.
 	 * @param cause the Throwable that caused the error, if known.  
 	 */
 	public LuaException(Throwable cause) {
@@ -68,7 +68,7 @@ public class LuaException extends RuntimeException {
 	}
 
 	/**
-	 * Construct a LuaError with a specific message.  
+	 * Construct a LuaException with a specific message.  
 	 *  
 	 * @param message message to supply
 	 */
@@ -78,7 +78,7 @@ public class LuaException extends RuntimeException {
 	}		
 
 	/**
-	 * Construct a LuaError with a message, and level to draw line number information from.
+	 * Construct a LuaException with a message, and level to draw line number information from.
 	 * @param message message to supply
 	 * @param level where to supply line info from in call stack
 	 */
@@ -88,7 +88,7 @@ public class LuaException extends RuntimeException {
 	}	
 
 	/**
-	 * Construct a LuaError with a LuaValue as the message object,
+	 * Construct a LuaException with a LuaValue as the message object,
 	 * and level to draw line number information from.
 	 * @param message_object message string or object to supply
 	 */

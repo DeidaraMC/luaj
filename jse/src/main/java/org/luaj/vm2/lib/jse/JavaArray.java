@@ -26,6 +26,7 @@ import java.lang.reflect.Array;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaUserdata;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.lib.OneArgFunction;
 
 /**
@@ -78,7 +79,7 @@ class JavaArray extends LuaUserdata {
 			if ( i>=0 && i<Array.getLength(m_instance) )
 				Array.set(m_instance,i,CoerceLuaToJava.coerce(value, m_instance.getClass().getComponentType()));
 			else if ( m_metatable==null || ! settable(this,key,value) )
-					error("array index out of bounds");
+					throw new LuaException("array index out of bounds");
 		}
 		else
 			super.set(key, value);

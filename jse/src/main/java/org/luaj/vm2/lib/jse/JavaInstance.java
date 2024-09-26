@@ -23,7 +23,7 @@ package org.luaj.vm2.lib.jse;
 
 import java.lang.reflect.Field;
 
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaUserdata;
 import org.luaj.vm2.LuaValue;
 
@@ -54,7 +54,7 @@ class JavaInstance extends LuaUserdata {
 			try {
 				return CoerceJavaToLua.coerce(f.get(m_instance));
 			} catch (Exception e) {
-				throw new LuaError(e);
+				throw new LuaException(e);
 			}
 		LuaValue m = jclass.getMethod(key);
 		if ( m != null )
@@ -74,7 +74,7 @@ class JavaInstance extends LuaUserdata {
 				f.set(m_instance, CoerceLuaToJava.coerce(value, f.getType()));
 				return;
 			} catch (Exception e) {
-				throw new LuaError(e);
+				throw new LuaException(e);
 			}
 		super.set(key, value);
 	} 	

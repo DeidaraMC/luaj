@@ -1,5 +1,6 @@
 package org.luaj.vm2;
 
+import org.luaj.vm2.exception.LuaTypeException;
 import org.luaj.vm2.lib.MathLib;
 
 /**
@@ -177,7 +178,7 @@ public class LuaInteger extends LuaNumber {
 	public boolean gteq_b( double rhs )    { return v >= rhs; }
 	
 	// string comparison
-	public int strcmp( LuaString rhs )      { typerror("attempt to compare number with string"); return 0; }
+	public int strcmp( LuaString rhs )      { throw new LuaTypeException(getTypeName(), "attempt to compare number with string"); }
 	
 	public int checkInt() {
 		return v;

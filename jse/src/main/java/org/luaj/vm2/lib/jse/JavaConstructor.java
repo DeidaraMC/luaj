@@ -27,9 +27,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.luaj.vm2.LuaError;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
+import org.luaj.vm2.exception.LuaException;
 import org.luaj.vm2.lib.VarArgFunction;
 
 /**
@@ -71,9 +72,9 @@ class JavaConstructor extends JavaMember {
 		try {
 			return CoerceJavaToLua.coerce( constructor.newInstance(a) );
 		} catch (InvocationTargetException e) {
-			throw new LuaError(e.getTargetException());
+			throw new LuaException(e.getTargetException());
 		} catch (Exception e) {
-			return LuaValue.error("coercion error "+e);
+			throw new LuaException(e);
 		}
 	}
 
@@ -107,7 +108,7 @@ class JavaConstructor extends JavaMember {
 			
 			// any match? 
 			if ( best == null )
-				LuaValue.error("no coercible public method");
+				throw new LuaException("no coercible public method");
 			
 			// invoke it
 			return best.invoke(args);
