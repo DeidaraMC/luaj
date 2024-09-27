@@ -17,9 +17,7 @@ import org.luaj.vm2.exception.LuaTypeException;
  * __mod: {@link LuaValue#mod(LuaValue)}
  * __concat: {@link LuaValue#concat(LuaValue)}
  */
-public class SelfLuaUserdata extends LuaValue {
-	public SelfLuaUserdata() { }
-
+public abstract class SelfLuaUserdata extends LuaValue {
 	public String toJString() {
 		return this.toString();
 	}
