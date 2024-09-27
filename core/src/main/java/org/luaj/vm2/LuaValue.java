@@ -2,6 +2,8 @@ package org.luaj.vm2;
 
 import org.luaj.vm2.exception.*;
 
+import java.util.Arrays;
+
 /**
  * Base class for all concrete lua type values.
  * <p>
@@ -162,7 +164,7 @@ public class LuaValue extends Varargs {
 	public static final LuaNumber  ONE       = LuaInteger.valueOf(1);
 
 	/** LuaValue number constant equal to -1 */
-	public static final LuaNumber  MINUSONE  = LuaInteger.valueOf(-1);
+	public static final LuaNumber NEGATIVE_ONE = LuaInteger.valueOf(-1);
 	
 	/** LuaValue array constant with no values */
 	public static final LuaValue[] NOVALS    = {};
@@ -234,10 +236,7 @@ public class LuaValue extends Varargs {
 	 * Must not be modified.
 	 */
 	public static final LuaValue[] NILS = new LuaValue[MAXSTACK];
-	static {
-		for ( int i=0; i<MAXSTACK; i++ )
-			NILS[i] = NIL;
-	}
+	static { Arrays.fill(NILS, NIL); }
 	
 	// type
 	/** Get the enumeration value for the type of this value.

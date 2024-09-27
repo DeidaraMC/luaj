@@ -238,7 +238,7 @@ public class JavaBuilder {
 			}
 			append(new ALOAD(1));
 			append(new PUSH(cp, 1 + p.numparams));
-			append(factory.createInvoke(STR_VARARGS, "subargs", TYPE_VARARGS, ARG_TYPES_INT, Constants.INVOKEVIRTUAL));
+			append(factory.createInvoke(STR_VARARGS, "subArgs", TYPE_VARARGS, ARG_TYPES_INT, Constants.INVOKEVIRTUAL));
 			append(new ASTORE(1));
 		} else {
 			// fixed arg function between 0 and 3 arguments
